@@ -1,12 +1,8 @@
 package GoScene;
 
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-
-import java.io.FileNotFoundException;
 
 public class ButtonPages {
     int buttonNumber;

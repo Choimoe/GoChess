@@ -1,6 +1,7 @@
 package GoScene;
 
 import GoGame.GoMain;
+import GoGame.GoStep;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -8,9 +9,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.Serializable;
+import java.io.*;
+import java.util.Objects;
 
 class ChessBoard implements Serializable {
     ImageView pieceWaitDisplay;
@@ -132,6 +132,21 @@ class ChessBoard implements Serializable {
         setPane();
     }
 
+    public void recoverPieces() {
+        pane.getChildren().clear();
+        setPane();
+        GoStep[] steps = goGame.getGoSteps();
+        for (GoStep step : steps) {
+            if (step == null) continue;
+            int boardPosX = step.getX(), boardPosY = step.getY(), player = step.getPlayer();
+            pane.getChildren().add(newPieceImage(player, boardPosX, boardPosY));
+        }
+
+        pane.getChildren().remove(pieceWaitDisplay);
+        pieceWaitDisplay = newPieceWaitImage(goGame.getCurrentPlayer());
+        pane.getChildren().add(pieceWaitDisplay);
+    }
+
     public void setPiece(double posX, double posY) {
         int boardPosX = getBoardPosX(posX), boardPosY = getBoardPosY(posY);
         if (boardPosX == -1 || boardPosY == -1) return;
@@ -164,11 +179,30 @@ class ChessBoard implements Serializable {
 }
 
 public class BoardPage extends ButtonPages{
+    int savesNumber = 0;
+
+    static void serialize(Object obj, int index) throws IOException {
+        ObjectOutputStream objectOutputStream =
+                new ObjectOutputStream(new FileOutputStream("data\\save" + index + ".dat"));
+        objectOutputStream.writeObject(obj);
+        objectOutputStream.close();
+    }
+
+    public Object deserialize(String pathName) throws IOException, ClassNotFoundException {
+//        System.out.println("deserialize");
+        ObjectInputStream objectInputStream =
+                new ObjectInputStream(new FileInputStream(pathName));
+        Object obj = objectInputStream.readObject();
+        objectInputStream.close();
+
+        return obj;
+    }
+
     ChessBoard board;
     BorderPane rootPane;
 
     public BoardPage() throws FileNotFoundException {
-        initialButton(170, 80, new String[]{"认输", "和棋", "存档", "强制退出"});
+        initialButton(170, 80, new String[]{"认输", "读档", "存档", "退出"});
 
         board = new ChessBoard();
 
@@ -187,7 +221,28 @@ public class BoardPage extends ButtonPages{
         rootPane.setRight(buttonLayout);
         rootPane.setLeft(board.getPane());
 
+        setButtonAction(1, () -> {
+            Object obj = null;
+            try {
+                File filePoint = new File("data");
+                File[] list = filePoint.listFiles();
+                for (File file : Objects.requireNonNull(list)) {
+                    String str = file.getName();
+                    if (!str.endsWith(".dat")) continue;
+                    if (!str.startsWith("save")) continue;
+                    obj = deserialize("data\\" + str);
+                    if (obj != null) break;
+                }
+                if (obj != null) {
+                    clear();
+                    board.goGame = (GoMain) obj;
+                    board.recoverPieces();
+                }
+            } catch (IOException | ClassNotFoundException ignored) {}
+        });
+
         setButtonAction(2, () -> {
+            try { serialize(board.goGame, ++savesNumber); } catch (IOException ignored) {}
         });
     }
 
