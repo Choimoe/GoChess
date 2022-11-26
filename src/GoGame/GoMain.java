@@ -1,6 +1,7 @@
 package GoGame;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class GoMain implements Serializable {
     final int SIZE = 19;
@@ -20,6 +21,10 @@ public class GoMain implements Serializable {
 
     public GoStep[] getGoSteps() {
         return goSteps;
+    }
+
+    public int getPosStep (int x, int y) {
+        return goMap[x][y];
     }
 
     public void beginGame() {
@@ -46,17 +51,22 @@ public class GoMain implements Serializable {
         currentUser = BLACK_PLAYER + WHITE_PLAYER - currentUser;
     }
 
-    public int checkWin() {
-        return 0;
+    public List<GoStep> getRemovePieces() {
+        return GoLiberty.check(goMap);
+    }
+
+    public void removePiece(List<GoStep> list) {
+        if (list == null) return;
+        list.forEach(step -> goMap[step.getX()][step.getY()] = WAIT_BEGIN);
     }
 
     public boolean putPiece(int x, int y) {
 //        System.out.println("location: " + x + " " + y + " " + gameEnded + " " + goMap[x][y]);
         if (!isLegal(x, y)) return false;
+        if (!GoLiberty.checkPosition(goMap, x, y, steps + 1)) return false;
 //        System.out.println("Success: " + x + " " + y + " " + currentUser);
         goSteps[++steps] = new GoStep(x, y, currentUser);
-        goMap[x][y] = currentUser;
-        gameEnded = checkWin();
+        goMap[x][y] = steps;
         changePlayer();
         return true;
     }

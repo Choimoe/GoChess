@@ -10,6 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import java.io.*;
+import java.util.List;
 import java.util.Objects;
 
 class ChessBoard implements Serializable {
@@ -31,6 +32,9 @@ class ChessBoard implements Serializable {
     ImageView[] pieceWait = new ImageView[3];
     ImageView[] piece = new ImageView[3];
 
+    int pieceCount = 0;
+    ImageView[] pieceList = new ImageView[BOARD_ROW * BOARD_COL];
+
     public Pane getPane() { return pane; }
 
     final double abs(double x) { return x < 0 ? -x : x; }
@@ -51,11 +55,24 @@ class ChessBoard implements Serializable {
     final int getAbsolutePosX (int posX) { return (int)(posX * LEN_X + NW_X); }
     final int getAbsolutePosY (int posY) { return (int)(posY * LEN_Y + NW_Y); }
 
+    /**
+     * reshapeImageWithHeight: change the height of the image by *keeping ratio*
+     * @param imageView: the image waiting change
+     * @param height: the height of the image
+     */
     public void reshapeImageWithHeight(ImageView imageView, int height) {
         imageView.setPreserveRatio(true);
         imageView.setFitHeight(height);
     }
 
+    /**
+     * loadImage: load the piece and board image.
+     *  - assets/blackPieceWait.png
+     *  - assets/whitePieceWait.png
+     *  - assets/blackPiece.png
+     *  - assets/whitePiece.png
+     *  - assets/board.png
+     */
     public void loadImage() throws FileNotFoundException {
         FileInputStream input;
         input = new FileInputStream("assets/blackPieceWait.png");
@@ -80,19 +97,34 @@ class ChessBoard implements Serializable {
         reshapeImageWithHeight(boardImageView, 768);
     }
 
+    /**
+     * setPiecePosition: display the piece
+     * @param piece: the image waiting to view
+     * @param posX,posY: the *absolute* position of image
+     */
     public void setPiecePosition (ImageView piece, int posX, int posY) {
         reshapeImageWithHeight(piece, 2 * RADIUS - 1);
         piece.setX(getAbsolutePosX(posX) - RADIUS + 1);
         piece.setY(getAbsolutePosY(posY) - RADIUS + 1);
     }
 
+    /**
+     * newPieceImage: make a piece with image
+     * @param type: the type of piece
+     * @param posX,posY: the *absolute* position of image
+     * @return the object of the piece
+     */
     public ImageView newPieceImage (int type, int posX, int posY) {
         ImageView newPiece = new ImageView(pieceImage[type]);
         setPiecePosition(newPiece, posX, posY);
-//        System.out.println(posX + " " + posY);
         return newPiece;
     }
 
+    /**
+     * newPieceImage: make a waiting piece with image
+     * @param type: the type of waiting piece
+     * @return the object of the piece
+     */
     public ImageView newPieceWaitImage (int type) {
         ImageView newPiece = new ImageView(pieceWaitImage[type]);
         reshapeImageWithHeight(newPiece, 2 * RADIUS - 1);
@@ -100,6 +132,11 @@ class ChessBoard implements Serializable {
         return newPiece;
     }
 
+    /**
+     * setPane: initialize the pane
+     * add the board with image to the pane
+     * set the mouse action about moving and clicking
+     */
     public void setPane() {
         pieceWaitDisplay = pieceWait[goGame.getCurrentPlayer()];
         pieceWaitDisplay.setVisible(false);
@@ -123,6 +160,9 @@ class ChessBoard implements Serializable {
         setPane();
     }
 
+    /**
+     * clear: reset all the data
+     */
     public void clear() {
         goGame.clear();
 
@@ -132,14 +172,31 @@ class ChessBoard implements Serializable {
         setPane();
     }
 
+    /**
+     * removePieceDisplay: remove the piece from the pane
+     * @param boardX,boardY: the *board* position which we can get to locate the piece, belongs to [0, 18]
+     */
+    protected void removePieceDisplay(int boardX, int boardY) {
+        int step = goGame.getPosStep(boardX, boardY);
+        if (step == 0) return;
+        System.out.println("delete: " + pieceList[step]);
+        pane.getChildren().remove(pieceList[step]);
+    }
+
+    /**
+     * recoverPieces: recover all the piece from steps array(GoStep[]) and display them
+     */
     public void recoverPieces() {
         pane.getChildren().clear();
         setPane();
+        pieceCount = 0;
         GoStep[] steps = goGame.getGoSteps();
         for (GoStep step : steps) {
             if (step == null) continue;
             int boardPosX = step.getX(), boardPosY = step.getY(), player = step.getPlayer();
-            pane.getChildren().add(newPieceImage(player, boardPosX, boardPosY));
+
+            ImageView newPiece = newPieceImage(player, boardPosX, boardPosY);
+            pane.getChildren().add(pieceList[++pieceCount] = newPiece);
         }
 
         pane.getChildren().remove(pieceWaitDisplay);
@@ -147,19 +204,47 @@ class ChessBoard implements Serializable {
         pane.getChildren().add(pieceWaitDisplay);
     }
 
+    /**
+     * updatePieces: delete the pieces which do not have "Chi"
+     * @param list: the piece waiting to be removed
+     */
+    private void updatePieces(List<GoStep> list) {
+        if (list == null) return;
+        for (GoStep step : list) {
+            removePieceDisplay(step.getX(), step.getY());
+        }
+    }
+
+    /**
+     * setPiece: try to put the piece
+     * @param posX,posY: the *absolute* position of image
+     */
     public void setPiece(double posX, double posY) {
         int boardPosX = getBoardPosX(posX), boardPosY = getBoardPosY(posY);
         if (boardPosX == -1 || boardPosY == -1) return;
-        if (goGame.putPiece(boardPosX, boardPosY)) {
-//            System.out.println("Put a piece at " + boardPosX + " " + boardPosY);
-            pane.getChildren().add(newPieceImage(goGame.getLastPlayer(), boardPosX, boardPosY));
 
+        /* try to put the piece */
+        if (goGame.putPiece(boardPosX, boardPosY)) {
+            /* make the new pieces */
+            ImageView newPiece = newPieceImage(goGame.getLastPlayer(), boardPosX, boardPosY);
+            pane.getChildren().add(pieceList[++pieceCount] = newPiece);
+
+            /* set the display of the deleted pieces */
+            List<GoStep> list = goGame.getRemovePieces();
+            updatePieces(list);
+            goGame.removePiece(list);
+
+            /* reset the display of the waiting piece */
             pane.getChildren().remove(pieceWaitDisplay);
             pieceWaitDisplay = newPieceWaitImage(goGame.getCurrentPlayer());
             pane.getChildren().add(pieceWaitDisplay);
         }
     }
 
+    /**
+     * setPieceWait: display the waiting piece on the given position
+     * @param posX,posY: the *absolute* position of image
+     */
     public void setPieceWait(double posX, double posY) {
         int boardPosX = getBoardPosX(posX), boardPosY = getBoardPosY(posY);
         if (boardPosX == -1 || boardPosY == -1) {
@@ -179,8 +264,16 @@ class ChessBoard implements Serializable {
 }
 
 public class BoardPage extends ButtonPages{
+    ChessBoard board;
+    BorderPane rootPane;
+
     int savesNumber = 0;
 
+    /**
+     * serialize: serialize the object to local storage
+     * @param obj: the object to be serialized
+     * @param index: the file number
+     */
     static void serialize(Object obj, int index) throws IOException {
         ObjectOutputStream objectOutputStream =
                 new ObjectOutputStream(new FileOutputStream("data\\save" + index + ".dat"));
@@ -188,8 +281,11 @@ public class BoardPage extends ButtonPages{
         objectOutputStream.close();
     }
 
+    /**
+     * deserialize: read the object from file
+     * @param pathName: the path of the file
+     */
     public Object deserialize(String pathName) throws IOException, ClassNotFoundException {
-//        System.out.println("deserialize");
         ObjectInputStream objectInputStream =
                 new ObjectInputStream(new FileInputStream(pathName));
         Object obj = objectInputStream.readObject();
@@ -198,11 +294,11 @@ public class BoardPage extends ButtonPages{
         return obj;
     }
 
-    ChessBoard board;
-    BorderPane rootPane;
-
+    /**
+     * set all the object on the page
+     */
     public BoardPage() throws FileNotFoundException {
-        initialButton(170, 80, new String[]{"认输", "读档", "存档", "退出"});
+        initialButton(new String[]{"认输", "读档", "存档", "退出"}, 170, 80);
 
         board = new ChessBoard();
 
@@ -211,19 +307,24 @@ public class BoardPage extends ButtonPages{
 
         VBox buttonLayout = new VBox();
 
+        /* set the layout of the button */
         buttonLayout.setLayoutX(1100);
         buttonLayout.setLayoutY(350);
         buttonLayout.setSpacing(20);
 
+        /* put the button one the pane */
         for (int i = 0; i < buttonNumber; i++)
             buttonLayout.getChildren().add(button[i].getButton());
 
+        /* put the button and pane on the rootPane */
         rootPane.setRight(buttonLayout);
         rootPane.setLeft(board.getPane());
 
+        /* set the "读档" action */
         setButtonAction(1, () -> {
             Object obj = null;
             try {
+                /* search all the files on the ./data/ */
                 File filePoint = new File("data");
                 File[] list = filePoint.listFiles();
                 for (File file : Objects.requireNonNull(list)) {
@@ -233,6 +334,8 @@ public class BoardPage extends ButtonPages{
                     obj = deserialize("data\\" + str);
                     if (obj != null) break;
                 }
+
+                /* got the obj */
                 if (obj != null) {
                     clear();
                     board.goGame = (GoMain) obj;
@@ -241,11 +344,15 @@ public class BoardPage extends ButtonPages{
             } catch (IOException | ClassNotFoundException ignored) {}
         });
 
+        /* set the "存档" action */
         setButtonAction(2, () -> {
             try { serialize(board.goGame, ++savesNumber); } catch (IOException ignored) {}
         });
     }
 
+    /**
+     * clear: clear the board
+     */
     public void clear() {
         board.clear();
     }
