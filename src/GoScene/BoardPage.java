@@ -20,14 +20,20 @@ class ChessBoard implements Serializable {
     GoMain goGame;
 
     final int BOARD_ROW = 19, BOARD_COL = 19;
+
+    /* the NW and SE position of the image */
     final double NW_X = 51, NW_Y = 45, SE_X = 779, SE_Y = 722;
+
+    /* the X and Y length of the block */
     final double LEN_X = (SE_X - NW_X) / (BOARD_ROW - 1.0),
             LEN_Y = (SE_Y - NW_Y) / (BOARD_COL - 1.0);
+
+    /* the radius of the piece */
     final int RADIUS = (int)((LEN_X * 0.9) * 0.5);
 
+    /* the input image */
     Image[] pieceWaitImage = new Image[3];
     Image[] pieceImage = new Image[3];
-
     ImageView boardImageView = new ImageView();
     ImageView[] pieceWait = new ImageView[3];
     ImageView[] piece = new ImageView[3];
@@ -100,7 +106,8 @@ class ChessBoard implements Serializable {
     /**
      * setPiecePosition: display the piece
      * @param piece: the image waiting to view
-     * @param posX,posY: the *absolute* position of image
+     * @param posX: the *absolute* x position
+     * @param posY: the *absolute* y position
      */
     public void setPiecePosition (ImageView piece, int posX, int posY) {
         reshapeImageWithHeight(piece, 2 * RADIUS - 1);
@@ -111,7 +118,8 @@ class ChessBoard implements Serializable {
     /**
      * newPieceImage: make a piece with image
      * @param type: the type of piece
-     * @param posX,posY: the *absolute* position of image
+     * @param posX: the *absolute* x position
+     * @param posY: the *absolute* y position
      * @return the object of the piece
      */
     public ImageView newPieceImage (int type, int posX, int posY) {
@@ -155,9 +163,19 @@ class ChessBoard implements Serializable {
 
         pane = new Pane();
         goGame = new GoMain();
-        goGame.beginGame();
+        beginGoGame();
 
         setPane();
+    }
+
+    /**
+     * Start the game
+     * TODO: there should do some action
+     *  - play audio
+     *  - reset the timer
+     */
+    void beginGoGame() {
+        goGame.beginGame();
     }
 
     /**
@@ -167,14 +185,16 @@ class ChessBoard implements Serializable {
         goGame.clear();
 
         pane.getChildren().clear();
-        goGame.beginGame();
+
+        beginGoGame();
 
         setPane();
     }
 
     /**
      * removePieceDisplay: remove the piece from the pane
-     * @param boardX,boardY: the *board* position which we can get to locate the piece, belongs to [0, 18]
+     * @param boardX: the *board* x position
+     * @param boardY: the *board* y position
      */
     protected void removePieceDisplay(int boardX, int boardY) {
         int step = goGame.getPosStep(boardX, boardY);
@@ -217,7 +237,8 @@ class ChessBoard implements Serializable {
 
     /**
      * setPiece: try to put the piece
-     * @param posX,posY: the *absolute* position of image
+     * @param posX: the *absolute* x position
+     * @param posY: the *absolute* y position
      */
     public void setPiece(double posX, double posY) {
         int boardPosX = getBoardPosX(posX), boardPosY = getBoardPosY(posY);
@@ -243,7 +264,8 @@ class ChessBoard implements Serializable {
 
     /**
      * setPieceWait: display the waiting piece on the given position
-     * @param posX,posY: the *absolute* position of image
+     * @param posX: the *absolute* x position
+     * @param posY: the *absolute* y position
      */
     public void setPieceWait(double posX, double posY) {
         int boardPosX = getBoardPosX(posX), boardPosY = getBoardPosY(posY);

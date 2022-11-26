@@ -6,18 +6,11 @@ import java.util.List;
 public class GoMain implements Serializable {
     final int SIZE = 19;
     final int WAIT_BEGIN = 0, BLACK_PLAYER = 1, WHITE_PLAYER = 2;
-    protected int[][] goMap = new int[SIZE][SIZE];
-    protected GoStep[] goSteps = new GoStep[SIZE * SIZE * 10];
-    protected int steps = 0;
-    protected int currentUser, gameEnded;
 
-    public void clear() {
-        currentUser = WAIT_BEGIN;
-        gameEnded = WAIT_BEGIN;
-        steps = 0;
-        for (int i = 0; i < SIZE; i++)
-            for (int j = 0; j < SIZE; j++) goMap[i][j] = WAIT_BEGIN;
-    }
+    protected int[][] goMap;
+    protected GoStep[] goSteps;
+
+    protected int steps, currentUser, gameEnded;
 
     public GoStep[] getGoSteps() {
         return goSteps;
@@ -27,6 +20,9 @@ public class GoMain implements Serializable {
         return goMap[x][y];
     }
 
+    /**
+     * beginGame: start game, set the user to black player
+     */
     public void beginGame() {
         currentUser = BLACK_PLAYER;
     }
@@ -34,47 +30,90 @@ public class GoMain implements Serializable {
     public int getCurrentPlayer() {
         return currentUser;
     }
-
     public int getLastPlayer() {
         return BLACK_PLAYER + WHITE_PLAYER - currentUser;
     }
 
+    /**
+     * isEmpty: check if the place is waiting a piece
+     * @param x: the x of board position
+     * @param y: the y of board position
+     * @return if no piece on this place
+     */
     public boolean isEmpty(int x, int y) {
         return goMap[x][y] == WAIT_BEGIN;
     }
 
+    /**
+     * isLegal: check that the position is empty and the game is not ended
+     * @param x: the x of board position
+     * @param y: the y of board position
+     * @return if the piece is legal
+     */
     public boolean isLegal(int x, int y) {
         return gameEnded == 0 && isEmpty(x, y);
     }
 
+    /**
+     * changePlayer: reverse the current user
+     * currentUser must belong to {BLACK_PLAYER, WHITE_PLAYER}
+     */
     public void changePlayer() {
         currentUser = BLACK_PLAYER + WHITE_PLAYER - currentUser;
     }
 
+    /**
+     * use GoLiberty.check() to get the piece updated
+     * @return the list of pieces waiting to be deleted
+     */
     public List<GoStep> getRemovePieces() {
         return GoLiberty.check(goMap);
     }
 
+    /**
+     * removePiece: delete the piece in the list
+     * @param list: the list of pieces waiting to be deleted
+     */
     public void removePiece(List<GoStep> list) {
         if (list == null) return;
         list.forEach(step -> goMap[step.getX()][step.getY()] = WAIT_BEGIN);
     }
 
+    /**
+     * putPiece: try to put the piece
+     * @param x: the x of board position
+     * @param y: the y of board position
+     * @return if successfully put the piece
+     */
     public boolean putPiece(int x, int y) {
-//        System.out.println("location: " + x + " " + y + " " + gameEnded + " " + goMap[x][y]);
         if (!isLegal(x, y)) return false;
         if (!GoLiberty.checkPosition(goMap, x, y, steps + 1)) return false;
-//        System.out.println("Success: " + x + " " + y + " " + currentUser);
         goSteps[++steps] = new GoStep(x, y, currentUser);
         goMap[x][y] = steps;
         changePlayer();
         return true;
     }
 
-    public GoMain() {
+    /**
+     * clear the chess game
+     *  - set the user to WAIT_BEGIN
+     *  - set the goMap to WAIT_BEGIN
+     */
+    public void clear() {
         currentUser = WAIT_BEGIN;
         gameEnded = WAIT_BEGIN;
+        steps = 0;
         for (int i = 0; i < SIZE; i++)
             for (int j = 0; j < SIZE; j++) goMap[i][j] = WAIT_BEGIN;
+    }
+
+    /**
+     * Initialize the objects
+     */
+    public GoMain() {
+        goMap = new int[SIZE][SIZE];
+        goSteps = new GoStep[SIZE * SIZE * 10];
+
+        clear();
     }
 }
