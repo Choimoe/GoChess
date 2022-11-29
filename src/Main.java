@@ -1,3 +1,7 @@
+/**
+ * repo: https://github.com/Choimoe/GoChess
+ */
+
 import GoScene.BoardPage;
 import GoScene.HomePage;
 import GoScene.StartGamePage;
