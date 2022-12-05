@@ -1,64 +1,82 @@
 package GoGame;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class GoLiberty {
     private final static int ROW = 19, COL = 19;
     private static final int[][] visited = new int[ROW][COL];
     private static int[][] goMap;
-    private static final int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-
-    private static int color = 0;
+    private static final int[][] directions4 = {{0, 1}, {0, -1},  {1, 0},  {-1, 0}};
 
     /**
      * GoLiberty.isLegal: check whether the position in the range of the map
      * @param x,y: the position of the map
      * @return if the position is in the range of the map
      */
-    private static boolean isLegal(int x, int y) {
-        return ((x >= 0) && (x < ROW) && (y >= 0) && (y < COL));
+    private static boolean isIllegal(int x, int y) {
+        return ((x < 0) || (x >= ROW) || (y < 0) || (y >= COL));
     }
 
     /**
-     * GoLiberty.DFS: search the whole block to check the "Chi"
-     * TODO: Some Bugs in it(Stack Overflow)
+     * GoLiberty.BFS: search the whole block to check the "Chi"
      * @param x,y: position
-     * @param col: the kind of the piece
+     * @param player: the kind of the piece
      *           - odd : black piece
      *           - even: white piece
      * @return if the position is liberty(have "Chi")
      */
-    private static boolean DFS(int x, int y, int col) {
-        visited[x][y] = color;
+    private static boolean libertySearch(int x, int y, int player, int color) {
+        Queue<GoStep> queue = new LinkedList<>();
+        clearVisited();
 
-        for (int dir = 0; dir < 4; dir++) {
-            int nextX = x + directions[dir][0], nextY = y + directions[dir][1];
-            if (!isLegal(nextX, nextY)) continue;
-            if (goMap[nextX][nextY] == 0) return true;
-            if (visited[nextX][nextY] != 0) continue;
-            if ((goMap[nextX][nextY] & 1) != col) continue;
-            if (DFS (nextX, nextY, col)) return true;
+        queue.add(new GoStep(x, y, player));
+
+        while(!queue.isEmpty()) {
+            GoStep step = queue.remove();
+
+            if (visited[step.getX()][step.getY()] != 0) continue;
+            visited[step.getX()][step.getY()] = color;
+
+            for (int dir = 0; dir < 4; dir++) {
+                int nextX = step.getX() + directions4[dir][0], nextY = step.getY() + directions4[dir][1];
+                if (isIllegal(nextX, nextY)) continue;
+
+                if (goMap[nextX][nextY] == 0) return true;
+                if (visited[nextX][nextY] != 0) continue;
+                if ((goMap[nextX][nextY] & 1) != step.getPlayer()) continue;
+
+                queue.add(new GoStep(nextX, nextY, step.getPlayer()));
+            }
         }
 
         return false;
     }
 
     /**
-     * GoLiberty.startDFS: start DFS on every position
+     * GoLiberty.startBFS: start BFS on every position
+     * @param x: the x of starting position
+     * @param y: the y of starting position
+     * @param dir: the direction of starting bfs
      * @return if there exists a block that is not liberty(not have "Chi")
      */
-    private static int startDFS() {
-        for (int i = 0; i < ROW; i++) {
-            for (int j = 0; j < COL; j++) {
-                if (visited[i][j] == 0 && goMap[i][j] != 0) {
-                    color++;
-//                    System.out.println("now DFS: (" + i + "," + j + "): " + goMap[i][j]);
-                    if (!DFS(i, j, goMap[i][j] & 1)) return color;
-                }
-            }
-        }
-        return -1;
+    private static List<GoStep> startSearch(int x, int y, int dir) {
+        int color = dir + 1;
+        int nextX = x + directions4[dir][0], nextY = y + directions4[dir][1];
+        if (isIllegal(nextX, nextY)) return null;
+        if (goMap[nextX][nextY] == 0) return null;
+
+        if (libertySearch(nextX, nextY, goMap[nextX][nextY] & 1, color)) return null;
+
+        List<GoStep> result = new ArrayList<>();
+
+        for (int i = 0; i < ROW; i++)
+            for (int j = 0; j < COL; j++)
+                if (visited[i][j] == color) result.add(new GoStep(i, j, goMap[i][j] & 1));
+
+        return result;
     }
 
     /**
@@ -73,14 +91,10 @@ public class GoLiberty {
      */
     public static boolean checkPosition(int[][] goMapOri, int posX, int posY, int step) {
         goMap = goMapOri;
-        color = 0;
-
-        for (int i = 0; i < ROW; i++)
-            for (int j = 0; j < COL; j++) visited[i][j] = 0;
 
         goMap[posX][posY] = step;
 
-        boolean result = DFS(posX, posY, step & 1);
+        boolean result = libertySearch(posX, posY, step & 1, 1);
 
         goMap[posX][posY] = 0;
 
@@ -88,32 +102,25 @@ public class GoLiberty {
     }
 
     /**
-     * GoLiberty.check: get the
+     * GoLiberty.check: get the deleted pieces list
      * @param goMapOri: the set the value of this.goMap
-     * @return the list of pieces which we need to delete
+     * @return [List<GoStep>] the list of pieces which we need to delete
      */
-    public static List<GoStep> check(int[][] goMapOri) {
+    public static List<GoStep> check(int[][] goMapOri, int boardPosX, int boardPosY) {
         List<GoStep> result = new ArrayList<>();
         goMap = goMapOri;
-        color = 0;
 
+        for (int dir = 0; dir < 4; dir++) {
+            List<GoStep> temp = startSearch(boardPosX, boardPosY, dir);
+            if (temp == null) continue;
+            result.addAll(temp);
+        }
+
+        return result;
+    }
+
+    private static void clearVisited() {
         for (int i = 0; i < ROW; i++)
             for (int j = 0; j < COL; j++) visited[i][j] = 0;
-
-        int removeColor = startDFS();
-        if (removeColor == -1) return null;
-
-//        for (int i = 0; i < ROW; i++) {
-//            for (int j = 0; j < COL; j++) {
-//                System.out.print(goMap[i][j] + "(" + visited[i][j] + ")  ");
-//            }
-//            System.out.println();
-//        }
-
-        for (int i = 0; i < ROW; i++)
-            for (int j = 0; j < COL; j++)
-                if (visited[i][j] == removeColor)
-                    result.add(new GoStep(i, j, goMap[i][j] & 1));
-        return result;
     }
 }

@@ -251,7 +251,7 @@ class ChessBoard implements Serializable {
             pane.getChildren().add(pieceList[++pieceCount] = newPiece);
 
             /* set the display of the deleted pieces */
-            List<GoStep> list = goGame.getRemovePieces();
+            List<GoStep> list = goGame.getRemovePieces(boardPosX, boardPosY);
             updatePieces(list);
             goGame.removePiece(list);
 

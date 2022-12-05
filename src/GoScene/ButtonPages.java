@@ -80,4 +80,6 @@ public class ButtonPages {
             buttonAction.buttonAction();
         });
     }
+
+    public void clear() {}
 }

@@ -66,8 +66,8 @@ public class GoMain implements Serializable {
      * use GoLiberty.check() to get the piece updated
      * @return the list of pieces waiting to be deleted
      */
-    public List<GoStep> getRemovePieces() {
-        return GoLiberty.check(goMap);
+    public List<GoStep> getRemovePieces(int boardPosX, int boardPosY) {
+        return GoLiberty.check(goMap, boardPosX, boardPosY);
     }
 
     /**
@@ -81,15 +81,18 @@ public class GoMain implements Serializable {
 
     /**
      * putPiece: try to put the piece
-     * @param x: the x of board position
-     * @param y: the y of board position
+     * @param boardX: the x of board position
+     * @param boardY: the y of board position
      * @return if successfully put the piece
      */
-    public boolean putPiece(int x, int y) {
-        if (!isLegal(x, y)) return false;
-        if (!GoLiberty.checkPosition(goMap, x, y, steps + 1)) return false;
-        goSteps[++steps] = new GoStep(x, y, currentUser);
-        goMap[x][y] = steps;
+    public boolean putPiece(int boardX, int boardY) {
+        if (!isLegal(boardX, boardY)) return false;
+        if (!GoLiberty.checkPosition(goMap, boardX, boardY, steps + 1)) return false;
+
+        steps += 1;
+        goSteps[steps] = new GoStep(boardX, boardY, currentUser);
+        goMap[boardX][boardY] = steps;
+
         changePlayer();
         return true;
     }
@@ -113,6 +116,7 @@ public class GoMain implements Serializable {
     public GoMain() {
         goMap = new int[SIZE][SIZE];
         goSteps = new GoStep[SIZE * SIZE * 10];
+        steps = 0;
 
         clear();
     }
