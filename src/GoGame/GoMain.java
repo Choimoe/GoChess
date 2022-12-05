@@ -1,6 +1,8 @@
 package GoGame;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GoMain implements Serializable {
@@ -8,16 +10,21 @@ public class GoMain implements Serializable {
     final int WAIT_BEGIN = 0, BLACK_PLAYER = 1, WHITE_PLAYER = 2;
 
     protected int[][] goMap;
-    protected GoStep[] goSteps;
+    protected List<GoStep> goSteps;
+    private final GoStep deletedStep = new GoStep(-1, -1, -1);
 
     protected int steps, currentUser, gameEnded;
 
-    public GoStep[] getGoSteps() {
+    public List<GoStep> getGoSteps() {
         return goSteps;
     }
 
     public int getPosStep (int x, int y) {
         return goMap[x][y];
+    }
+
+    public int getSteps() {
+        return steps;
     }
 
     /**
@@ -76,6 +83,7 @@ public class GoMain implements Serializable {
      */
     public void removePiece(List<GoStep> list) {
         if (list == null) return;
+        list.forEach(step -> goSteps.set(getPosStep(step.getX(), step.getY()), new GoStep(deletedStep)));
         list.forEach(step -> goMap[step.getX()][step.getY()] = WAIT_BEGIN);
     }
 
@@ -90,7 +98,7 @@ public class GoMain implements Serializable {
         if (!GoLiberty.checkPosition(goMap, boardX, boardY, steps + 1)) return false;
 
         steps += 1;
-        goSteps[steps] = new GoStep(boardX, boardY, currentUser);
+        goSteps.set(steps, new GoStep(boardX, boardY, currentUser));
         goMap[boardX][boardY] = steps;
 
         changePlayer();
@@ -115,9 +123,15 @@ public class GoMain implements Serializable {
      */
     public GoMain() {
         goMap = new int[SIZE][SIZE];
-        goSteps = new GoStep[SIZE * SIZE * 10];
+        goSteps = new ArrayList<>();
+        for (int i = 0; i < SIZE * SIZE * 10; i++) goSteps.add(deletedStep);
         steps = 0;
 
         clear();
+    }
+
+    public void skipTurn() {
+        steps++;
+        changePlayer();
     }
 }

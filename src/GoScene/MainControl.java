@@ -47,7 +47,7 @@ public class MainControl extends Application {
         homePage.setButtonJump(stage, 0, startPage.getScene());
         startPage.setButtonJump(stage, 2, homePage.getScene());
         startPage.setButtonJump(stage, 0, chessBoard.getScene());
-        chessBoard.setButtonJump(stage, 3, startPage.getScene(), chessBoard::clear);
+        chessBoard.setButtonJump(stage, 4, startPage.getScene(), chessBoard::clear);
     }
 
     Scene getMainScene() {

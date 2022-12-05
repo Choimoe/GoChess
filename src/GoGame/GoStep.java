@@ -25,4 +25,15 @@ public class GoStep implements Serializable {
         this.y = y;
         this.player = player;
     }
+
+    public GoStep(GoStep o) {
+        this.x = o.getX();
+        this.y = o.getY();
+        this.player = o.getPlayer();
+    }
+
+    @Override
+    public String toString() {
+        return "[" + x + ", " + y + ", (" + player + ")]";
+    }
 }

@@ -9,12 +9,12 @@ public class GoLiberty {
     private final static int ROW = 19, COL = 19;
     private static final int[][] visited = new int[ROW][COL];
     private static int[][] goMap;
-    private static final int[][] directions4 = {{0, 1}, {0, -1},  {1, 0},  {-1, 0}};
+    private static final int[][] directions4 = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 
     /**
-     * GoLiberty.isLegal: check whether the position in the range of the map
+     * GoLiberty.isIllegal: check whether the position in the range of the map
      * @param x,y: the position of the map
-     * @return if the position is in the range of the map
+     * @return if the position is out the range of the map
      */
     private static boolean isIllegal(int x, int y) {
         return ((x < 0) || (x >= ROW) || (y < 0) || (y >= COL));
@@ -34,7 +34,10 @@ public class GoLiberty {
 
         queue.add(new GoStep(x, y, player));
 
+//        System.out.println("x = " + x + ", y = " + y + ", player = " + player);
+
         while(!queue.isEmpty()) {
+//            System.out.println(queue);
             GoStep step = queue.remove();
 
             if (visited[step.getX()][step.getY()] != 0) continue;
@@ -70,6 +73,9 @@ public class GoLiberty {
 
         if (libertySearch(nextX, nextY, goMap[nextX][nextY] & 1, color)) return null;
 
+        /* do not eat itself */
+        if (visited[x][y] == color) return null;
+
         List<GoStep> result = new ArrayList<>();
 
         for (int i = 0; i < ROW; i++)
@@ -96,9 +102,23 @@ public class GoLiberty {
 
         boolean result = libertySearch(posX, posY, step & 1, 1);
 
-        goMap[posX][posY] = 0;
+        if (result) {
+            goMap[posX][posY] = 0;
+            return true;
+        }
 
-        return result;
+        for (int dir = 0; dir < 4; dir++) {
+            int nextX = posX + directions4[dir][0], nextY = posY + directions4[dir][1];
+            if (isIllegal(nextX, nextY)) continue;
+            if ((goMap[nextX][nextY] & 1) == (step & 1)) continue;
+            if (!libertySearch(nextX, nextY, goMap[nextX][nextY] & 1, dir + 2)) {
+                goMap[posX][posY] = 0;
+                return true;
+            }
+        }
+
+        goMap[posX][posY] = 0;
+        return false;
     }
 
     /**
@@ -115,6 +135,10 @@ public class GoLiberty {
             if (temp == null) continue;
             result.addAll(temp);
         }
+
+//        for (Object o : result) {
+//            System.out.println(o);
+//        }
 
         return result;
     }
