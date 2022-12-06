@@ -82,4 +82,6 @@ public class ButtonPages {
     }
 
     public void clear() {}
+
+    public void cleanPages() {}
 }

@@ -76,4 +76,11 @@ public class MainControl extends Application {
     public void display() {
         launch();
     }
+
+    public void clean() {
+        for (ButtonPages page : pages) {
+            if (page == null) continue;
+            page.cleanPages();
+        }
+    }
 }

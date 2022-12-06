@@ -2,6 +2,8 @@ package GoScene;
 
 import GoGame.GoMain;
 import GoGame.GoStep;
+import GoSound.SoundList;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -13,6 +15,8 @@ import java.util.List;
 
 public class ChessBoard implements Serializable {
     ImageView pieceWaitDisplay;
+    SoundList sound;
+
     Pane pane;
 
     GoMain goGame;
@@ -161,6 +165,7 @@ public class ChessBoard implements Serializable {
 
         pane = new Pane();
         goGame = new GoMain();
+        sound = new SoundList();
         beginGoGame();
 
         setPane();
@@ -266,6 +271,9 @@ public class ChessBoard implements Serializable {
 
         /* try to put the piece */
         if (goGame.putPiece(boardPosX, boardPosY)) {
+            /* play put piece sound */
+            sound.play(0);
+
             /* make the new pieces */
             ImageView newPiece = newPieceImage(goGame.getLastPlayer(), boardPosX, boardPosY);
             pane.getChildren().add(pieceList[++pieceCount] = newPiece);
@@ -300,5 +308,9 @@ public class ChessBoard implements Serializable {
         pieceWaitDisplay.setVisible(true);
         pieceWaitDisplay.setX(getAbsolutePosX(boardPosX) - RADIUS + 1);
         pieceWaitDisplay.setY(getAbsolutePosY(boardPosY) - RADIUS + 1);
+    }
+
+    void clean() {
+        sound.recycle();
     }
 }

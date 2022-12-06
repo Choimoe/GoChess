@@ -3,6 +3,8 @@
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+data/
+**/*.dat
 #.idea/
 #*.xml
 #*.iml

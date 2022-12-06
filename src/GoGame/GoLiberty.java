@@ -34,10 +34,7 @@ public class GoLiberty {
 
         queue.add(new GoStep(x, y, player));
 
-//        System.out.println("x = " + x + ", y = " + y + ", player = " + player);
-
         while(!queue.isEmpty()) {
-//            System.out.println(queue);
             GoStep step = queue.remove();
 
             if (visited[step.getX()][step.getY()] != 0) continue;
@@ -135,10 +132,6 @@ public class GoLiberty {
             if (temp == null) continue;
             result.addAll(temp);
         }
-
-//        for (Object o : result) {
-//            System.out.println(o);
-//        }
 
         return result;
     }

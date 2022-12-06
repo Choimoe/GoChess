@@ -100,7 +100,16 @@ public class BoardPage extends ButtonPages{
     /**
      * clear: clear the board
      */
+    @Override
     public void clear() {
         board.clear();
+    }
+
+    /**
+     * cleanPages: clear the pages when ended
+     */
+    @Override
+    public void cleanPages() {
+        board.clean();
     }
 }

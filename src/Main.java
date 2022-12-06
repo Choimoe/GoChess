@@ -8,5 +8,6 @@ public class Main {
     public static void main(String[] args) {
         MainControl GUI = new MainControl();
         GUI.display();
+        GUI.clean();
     }
 }
