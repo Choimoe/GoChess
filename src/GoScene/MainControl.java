@@ -28,9 +28,9 @@ public class MainControl extends Application {
     }
 
     void createPages() throws Exception {
-        HomePage homePage = new HomePage();
+        HomePage homePage       = new HomePage();
         StartGamePage startPage = new StartGamePage();
-        BoardPage chessBoard = new BoardPage();
+        BoardPage chessBoard    = new BoardPage();
 
         pages[0] = homePage;
         pages[1] = startPage;
@@ -38,16 +38,16 @@ public class MainControl extends Application {
     }
 
     void setJumpRelation(Stage stage) {
-        ButtonPages homePage = pages[0];
-        ButtonPages startPage = pages[1];
-        ButtonPages chessBoard = pages[2];
+        ButtonPages homePage    = pages[0];
+        ButtonPages startPage   = pages[1];
+        ButtonPages chessBoard  = pages[2];
 
         homePage.button[2].button.setOnAction((ActionEvent e) -> stage.close());
 
-        homePage.setButtonJump(stage, 0, startPage.getScene());
-        startPage.setButtonJump(stage, 2, homePage.getScene());
-        startPage.setButtonJump(stage, 0, chessBoard.getScene());
-        chessBoard.setButtonJump(stage, 4, startPage.getScene(), chessBoard::clear);
+        homePage.setButtonJump      (stage, 0, startPage .getScene());
+        startPage.setButtonJump     (stage, 2, homePage  .getScene());
+        startPage.setButtonJump     (stage, 0, chessBoard.getScene());
+        chessBoard.setButtonJump    (stage, 4, startPage .getScene(), chessBoard::clear);
     }
 
     Scene getMainScene() {

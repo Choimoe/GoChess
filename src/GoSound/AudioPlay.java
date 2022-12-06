@@ -11,14 +11,13 @@ import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class AudioPlay {
-    AudioInputStream audioStream;
-    AudioFormat audioFormat;
-    DataLine.Info dataLineInfo;
-    SourceDataLine sourceDataLine;
+    AudioInputStream    audioStream;
+    AudioFormat         audioFormat;
+    DataLine.Info       dataLineInfo;
+    SourceDataLine      sourceDataLine;
 
-    byte[] buf = new byte[1024];
-
-    int length;
+    int     length;
+    byte[]  buf = new byte[1024];
 
     public AudioPlay(String path) {
         loadMusic(path);
@@ -41,19 +40,18 @@ public class AudioPlay {
 
     private void loadMusic(String path) {
         try {
-            audioStream = AudioSystem.getAudioInputStream(new File(path));
+            audioStream     = AudioSystem.getAudioInputStream(new File(path));
         } catch (UnsupportedAudioFileException | IOException e) {
             e.printStackTrace();
         }
 
         /* get the encode method */
-        audioFormat = audioStream.getFormat();
-
-        dataLineInfo = new DataLine.Info(SourceDataLine.class,
+        audioFormat         = audioStream.getFormat();
+        dataLineInfo        = new DataLine.Info(SourceDataLine.class,
                 audioFormat, AudioSystem.NOT_SPECIFIED);
 
         try {
-            sourceDataLine = (SourceDataLine) AudioSystem.getLine(dataLineInfo);
+            sourceDataLine  = (SourceDataLine) AudioSystem.getLine(dataLineInfo);
             sourceDataLine.open(audioFormat);
         } catch (LineUnavailableException e) {
             e.printStackTrace();
@@ -71,6 +69,7 @@ public class AudioPlay {
     public void recycle() {
         sourceDataLine.drain();
         sourceDataLine.close();
+
         try {
             audioStream.close();
         } catch (IOException e) {

@@ -14,17 +14,10 @@ public class GoMain implements Serializable {
 
     protected int steps, currentUser, gameEnded;
 
-    public List<GoStep> getGoSteps() {
-        return goSteps;
-    }
-
-    public int getPosStep (int x, int y) {
-        return goMap[x][y];
-    }
-
-    public int getSteps() {
-        return steps;
-    }
+    public int getSteps()               { return steps;         }
+    public int getCurrentPlayer()       { return currentUser;   }
+    public List<GoStep> getGoSteps()    { return goSteps;       }
+    public int getPosStep(int x, int y) { return goMap[x][y];   }
 
     /**
      * beginGame: start game, set the user to black player
@@ -33,9 +26,6 @@ public class GoMain implements Serializable {
         currentUser = BLACK_PLAYER;
     }
 
-    public int getCurrentPlayer() {
-        return currentUser;
-    }
     public int getLastPlayer() {
         return BLACK_PLAYER + WHITE_PLAYER - currentUser;
     }
@@ -93,8 +83,8 @@ public class GoMain implements Serializable {
      * @return if successfully put the piece
      */
     public boolean putPiece(int boardX, int boardY) {
-        if (!isLegal(boardX, boardY)) return false;
-        if (!GoLiberty.checkPosition(goMap, boardX, boardY, steps + 1)) return false;
+        if (!isLegal(boardX, boardY))                                       return false;
+        if (!GoLiberty.checkPosition(goMap, boardX, boardY, steps + 1))     return false;
 
         steps += 1;
         goSteps.set(steps, new GoStep(boardX, boardY, currentUser));
@@ -111,8 +101,9 @@ public class GoMain implements Serializable {
      */
     public void clear() {
         currentUser = WAIT_BEGIN;
-        gameEnded = WAIT_BEGIN;
-        steps = 0;
+        gameEnded   = WAIT_BEGIN;
+        steps       = 0;
+
         for (int i = 0; i < SIZE; i++)
             for (int j = 0; j < SIZE; j++) goMap[i][j] = WAIT_BEGIN;
     }
@@ -121,10 +112,11 @@ public class GoMain implements Serializable {
      * Initialize the objects
      */
     public GoMain() {
-        goMap = new int[SIZE][SIZE];
+        goMap   = new int[SIZE][SIZE];
         goSteps = new ArrayList<>();
+
         for (int i = 0; i < SIZE * SIZE * 10; i++) goSteps.add(deletedStep);
-        steps = 0;
+        steps   = 0;
 
         clear();
     }

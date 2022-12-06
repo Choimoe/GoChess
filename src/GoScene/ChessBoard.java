@@ -14,34 +14,32 @@ import java.io.Serializable;
 import java.util.List;
 
 public class ChessBoard implements Serializable {
-    ImageView pieceWaitDisplay;
-    SoundList sound;
+    Pane        pane;
+    GoMain      goGame;
+    SoundList   sound;
 
-    Pane pane;
-
-    GoMain goGame;
-
-    final int BOARD_ROW = 19, BOARD_COL = 19;
+    final int       BOARD_ROW = 19, BOARD_COL = 19;
 
     /* the NW and SE position of the image */
-    final double NW_X = 51, NW_Y = 45, SE_X = 779, SE_Y = 722;
+    final double    NW_X = 51, NW_Y = 45, SE_X = 779, SE_Y = 722;
 
     /* the X and Y length of the block */
-    final double LEN_X = (SE_X - NW_X) / (BOARD_ROW - 1.0),
-            LEN_Y = (SE_Y - NW_Y) / (BOARD_COL - 1.0);
+    final double    LEN_X = (SE_X - NW_X) / (BOARD_ROW - 1.0),
+                    LEN_Y = (SE_Y - NW_Y) / (BOARD_COL - 1.0);
 
     /* the radius of the piece */
-    final int RADIUS = (int)((LEN_X * 0.9) * 0.5);
+    final int       RADIUS = (int)((LEN_X * 0.9) * 0.5);
 
     /* the input image */
-    Image[] pieceWaitImage = new Image[3];
-    Image[] pieceImage = new Image[3];
-    ImageView boardImageView = new ImageView();
-    ImageView[] pieceWait = new ImageView[3];
-    ImageView[] piece = new ImageView[3];
+    Image[]     pieceWaitImage      = new Image[3];
+    Image[]     pieceImage          = new Image[3];
+    ImageView   boardImageView      = new ImageView();
+    ImageView   pieceWaitDisplay    = new ImageView();
+    ImageView[] pieceWait           = new ImageView[3];
+    ImageView[] piece               = new ImageView[3];
+    ImageView[] pieceList           = new ImageView[BOARD_ROW * BOARD_COL];
 
     int pieceCount = 0;
-    ImageView[] pieceList = new ImageView[BOARD_ROW * BOARD_COL];
 
     public Pane getPane() { return pane; }
 
@@ -53,6 +51,7 @@ public class ChessBoard implements Serializable {
         if (abs(divided - getInt) > 0.3 || getInt >= 19) return -1;
         else return getInt;
     }
+
     final int getBoardPosY (double posY) {
         double divided = (posY - NW_Y) / LEN_Y;
         int getInt = (int)(divided + 0.5);
@@ -69,6 +68,7 @@ public class ChessBoard implements Serializable {
      * @param height: the height of the image
      */
     public void reshapeImageWithHeight(ImageView imageView, int height) {
+        if (imageView == null) return;
         imageView.setPreserveRatio(true);
         imageView.setFitHeight(height);
     }
@@ -82,27 +82,31 @@ public class ChessBoard implements Serializable {
      *  - assets/board.png
      */
     public void loadImage() throws FileNotFoundException {
-        FileInputStream input;
-        input = new FileInputStream("assets/blackPieceWait.png");
-        pieceWaitImage[1] = new Image(input);
-        pieceWait[1] = new ImageView(pieceWaitImage[1]);
-        input = new FileInputStream("assets/whitePieceWait.png");
-        pieceWaitImage[2] = new Image(input);
-        pieceWait[2] = new ImageView(pieceWaitImage[2]);
+        pieceWaitImage[1]   = new Image(new FileInputStream("assets/blackPieceWait.png"));
+        pieceWaitImage[2]   = new Image(new FileInputStream("assets/whitePieceWait.png"));
+        pieceImage[1]       = new Image(new FileInputStream("assets/blackPiece.png"));
+        pieceImage[2]       = new Image(new FileInputStream("assets/whitePiece.png"));
 
-        input = new FileInputStream("assets/blackPiece.png");
-        pieceImage[1] = new Image(input);
-        piece[1] = new ImageView(pieceImage[1]);
-        input = new FileInputStream("assets/whitePiece.png");
-        pieceImage[2] = new Image(input);
-        piece[2] = new ImageView(pieceImage[2]);
+        pieceWait[1]        = new ImageView(pieceWaitImage[1]);
+        pieceWait[2]        = new ImageView(pieceWaitImage[2]);
+        piece[1]            = new ImageView(pieceImage[1]);
+        piece[2]            = new ImageView(pieceImage[2]);
 
         for (int i = 1; i <= 2; i++) reshapeImageWithHeight(pieceWait[i], 2 * RADIUS - 1);
         for (int i = 1; i <= 2; i++) reshapeImageWithHeight(piece[i]    , 2 * RADIUS - 1);
 
-        input = new FileInputStream("assets/board.png");
-        boardImageView = new ImageView(new Image(input));
+        boardImageView = new ImageView(new Image(new FileInputStream("assets/board.png")));
+
         reshapeImageWithHeight(boardImageView, 768);
+    }
+
+    /**
+     * loadImage: load the sound.
+     *  - assets/putPiece.wav
+     */
+    public void loadSound() {
+        String[] audioPath = {"assets\\putPiece.wav"};
+        sound = new SoundList(audioPath);
     }
 
     /**
@@ -113,6 +117,7 @@ public class ChessBoard implements Serializable {
      */
     public void setPiecePosition (ImageView piece, int posX, int posY) {
         reshapeImageWithHeight(piece, 2 * RADIUS - 1);
+
         piece.setX(getAbsolutePosX(posX) - RADIUS + 1);
         piece.setY(getAbsolutePosY(posY) - RADIUS + 1);
     }
@@ -156,16 +161,17 @@ public class ChessBoard implements Serializable {
 
         boardImageView.setPreserveRatio(true);
 
-        pane.setOnMouseMoved(event -> setPieceWait(event.getX(), event.getY()));
-        pane.setOnMouseClicked(event -> setPiece(event.getX(), event.getY()));
+        pane.setOnMouseMoved    (event -> setPieceWait  (event.getX(), event.getY()));
+        pane.setOnMouseClicked  (event -> setPiece      (event.getX(), event.getY()));
     }
 
     public ChessBoard() throws FileNotFoundException {
         loadImage();
+        loadSound();
 
-        pane = new Pane();
-        goGame = new GoMain();
-        sound = new SoundList();
+        pane    = new Pane();
+        goGame  = new GoMain();
+
         beginGoGame();
 
         setPane();
@@ -219,9 +225,10 @@ public class ChessBoard implements Serializable {
      */
     protected void removePieceDisplay(int boardX, int boardY) {
         int step = goGame.getPosStep(boardX, boardY);
-        if (step == 0) return;
-        if (pieceList[step] == null) return;
-//        System.out.println("delete: " + pieceList[step]);
+
+        if (step == 0)                  return;
+        if (pieceList[step] == null)    return;
+
         pane.getChildren().remove(pieceList[step]);
         pieceList[step] = null;
     }
@@ -236,7 +243,8 @@ public class ChessBoard implements Serializable {
         List<GoStep> steps = goGame.getGoSteps();
         for (GoStep step : steps) {
             if (step == null) continue;
-            if (step.getX() == -1 && step.getY() == -1 && step.getPlayer() == -1) continue;
+            if ((step.getX() == -1) || (step.getY() == -1) || (step.getPlayer() == -1)) continue;
+
             int boardPosX = step.getX(), boardPosY = step.getY(), player = step.getPlayer();
 
             ImageView newPiece = newPieceImage(player, boardPosX, boardPosY);
@@ -255,9 +263,7 @@ public class ChessBoard implements Serializable {
      */
     private void updatePieces(List<GoStep> list) {
         if (list == null) return;
-        for (GoStep step : list) {
-            removePieceDisplay(step.getX(), step.getY());
-        }
+        list.forEach(step -> removePieceDisplay(step.getX(), step.getY()));
     }
 
     /**
@@ -271,7 +277,7 @@ public class ChessBoard implements Serializable {
 
         /* try to put the piece */
         if (goGame.putPiece(boardPosX, boardPosY)) {
-            /* play put piece sound */
+            /* play putPiece sound */
             sound.play(0);
 
             /* make the new pieces */
@@ -306,6 +312,7 @@ public class ChessBoard implements Serializable {
         }
 
         pieceWaitDisplay.setVisible(true);
+
         pieceWaitDisplay.setX(getAbsolutePosX(boardPosX) - RADIUS + 1);
         pieceWaitDisplay.setY(getAbsolutePosY(boardPosY) - RADIUS + 1);
     }

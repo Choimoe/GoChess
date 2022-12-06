@@ -12,12 +12,13 @@ public class HomePage extends ButtonPages {
     public HomePage() {
         initialButton(new String[]{"开始", "设置", "退出"});
 
-        VBox vBox = new VBox(new Label("This is HomePage"));
+        VBox vBox   = new VBox(new Label("This is HomePage"));
         Group group = new Group();
-        scene = new Scene(group);
+        scene       = new Scene(group);
 
         /* set the position of the display box */
-        VBox vbox = new VBox();
+        VBox vbox   = new VBox();
+
         vbox.setLayoutX(950);
         vbox.setLayoutY(350);
 

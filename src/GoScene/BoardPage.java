@@ -45,17 +45,16 @@ public class BoardPage extends ButtonPages{
     public BoardPage() throws FileNotFoundException {
         initialButton(new String[]{"认输", "虚着", "读档", "存档", "退出"}, 170, 80);
 
-        board = new ChessBoard();
-
-        rootPane = new BorderPane();
-        scene = new Scene(rootPane);
+        board       = new ChessBoard();
+        rootPane    = new BorderPane();
+        scene       = new Scene(rootPane);
 
         VBox buttonLayout = new VBox();
 
         /* set the layout of the button */
         buttonLayout.setLayoutX(1100);
-        buttonLayout.setLayoutY(350);
-        buttonLayout.setSpacing(20);
+        buttonLayout.setLayoutY(350 );
+        buttonLayout.setSpacing(20  );
 
         /* put the button one the pane */
         for (int i = 0; i < buttonNumber; i++)

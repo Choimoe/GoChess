@@ -5,11 +5,9 @@ import java.util.List;
 
 public class SoundList {
     List<AudioPlay> audio = new ArrayList<>();
-
-    String[] audioPath = {"assets\\putPiece.wav"};
     int count;
 
-    public SoundList() {
+    public SoundList(String[] audioPath) {
         for (String path : audioPath) audio.add(new AudioPlay(path));
         count = audioPath.length;
     }

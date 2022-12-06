@@ -65,7 +65,8 @@ public class GoLiberty {
     private static List<GoStep> startSearch(int x, int y, int dir) {
         int color = dir + 1;
         int nextX = x + directions4[dir][0], nextY = y + directions4[dir][1];
-        if (isIllegal(nextX, nextY)) return null;
+
+        if (isIllegal(nextX, nextY))  return null;
         if (goMap[nextX][nextY] == 0) return null;
 
         if (libertySearch(nextX, nextY, goMap[nextX][nextY] & 1, color)) return null;

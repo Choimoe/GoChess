@@ -5,8 +5,9 @@ import javafx.scene.input.MouseEvent;
 
 public class CustomButton {
     public Button button;
-    String name;
-    int width = 370;
+    public String name;
+
+    int width  = 370;
     int height = 80;
 
     Button getButton() {
@@ -14,7 +15,7 @@ public class CustomButton {
     }
 
     void setSize(int width, int height) {
-        if (width >= 0) this.width = width;
+        if (width  >= 0) this.width  = width;
         if (height >= 0) this.height = height;
     }
 
@@ -40,9 +41,9 @@ public class CustomButton {
         button.setPrefWidth(width); button.setPrefHeight(height);
 
         button.setStyle(
-            "-fx-background-color:#E8E8E8;"+ //设置背景颜色
-            "-fx-background-radius:20;"+     //设置背景圆角
-            "-fx-text-fill:#4A88C7;"+        //设置字体颜色
+            "-fx-background-color:#E8E8E8;"+
+            "-fx-background-radius:20;"+
+            "-fx-text-fill:#4A88C7;"+
             "-fx-font: 24 YaHei"
         );
     }

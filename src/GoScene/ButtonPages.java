@@ -5,10 +5,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class ButtonPages {
-    int buttonNumber;
-    public CustomButton[] button;
-    String[] buttonName;
-    protected Scene scene;
+    int                     buttonNumber;
+    String[]                buttonName;
+    protected Scene         scene;
+    public CustomButton[]   button;
 
     private double oldStageX, oldStageY, oldScreenX, oldScreenY;
 
@@ -22,10 +22,10 @@ public class ButtonPages {
      */
     public void setDragged(Stage stage) {
         scene.setOnMousePressed(event -> {
-            oldStageX = stage.getX();
-            oldStageY = stage.getY();
-            oldScreenX = event.getScreenX();
-            oldScreenY = event.getScreenY();
+            oldStageX   = stage.getX();
+            oldStageY   = stage.getY();
+            oldScreenX  = event.getScreenX();
+            oldScreenY  = event.getScreenY();
         });
 
         scene.setOnMouseDragged(event -> {

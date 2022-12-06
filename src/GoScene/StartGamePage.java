@@ -12,9 +12,9 @@ public class StartGamePage extends ButtonPages {
     public StartGamePage() {
         initialButton(new String[]{"新一局", "回放", "返回"});
 
-        VBox vBox = new VBox(new Label("This is HomePage"));
+        VBox vBox   = new VBox(new Label("This is HomePage"));
         Group group = new Group();
-        scene = new Scene(group);
+        scene       = new Scene(group);
 
         VBox vbox = new VBox();
         vbox.setLayoutX(950);
