@@ -1,0 +1,16 @@
+2022-12-09 20:51:26+0800: GTP Engine starting...
+2022-12-09 20:51:26+0800: KataGo v1.11.0
+2022-12-09 20:51:26+0800: Using TrompTaylor rules initially, unless GTP/GUI overrides this
+2022-12-09 20:51:26+0800: Using 6 CPU thread(s) for search
+2022-12-09 20:51:26+0800: nnRandSeed0 = 8599868943961070973
+2022-12-09 20:51:26+0800: After dedups: nnModelFile0 = g170-b30c320x2-s4824661760-d1229536699.bin.gz useFP16 auto useNHWC auto
+2022-12-09 20:51:26+0800: Initializing neural net buffer to be size 19 * 19 exactly
+2022-12-09 20:51:28+0800: Cuda backend thread 0: Found GPU NVIDIA GeForce RTX 3060 Laptop GPU memory 6441926656 compute capability major 8 minor 6
+2022-12-09 20:51:28+0800: Cuda backend thread 0: Model version 8 useFP16 = true useNHWC = true
+2022-12-09 20:51:28+0800: Cuda backend thread 0: Model name: g170-b30c320x2-s4824661760-d1229536699
+2022-12-09 20:51:29+0800: Loaded neural net with nnXLen 19 nnYLen 19
+2022-12-09 20:51:29+0800: Initializing board with boardXSize 19 boardYSize 19
+2022-12-09 20:51:29+0800: Loaded config F:\CS\Project\GoChess\kataGo/default_gtp.cfg
+2022-12-09 20:51:29+0800: Loaded model g170-b30c320x2-s4824661760-d1229536699.bin.gz
+2022-12-09 20:51:29+0800: Model name: g170-b30c320x2-s4824661760-d1229536699
+2022-12-09 20:51:29+0800: GTP ready, beginning main protocol loop
