@@ -21,11 +21,12 @@ public class GoLiberty {
     }
 
     /**
-     * GoLiberty.BFS: search the whole block to check the "Chi"
+     * GoLiberty.libertySearch: search the whole block to check the "Chi"
      * @param x,y: position
      * @param player: the kind of the piece
      *           - odd : black piece
      *           - even: white piece
+     * @param color: to let the value of visited be color
      * @return if the position is liberty(have "Chi")
      */
     private static boolean libertySearch(int x, int y, int player, int color) {
@@ -56,7 +57,7 @@ public class GoLiberty {
     }
 
     /**
-     * GoLiberty.startBFS: start BFS on every position
+     * GoLiberty.startSearch: start BFS on given direction
      * @param x: the x of starting position
      * @param y: the y of starting position
      * @param dir: the direction of starting bfs

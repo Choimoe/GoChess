@@ -1,5 +1,6 @@
 package GoScene;
 
+import GoDataIO.InputData;
 import GoGame.GoMain;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -21,7 +22,7 @@ public class BoardPage extends ButtonPages{
      */
     static void serialize(Object obj, int index) throws IOException {
         ObjectOutputStream objectOutputStream =
-                new ObjectOutputStream(new FileOutputStream("data\\save" + index + ".dat"));
+                new ObjectOutputStream(new FileOutputStream("data\\saves\\save" + index + ".dat"));
         objectOutputStream.writeObject(obj);
         objectOutputStream.close();
     }
@@ -42,10 +43,10 @@ public class BoardPage extends ButtonPages{
     /**
      * set all the object on the page
      */
-    public BoardPage() throws FileNotFoundException {
+    public BoardPage(InputData inputData) throws FileNotFoundException {
         initialButton(new String[]{"认输", "虚着", "读档", "存档", "退出"}, 170, 80);
 
-        board       = new ChessBoard();
+        board       = new ChessBoard(inputData);
         rootPane    = new BorderPane();
         scene       = new Scene(rootPane);
 
@@ -71,7 +72,7 @@ public class BoardPage extends ButtonPages{
             Object obj = null;
             try {
                 /* search all the files on the ./data/ */
-                File filePoint = new File("data");
+                File filePoint = new File("data\\saves");
                 File[] list = filePoint.listFiles();
                 for (File file : Objects.requireNonNull(list)) {
                     String str = file.getName();
@@ -102,6 +103,7 @@ public class BoardPage extends ButtonPages{
     @Override
     public void clear() {
         board.clear();
+        board.refreshSound();
     }
 
     /**

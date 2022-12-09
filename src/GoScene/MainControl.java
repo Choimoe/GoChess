@@ -1,5 +1,6 @@
 package GoScene;
 
+import GoDataIO.InputData;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
@@ -10,6 +11,8 @@ public class MainControl extends Application {
     /* the size of the main window */
     int width = 1366, height = 768;
     final int PAGE_NUMBER = 3;
+
+    InputData fileData;
 
     ButtonPages[] pages = new ButtonPages[PAGE_NUMBER];
 
@@ -30,7 +33,7 @@ public class MainControl extends Application {
     void createPages() throws Exception {
         HomePage homePage       = new HomePage();
         StartGamePage startPage = new StartGamePage();
-        BoardPage chessBoard    = new BoardPage();
+        BoardPage chessBoard    = new BoardPage(fileData);
 
         pages[0] = homePage;
         pages[1] = startPage;
@@ -60,6 +63,8 @@ public class MainControl extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        fileData = new InputData();
+
         initializeStageStyle(stage);
 
         createPages();

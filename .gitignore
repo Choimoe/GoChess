@@ -3,8 +3,9 @@
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-data/
 **/*.dat
+kataGo/*.*
+kataGo/gtp_logs/
 #.idea/
 #*.xml
 #*.iml

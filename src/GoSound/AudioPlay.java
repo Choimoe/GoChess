@@ -19,14 +19,12 @@ public class AudioPlay {
     int     length;
     byte[]  buf = new byte[1024];
 
-    public AudioPlay(String path) {
-        loadMusic(path);
+    public AudioPlay(AudioInputStream stream) {
+        loadMusic(stream);
     }
 
     public void playMusic() {
         try {
-            audioStream.mark(length);
-
             int count;
             while ((count = audioStream.read(buf, 0, buf.length)) != -1) {
                 sourceDataLine.write(buf, 0, count);
@@ -38,12 +36,8 @@ public class AudioPlay {
         }
     }
 
-    private void loadMusic(String path) {
-        try {
-            audioStream     = AudioSystem.getAudioInputStream(new File(path));
-        } catch (UnsupportedAudioFileException | IOException e) {
-            e.printStackTrace();
-        }
+    private void loadMusic(AudioInputStream stream) {
+        audioStream         = stream;
 
         /* get the encode method */
         audioFormat         = audioStream.getFormat();
@@ -61,9 +55,16 @@ public class AudioPlay {
 
         try {
             length = audioStream.available();
+            audioStream.mark(length);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void reset() {
+        try {
+            audioStream.reset();
+        } catch (IOException ignored) {}
     }
 
     public void recycle() {
@@ -75,10 +76,5 @@ public class AudioPlay {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static void main(String[] args) {
-        String path = "assets\\putPiece.wav";
-        new AudioPlay(path);
     }
 }

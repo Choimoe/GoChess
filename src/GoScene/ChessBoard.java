@@ -1,5 +1,6 @@
 package GoScene;
 
+import GoDataIO.InputData;
 import GoGame.GoMain;
 import GoGame.GoStep;
 import GoSound.SoundList;
@@ -11,6 +12,7 @@ import javafx.scene.layout.Pane;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 public class ChessBoard implements Serializable {
@@ -30,6 +32,8 @@ public class ChessBoard implements Serializable {
     /* the radius of the piece */
     final int       RADIUS = (int)((LEN_X * 0.9) * 0.5);
 
+    InputData inputData;
+
     /* the input image */
     Image[]     pieceWaitImage      = new Image[3];
     Image[]     pieceImage          = new Image[3];
@@ -37,7 +41,7 @@ public class ChessBoard implements Serializable {
     ImageView   pieceWaitDisplay    = new ImageView();
     ImageView[] pieceWait           = new ImageView[3];
     ImageView[] piece               = new ImageView[3];
-    ImageView[] pieceList           = new ImageView[BOARD_ROW * BOARD_COL];
+    ImageView[] pieceList           = new ImageView[BOARD_ROW * BOARD_COL * 3];
 
     int pieceCount = 0;
 
@@ -75,17 +79,17 @@ public class ChessBoard implements Serializable {
 
     /**
      * loadImage: load the piece and board image.
-     *  - assets/blackPieceWait.png
-     *  - assets/whitePieceWait.png
-     *  - assets/blackPiece.png
-     *  - assets/whitePiece.png
-     *  - assets/board.png
+     *  - 101:assets/blackPieceWait.png
+     *  - 102:assets/whitePieceWait.png
+     *  - 103:assets/blackPiece.png
+     *  - 104:assets/whitePiece.png
+     *  - 105:assets/board.png
      */
-    public void loadImage() throws FileNotFoundException {
-        pieceWaitImage[1]   = new Image(new FileInputStream("assets/blackPieceWait.png"));
-        pieceWaitImage[2]   = new Image(new FileInputStream("assets/whitePieceWait.png"));
-        pieceImage[1]       = new Image(new FileInputStream("assets/blackPiece.png"));
-        pieceImage[2]       = new Image(new FileInputStream("assets/whitePiece.png"));
+    public void loadImage() {
+        pieceWaitImage[1]   = inputData.getImage(101);
+        pieceWaitImage[2]   = inputData.getImage(102);
+        pieceImage[1]       = inputData.getImage(103);
+        pieceImage[2]       = inputData.getImage(104);
 
         pieceWait[1]        = new ImageView(pieceWaitImage[1]);
         pieceWait[2]        = new ImageView(pieceWaitImage[2]);
@@ -95,7 +99,7 @@ public class ChessBoard implements Serializable {
         for (int i = 1; i <= 2; i++) reshapeImageWithHeight(pieceWait[i], 2 * RADIUS - 1);
         for (int i = 1; i <= 2; i++) reshapeImageWithHeight(piece[i]    , 2 * RADIUS - 1);
 
-        boardImageView = new ImageView(new Image(new FileInputStream("assets/board.png")));
+        boardImageView = new ImageView(inputData.getImage(105));
 
         reshapeImageWithHeight(boardImageView, 768);
     }
@@ -105,8 +109,7 @@ public class ChessBoard implements Serializable {
      *  - assets/putPiece.wav
      */
     public void loadSound() {
-        String[] audioPath = {"assets\\putPiece.wav"};
-        sound = new SoundList(audioPath);
+        sound = new SoundList(inputData.getData());
     }
 
     /**
@@ -165,7 +168,9 @@ public class ChessBoard implements Serializable {
         pane.setOnMouseClicked  (event -> setPiece      (event.getX(), event.getY()));
     }
 
-    public ChessBoard() throws FileNotFoundException {
+    public ChessBoard(InputData inputData) throws FileNotFoundException {
+        this.inputData = inputData;
+
         loadImage();
         loadSound();
 
@@ -278,7 +283,7 @@ public class ChessBoard implements Serializable {
         /* try to put the piece */
         if (goGame.putPiece(boardPosX, boardPosY)) {
             /* play putPiece sound */
-            sound.play(0);
+            sound.play(201);
 
             /* make the new pieces */
             ImageView newPiece = newPieceImage(goGame.getLastPlayer(), boardPosX, boardPosY);
@@ -317,7 +322,12 @@ public class ChessBoard implements Serializable {
         pieceWaitDisplay.setY(getAbsolutePosY(boardPosY) - RADIUS + 1);
     }
 
+    void refreshSound() {
+        sound.resetAll();
+    }
+
     void clean() {
         sound.recycle();
+        loadSound();
     }
 }

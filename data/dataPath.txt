@@ -1,0 +1,6 @@
+101:assets/blackPieceWait.png
+102:assets/whitePieceWait.png
+103:assets/blackPiece.png
+104:assets/whitePiece.png
+105:assets/board.png
+201:assets/putPiece.wav
