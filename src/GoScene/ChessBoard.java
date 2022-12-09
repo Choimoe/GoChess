@@ -9,10 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 
 public class ChessBoard implements Serializable {
@@ -168,7 +165,7 @@ public class ChessBoard implements Serializable {
         pane.setOnMouseClicked  (event -> setPiece      (event.getX(), event.getY()));
     }
 
-    public ChessBoard(InputData inputData) throws FileNotFoundException {
+    public ChessBoard(InputData inputData) {
         this.inputData = inputData;
 
         loadImage();
@@ -196,12 +193,10 @@ public class ChessBoard implements Serializable {
      * clear: reset all the data
      */
     public void clear() {
+        pieceCount = 0;
         goGame.clear();
-
         pane.getChildren().clear();
-
         beginGoGame();
-
         setPane();
     }
 
@@ -241,17 +236,19 @@ public class ChessBoard implements Serializable {
     /**
      * recoverPieces: recover all the piece from steps array(GoStep[]) and display them
      */
-    public void recoverPieces() {
+    public void recoverPieces(String goGameData) {
         pane.getChildren().clear();
         setPane();
         pieceCount = 0;
+        goGame.recover(goGameData);
         List<GoStep> steps = goGame.getGoSteps();
         for (GoStep step : steps) {
             if (step == null) continue;
             if ((step.getX() == -1) || (step.getY() == -1) || (step.getPlayer() == -1)) continue;
 
-            int boardPosX = step.getX(), boardPosY = step.getY(), player = step.getPlayer();
+            int boardPosX = step.getX(), boardPosY = step.getY(), player = 2 - (step.getPlayer() & 1);
 
+            System.out.println("[DEBUG] Recover: " + boardPosX + " " + boardPosY + " " + player);
             ImageView newPiece = newPieceImage(player, boardPosX, boardPosY);
             pieceList[goGame.getPosStep(boardPosX, boardPosY)] = newPiece;
             pane.getChildren().add(newPiece);
@@ -329,5 +326,10 @@ public class ChessBoard implements Serializable {
     void clean() {
         sound.recycle();
         loadSound();
+    }
+
+    @Override
+    public String toString() {
+        return goGame.toString();
     }
 }

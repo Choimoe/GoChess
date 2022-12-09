@@ -12,6 +12,7 @@ import java.util.Objects;
 public class BoardPage extends ButtonPages{
     ChessBoard board;
     BorderPane rootPane;
+    InputData data;
 
     int savesNumber = 0;
 
@@ -45,8 +46,9 @@ public class BoardPage extends ButtonPages{
      */
     public BoardPage(InputData inputData) throws FileNotFoundException {
         initialButton(new String[]{"认输", "虚着", "读档", "存档", "退出"}, 170, 80);
+        data = inputData;
 
-        board       = new ChessBoard(inputData);
+        board       = new ChessBoard(data);
         rootPane    = new BorderPane();
         scene       = new Scene(rootPane);
 
@@ -68,32 +70,34 @@ public class BoardPage extends ButtonPages{
         setButtonAction(1, () -> board.skipTurn());
 
         /* set the "读档" action */
+        // TODO:
+        //  - choose the saves
         setButtonAction(2, () -> {
-            Object obj = null;
-            try {
-                /* search all the files on the ./data/ */
-                File filePoint = new File("data\\saves");
-                File[] list = filePoint.listFiles();
-                for (File file : Objects.requireNonNull(list)) {
-                    String str = file.getName();
-                    if (!str.endsWith(".dat")) continue;
-                    if (!str.startsWith("save")) continue;
-                    obj = deserialize("data\\" + str);
-                    if (obj != null) break;
-                }
+            if (inputData.getSavesCount() == 0) {
+                System.out.println("[ERROR] No saves found.");
+                return;
+            }
 
-                /* got the obj */
-                if (obj != null) {
-                    clear();
-                    board.goGame = (GoMain) obj;
-                    board.recoverPieces();
-                }
-            } catch (IOException | ClassNotFoundException ignored) {}
+            inputData.refreshReadSave();
+            board.recoverPieces(inputData.getGoGame(301));
         });
 
         /* set the "存档" action */
         setButtonAction(3, () -> {
-            try { serialize(board.goGame, ++savesNumber); } catch (IOException ignored) {}
+            int curNum = inputData.getSavesCount();
+            String data = board.toString();
+            File file = new File("data/saves/" + curNum + ".sgf");
+            FileOutputStream fop = null;
+            try {
+                fop = new FileOutputStream(file);
+                if (!file.exists())
+                    //noinspection ResultOfMethodCallIgnored
+                    file.createNewFile();
+                byte[] contentInBytes = data.getBytes();
+                fop.write(contentInBytes);
+            } catch (IOException e) {
+                System.out.println("[ERROR] Cannot save the game into " + curNum + ".sgf");
+            }
         });
     }
 

@@ -4,3 +4,4 @@
 104:assets/whitePiece.png
 105:assets/board.png
 201:assets/putPiece.wav
+300:data/saves

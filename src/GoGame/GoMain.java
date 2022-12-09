@@ -3,6 +3,8 @@ package GoGame;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class GoMain implements Serializable {
     final int SIZE = 19;
@@ -106,6 +108,9 @@ public class GoMain implements Serializable {
 
         for (int i = 0; i < SIZE; i++)
             for (int j = 0; j < SIZE; j++) goMap[i][j] = WAIT_BEGIN;
+
+        goSteps.clear();
+        for (int i = 0; i < SIZE * SIZE * 10; i++) goSteps.add(deletedStep);
     }
 
     /**
@@ -121,8 +126,68 @@ public class GoMain implements Serializable {
         clear();
     }
 
+    /**
+     * skip the turn
+     */
     public void skipTurn() {
         steps++;
         changePlayer();
+    }
+
+    @SuppressWarnings("RegExpRedundantEscape")
+    public void recover(String data) {
+        clear();
+        Pattern patCounter      = Pattern.compile("CT\\[(\\d+)\\]");
+        Pattern patPlayer       = Pattern.compile("CU\\[(\\d+)\\]");
+        Pattern patPiece        = Pattern.compile("(B|W)\\[([a-z]{2})\\]");
+
+        Matcher matcherCounter  = patCounter.matcher(data);
+        Matcher matcherPlayer   = patPlayer.matcher (data);
+        Matcher matcherPiece    = patPiece.matcher  (data);
+
+        if (matcherCounter.find()) steps        = Integer.parseInt(matcherCounter.group(1));
+        if (matcherPlayer .find()) currentUser  = Integer.parseInt(matcherPlayer .group(1));
+
+        System.out.println("[DEBUG] matcherCounter: " + matcherCounter.group() + " -> " + steps      );
+        System.out.println("[DEBUG] matcherPlayer : " + matcherPlayer .group() + " -> " + currentUser);
+
+        int curStep = 0;
+        while (matcherPiece.find()) {
+            String match        = matcherPiece.group();
+
+            int x = match.charAt(2) - 'a';
+            int y = match.charAt(3) - 'a';
+
+            if (match.charAt(0) == 'B') {
+                if ((curStep & 1) == 1) curStep++; goMap[x][y] = ++curStep;
+                goSteps.set(curStep, new GoStep(x, y, BLACK_PLAYER));
+            } else {
+                if ((curStep & 1) == 0) curStep++; goMap[x][y] = ++curStep;
+                goSteps.set(curStep, new GoStep(x, y, WHITE_PLAYER));
+            }
+        }
+
+        if (curStep > steps) steps = 2 * curStep + currentUser;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        result.append("(;GM[1]FF[4]CA[UTF-8]SZ[19]KM[6.5]PB[Black]PW[White]");
+        result.append("CT[").append(steps       ).append("]");
+        result.append("CU[").append(currentUser ).append("]");
+
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (goMap[i][j] == WAIT_BEGIN) continue;
+                String pos = (char)((int)'a' + i) + "" + (char)((int)'a' + j);
+                if ((goMap[i][j] & 1) == 1) result.append('B');
+                else result.append('W');
+                result.append('[').append(pos).append(']');
+            }
+        }
+
+        result.append(')');
+        return result.toString();
     }
 }
