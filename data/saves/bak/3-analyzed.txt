@@ -1,0 +1,1087 @@
+(;GM[1]FF[4]CA[UTF-8]SZ[19]KM[6.5]PB[Black]PW[White]CT[76]CU[2]C[# Analyze-SGF Report
+
+Komi 6.5
+
+Black (Black)
+* KataGo top choices (7.14%, 1/14)
+* Less than 2% win rate drops (85.71%, 12/14)
+* Less than 5% win rate drops (85.71%, 12/14)
+* More than 5% win rate drops (14.29%, 2/14): #1 ⇣19.42%, #26 ⇣34.04%
+* More than 20% win rate drops (7.14%, 1/14): #26 ⇣34.04%
+* Top 10 win rate drops: #26 ⇣34.04%, #1 ⇣19.42%, #14 ⇣0.54%, #12 ⇣0.13%, #17 ⇣0.05%, #9 ⇣0.00%, #23 ⇣-0.00%, #7 ⇣-0.02%, #4 ⇣-0.11%, #18 ⇣-0.89%
+* Top 10 score drops: #26 ⇣11.51, #14 ⇣2.64, #1 ⇣2.61, #17 ⇣1.59, #12 ⇣0.49, #9 ⇣-0.17, #23 ⇣-0.45, #4 ⇣-0.71, #7 ⇣-0.78, #10 ⇣-11.12
+
+White (White)
+* KataGo top choices (7.69%, 1/13)
+* Less than 2% win rate drops (69.23%, 9/13)
+* Less than 5% win rate drops (76.92%, 10/13)
+* More than 5% win rate drops (23.08%, 3/13): #2 ⇣10.45%, #20 ⇣26.12%, #25 ⇣31.27%
+* More than 20% win rate drops (15.38%, 2/13): #20 ⇣26.12%, #25 ⇣31.27%
+* Top 10 win rate drops: #25 ⇣31.27%, #20 ⇣26.12%, #2 ⇣10.45%, #15 ⇣3.04%, #13 ⇣0.50%, #8 ⇣-0.02%, #11 ⇣-0.09%, #5 ⇣-0.14%, #6 ⇣-1.13%, #22 ⇣-1.89%
+* Top 10 score drops: #25 ⇣7.55, #15 ⇣6.00, #20 ⇣4.05, #13 ⇣2.48, #2 ⇣1.54, #5 ⇣-0.20, #11 ⇣-0.56, #8 ⇣-0.88, #22 ⇣-9.89, #6 ⇣-11.56
+
+Analyzed by KataGo Parallel Analysis Engine (1615 max visits).]
+(;B[bq]C[Move 1
+
+* Win rate: W 63.20%
+* Score lead: W 2.33
+* Win rate drop: B ⇣19.42%
+* Score drop: B ⇣2.61
+* Visits: 1614
+
+Bad moves left
+
+* Black bad moves: #26 ⇣34.04%
+* Black bad hot spots: #26 ⇣34.04%
+* White bad moves: #2 ⇣10.45%, #20 ⇣26.12%, #25 ⇣31.27%
+* White hot spots: #20 ⇣26.12%, #25 ⇣31.27%
+
+The proposed variations
+
+1. BQ4 D16 D4 Q16 C17 C16 D17 E16 F18 R3 Q3 (B 56.29%, B 0.29, 651 visits)
+2. BQ16 D4 D16 Q4 C3 C4 D3 E4 F2 R17 Q17 (B 56.29%, B 0.29, 651 visits)
+3. BD4 Q16 Q4 D16 R17 R16 Q17 P16 O18 C3 D3 (B 56.29%, B 0.29, 651 visits)
+4. BD16 Q4 Q16 D4 R3 R4 Q3 P4 O2 C17 D17 (B 56.29%, B 0.29, 651 visits)
+5. BR4 D4 D16 Q16 C3 D3 C4 C6 C5 D5 B6 P3 (B 55.31%, B 0.19, 302 visits)
+6. BR16 D16 D4 Q4 C17 D17 C16 C14 C15 D15 B14 P17 (B 55.31%, B 0.19, 302 visits)
+7. BC4 Q4 Q16 D16 R3 Q3 R4 R6 R5 Q5 S6 E3 (B 55.31%, B 0.19, 302 visits)
+8. BC16 Q16 Q4 D4 R17 Q17 R16 R14 R15 Q15 S14 E17 (B 55.31%, B 0.19, 302 visits)
+9. BD17 D4 Q4 Q16 C3 C4 D3 F3 E3 E4 F2 C15 (B 55.31%, B 0.19, 302 visits)
+10. BQ17 Q4 D4 D16 R3 R4 Q3 O3 P3 P4 O2 R15 (B 55.31%, B 0.19, 302 visits)
+]BM[1]SBKV[36.80]
+(;W[cf]C[Move 2
+
+* Win rate: W 52.75%
+* Score lead: W 0.79
+* Win rate drop: W ⇣10.45%
+* Score drop: W ⇣1.54
+* Visits: 1615
+
+Bad moves left
+
+* Black bad moves: #26 ⇣34.04%
+* Black bad hot spots: #26 ⇣34.04%
+* White bad moves: #20 ⇣26.12%, #25 ⇣31.27%
+* White hot spots: #20 ⇣26.12%, #25 ⇣31.27%
+
+The proposed variations
+
+1. WQ4 D16 Q16 E4 C17 C16 D17 E16 F17 R3 R4 (W 63.65%, W 2.38, 220 visits)
+2. WQ16 E4 Q4 D16 C17 C16 D17 E16 F17 R3 R4 (W 63.05%, W 2.29, 243 visits)
+3. WD16 R4 R16 P4 C4 C3 E4 D4 (W 63.02%, W 2.31, 182 visits)
+4. WC16 Q4 Q16 E17 G16 E15 D14 (W 63.42%, W 2.37, 171 visits)
+5. WQ3 D16 Q16 E4 C17 D17 C16 C14 B14 C13 (W 63.32%, W 2.34, 150 visits)
+6. WR4 D16 Q16 P3 Q5 E4 C17 C16 D17 (W 63.03%, W 2.33, 119 visits)
+7. WD17 Q4 Q16 C15 E16 R17 R16 Q17 (W 63.18%, W 2.36, 114 visits)
+8. WR16 D16 Q4 P17 Q15 E4 C17 C16 (W 62.81%, W 2.28, 121 visits)
+9. WQ17 Q4 D16 R15 R3 Q3 R4 R6 (W 62.59%, W 2.24, 105 visits)
+10. WR3 D17 Q16 E4 D15 C15 C14 (W 61.83%, W 2.14, 56 visits)
+]BM[1]SBKV[47.25]
+;W[cp]C[Move 3
+
+* Win rate: W 98.54%
+* Score lead: W 15.72
+* Win rate drop: W ⇣-45.80%
+* Score drop: W ⇣-14.94
+* Visits: 1615
+
+Bad moves left
+
+* Black bad moves: #26 ⇣34.04%
+* Black bad hot spots: #26 ⇣34.04%
+* White bad moves: #20 ⇣26.12%, #25 ⇣31.27%
+* White hot spots: #20 ⇣26.12%, #25 ⇣31.27%
+
+The proposed variations
+
+1. BD17 D16 C17 F16 E17 F14 E16 E15 G15 F15 G17 G16 H17 (W 52.27%, W 0.72, 599 visits)
+2. BC16 D16 D17 E17 C18 D18 C17 D15 E18 F18 D19 Q16 Q4 F16 E4 R3 (W 54.44%, W 1.03, 288 visits)
+3. BQ4 D17 Q16 R3 Q3 R4 R6 R5 Q5 S6 R2 S2 S5 (W 54.26%, W 0.99, 134 visits)
+4. BQ16 D17 Q3 Q5 R5 R6 R4 Q6 O4 Q10 R12 R17 (W 54.43%, W 1.02, 128 visits)
+5. BD16 Q16 Q4 F17 D14 D13 E14 C16 C17 C15 (W 54.32%, W 1.09, 90 visits)
+6. BC17 Q16 Q4 R3 Q3 R4 Q5 S6 C11 D12 (W 53.90%, W 1.04, 90 visits)
+7. BQ3 D17 Q16 Q5 R5 R6 R4 Q6 O4 Q10 R12 R17 (W 54.56%, W 1.05, 81 visits)
+]TE[1]SBKV[1.46]
+;B[cq]C[Move 4
+
+* Win rate: W 98.43%
+* Score lead: W 15.01
+* Win rate drop: B ⇣-0.11%
+* Score drop: B ⇣-0.71
+* Visits: 1615
+
+Bad moves left
+
+* Black bad moves: #26 ⇣34.04%
+* Black bad hot spots: #26 ⇣34.04%
+* White bad moves: #20 ⇣26.12%, #25 ⇣31.27%
+* White hot spots: #20 ⇣26.12%, #25 ⇣31.27%
+
+The proposed variations
+
+1. WC3 D17 Q16 R4 E4 O3 (W 98.48%, W 15.18, 223 visits)
+2. WC16 D16 D17 E17 C18 D18 C17 D15 E18 (W 98.47%, W 15.86, 88 visits)
+3. WD17 C3 C6 D16 C17 (W 98.50%, W 15.75, 75 visits)
+4. WQ16 C3 D17 Q4 C6 D16 (W 98.58%, W 15.93, 63 visits)
+5. WD16 C3 C6 C5 D6 F4 C10 (W 98.55%, W 16.21, 62 visits)
+6. WQ4 C3 D17 Q16 C6 D16 (W 98.53%, W 15.92, 66 visits)
+7. WD15 D14 E15 B16 C3 E4 (W 98.55%, W 15.93, 51 visits)
+8. WR4 C3 D17 Q16 C6 D16 (W 98.55%, W 15.83, 62 visits)
+9. WQ3 C3 D17 Q16 C6 (W 98.57%, W 15.79, 44 visits)
+10. WQ17 C3 C16 D16 D17 E17 (W 98.54%, W 15.96, 51 visits)
+]TE[1]SBKV[1.57]
+;W[dd]C[Move 5
+
+* Win rate: W 98.57%
+* Score lead: W 15.20
+* Win rate drop: W ⇣-0.14%
+* Score drop: W ⇣-0.20
+* Visits: 1615
+
+Bad moves left
+
+* Black bad moves: #26 ⇣34.04%
+* Black bad hot spots: #26 ⇣34.04%
+* White bad moves: #20 ⇣26.12%, #25 ⇣31.27%
+* White hot spots: #20 ⇣26.12%, #25 ⇣31.27%
+
+The proposed variations
+
+1. BD17 Q4 E4 D4 D5 D3 E5 (W 98.55%, W 15.39, 161 visits)
+2. BD16 E4 R4 Q16 O3 O17 (W 98.54%, W 15.12, 197 visits)
+3. BD4 D3 E4 F3 D17 Q16 Q4 (W 98.34%, W 14.75, 104 visits)
+4. BQ16 D17 D16 C17 F16 E16 (W 98.42%, W 14.98, 79 visits)
+5. BE4 D4 D5 D3 E5 F3 D17 (W 98.45%, W 15.49, 71 visits)
+6. BQ4 D17 Q16 E4 D16 C17 (W 98.39%, W 14.84, 68 visits)
+7. BQ17 D17 D4 D3 E4 (W 98.38%, W 14.80, 65 visits)
+8. BR16 D17 D16 C17 F16 E17 (W 98.40%, W 14.86, 59 visits)
+9. BQ3 D17 D4 D3 E4 F3 (W 98.36%, W 14.76, 61 visits)
+10. BR4 D17 D16 C17 F16 F17 (W 98.38%, W 14.74, 55 visits)
+]TE[1]SBKV[1.43]
+;W[dp]C[Move 6
+
+* Win rate: W 99.70%
+* Score lead: W 26.76
+* Win rate drop: W ⇣-1.13%
+* Score drop: W ⇣-11.56
+* Visits: 1615
+* KataGo choice no. 3
+
+Bad moves left
+
+* Black bad moves: #26 ⇣34.04%
+* Black bad hot spots: #26 ⇣34.04%
+* White bad moves: #20 ⇣26.12%, #25 ⇣31.27%
+* White hot spots: #20 ⇣26.12%, #25 ⇣31.27%
+
+The proposed variations
+
+1. WQ16 Q3 E4 R6 O17 R14 (W 98.56%, W 14.99, 123 visits)
+2. WE4 R16 Q4 P16 D9 R6 (W 98.57%, W 15.11, 135 visits)
+3. WD4 Q16 Q4 R14 R6 (W 98.58%, W 15.03, 132 visits)
+4. WQ4 R16 E4 P16 D9 R6 (W 98.52%, W 15.18, 109 visits)
+5. WQ17 Q3 E4 Q15 R15 (W 98.55%, W 15.03, 85 visits)
+6. WR16 R4 E4 P16 P17 O17 (W 98.57%, W 15.11, 85 visits)
+7. WR4 Q16 D4 P4 P3 O3 (W 98.52%, W 15.19, 91 visits)
+8. WQ3 Q16 R6 Q4 P4 (W 98.55%, W 15.31, 74 visits)
+9. WR17 E4 D4 D5 D3 G5 Q4 (W 98.52%, W 15.47, 55 visits)
+10. WR3 R16 D4 P16 D13 (W 98.50%, W 15.58, 53 visits)
+]TE[1]SBKV[0.30]
+;B[dq]C[Move 7
+
+* Win rate: W 99.68%
+* Score lead: W 25.98
+* Win rate drop: B ⇣-0.02%
+* Score drop: B ⇣-0.78
+* Visits: 1615
+* KataGo top choice
+
+Bad moves left
+
+* Black bad moves: #26 ⇣34.04%
+* Black bad hot spots: #26 ⇣34.04%
+* White bad moves: #20 ⇣26.12%, #25 ⇣31.27%
+* White hot spots: #20 ⇣26.12%, #25 ⇣31.27%
+
+The proposed variations
+
+1. BD3 E4 F3 Q16 Q4 D8 R17 Q17 R16 (W 99.69%, W 26.25, 407 visits)
+2. BE2 Q16 Q4 D8 R17 Q17 R16 (W 99.70%, W 26.92, 265 visits)
+3. BC6 Q4 Q16 R17 R16 (W 99.71%, W 27.53, 106 visits)
+4. BD15 C15 D3 E4 F3 Q16 Q4 (W 99.72%, W 28.19, 85 visits)
+5. BE3 Q16 Q4 D3 D2 C2 (W 99.76%, W 29.27, 58 visits)
+6. BB4 Q16 Q4 C6 E2 (W 99.76%, W 28.30, 65 visits)
+7. BF2 D3 C6 B4 D2 E2 (W 99.76%, W 29.08, 50 visits)
+8. BC15 D15 D3 E4 F3 Q16 Q4 (W 99.74%, W 28.97, 59 visits)
+9. BQ4 D3 Q16 C7 O17 O3 M3 (W 99.76%, W 30.51, 33 visits)
+10. BQ16 D3 Q4 C7 O17 O3 M3 (W 99.78%, W 30.67, 41 visits)
+]TE[1]SBKV[0.32]
+;W[ep]C[Move 8
+
+* Win rate: W 99.71%
+* Score lead: W 26.86
+* Win rate drop: W ⇣-0.02%
+* Score drop: W ⇣-0.88
+* Visits: 1615
+* KataGo top choice
+
+Bad moves left
+
+* Black bad moves: #26 ⇣34.04%
+* Black bad hot spots: #26 ⇣34.04%
+* White bad moves: #20 ⇣26.12%, #25 ⇣31.27%
+* White hot spots: #20 ⇣26.12%, #25 ⇣31.27%
+
+The proposed variations
+
+1. WE4 F3 Q16 Q4 D8 R17 Q17 R16 (W 99.69%, W 26.46, 220 visits)
+2. WQ16 E4 Q4 D9 R14 O3 (W 99.70%, W 26.17, 68 visits)
+3. WF4 E4 E5 E3 F5 Q16 Q4 (W 99.64%, W 25.07, 60 visits)
+4. WQ4 E4 Q16 D9 R14 O3 (W 99.70%, W 26.16, 70 visits)
+5. WQ17 E4 Q4 Q15 R15 R14 R16 (W 99.69%, W 25.80, 64 visits)
+6. WR16 E4 Q4 P17 Q14 (W 99.69%, W 25.86, 53 visits)
+7. WQ3 E4 Q16 R5 P4 R8 (W 99.69%, W 25.72, 58 visits)
+8. WR4 E4 Q16 P4 N3 R3 (W 99.68%, W 25.64, 55 visits)
+9. WR3 Q16 E4 F3 D8 O17 (W 99.68%, W 25.56, 43 visits)
+10. WR17 E4 Q4 O3 R6 (W 99.69%, W 25.58, 38 visits)
+]TE[1]SBKV[0.29]
+;B[eq]C[Move 9
+
+* Win rate: W 99.71%
+* Score lead: W 26.69
+* Win rate drop: B ⇣0.00%
+* Score drop: B ⇣-0.17
+* Visits: 1615
+* KataGo choice no. 3
+
+Bad moves left
+
+* Black bad moves: #26 ⇣34.04%
+* Black bad hot spots: #26 ⇣34.04%
+* White bad moves: #20 ⇣26.12%, #25 ⇣31.27%
+* White hot spots: #20 ⇣26.12%, #25 ⇣31.27%
+
+The proposed variations
+
+1. BF3 Q16 Q4 D8 R14 O17 (W 99.69%, W 26.44, 259 visits)
+2. BF2 Q16 Q4 D8 R17 Q17 R16 (W 99.70%, W 26.70, 184 visits)
+3. BE3 F4 G3 Q4 Q16 O17 R14 (W 99.72%, W 26.94, 225 visits)
+4. BG2 G3 F3 E3 E2 F4 F2 (W 99.74%, W 27.71, 89 visits)
+5. BC6 Q16 Q4 G3 E3 (W 99.72%, W 27.50, 93 visits)
+6. BD15 C15 F3 Q16 Q4 D8 (W 99.70%, W 27.88, 64 visits)
+7. BB4 Q16 Q4 C6 F3 R14 (W 99.74%, W 27.65, 69 visits)
+8. BC7 E3 B4 Q4 Q16 K4 (W 99.73%, W 28.53, 56 visits)
+9. BQ16 E3 Q3 B4 R6 D10 (W 99.75%, W 30.22, 27 visits)
+10. BQ4 E3 R16 B4 O17 O3 (W 99.74%, W 29.96, 41 visits)
+]TE[1]SBKV[0.29]
+;B[fc]C[Move 10
+
+* Win rate: W 98.73%
+* Score lead: W 15.57
+* Win rate drop: B ⇣-0.98%
+* Score drop: B ⇣-11.12
+* Visits: 1615
+
+Bad moves left
+
+* Black bad moves: #26 ⇣34.04%
+* Black bad hot spots: #26 ⇣34.04%
+* White bad moves: #20 ⇣26.12%, #25 ⇣31.27%
+* White hot spots: #20 ⇣26.12%, #25 ⇣31.27%
+
+The proposed variations
+
+1. WF4 G3 Q16 Q4 D9 R17 (W 99.71%, W 27.10, 144 visits)
+2. WQ16 F4 Q3 D8 F5 G5 (W 99.72%, W 27.07, 96 visits)
+3. WQ4 F4 Q16 O3 F5 G5 (W 99.72%, W 26.77, 96 visits)
+4. WQ17 F4 Q4 F5 D9 R15 (W 99.71%, W 26.69, 73 visits)
+5. WR16 F4 Q4 F5 D9 P16 (W 99.71%, W 26.65, 78 visits)
+6. WG4 F4 F5 F3 Q4 G5 F6 Q16 (W 99.70%, W 26.25, 58 visits)
+7. WQ3 Q16 F4 G3 R6 D8 (W 99.71%, W 26.54, 68 visits)
+8. WR4 Q16 F4 G3 O4 O17 (W 99.72%, W 26.43, 67 visits)
+9. WF3 F4 G3 F5 D7 H4 H3 K4 K3 (W 99.59%, W 26.19, 51 visits)
+10. WR17 Q4 F4 G3 D9 F17 (W 99.70%, W 26.49, 49 visits)
+]TE[1]SBKV[1.27]
+;W[fp]C[Move 11
+
+* Win rate: W 98.82%
+* Score lead: W 16.13
+* Win rate drop: W ⇣-0.09%
+* Score drop: W ⇣-0.56
+* Visits: 1615
+
+Bad moves left
+
+* Black bad moves: #26 ⇣34.04%
+* Black bad hot spots: #26 ⇣34.04%
+* White bad moves: #20 ⇣26.12%, #25 ⇣31.27%
+* White hot spots: #20 ⇣26.12%, #25 ⇣31.27%
+
+The proposed variations
+
+1. BF4 G3 Q3 Q16 R17 Q17 R16 (W 98.80%, W 15.89, 210 visits)
+2. BQ16 F4 Q3 F5 D9 O17 R14 (W 98.74%, W 15.67, 107 visits)
+3. BQ4 F4 Q16 F5 D9 O3 M3 (W 98.77%, W 15.61, 111 visits)
+4. BQ17 F4 Q3 Q15 R15 R14 (W 98.73%, W 15.61, 84 visits)
+5. BQ3 F4 Q16 F5 D9 O17 R14 (W 98.78%, W 15.60, 79 visits)
+6. BR16 F4 Q3 F5 D9 P16 (W 98.70%, W 15.54, 66 visits)
+7. BR4 F4 Q16 P4 N3 R3 F5 G5 (W 98.69%, W 15.36, 70 visits)
+8. BG4 F4 F5 F3 Q4 G5 F6 Q16 R14 H5 (W 98.58%, W 14.97, 56 visits)
+9. BR3 F4 Q16 F5 D9 (W 98.67%, W 15.21, 46 visits)
+10. BE17 F4 Q4 Q16 F16 O3 (W 98.62%, W 15.13, 49 visits)
+]TE[1]SBKV[1.18]
+;B[fq]C[Move 12
+
+* Win rate: W 98.95%
+* Score lead: W 16.62
+* Win rate drop: B ⇣0.13%
+* Score drop: B ⇣0.49
+* Visits: 1615
+
+Bad moves left
+
+* Black bad moves: #26 ⇣34.04%
+* Black bad hot spots: #26 ⇣34.04%
+* White bad moves: #20 ⇣26.12%, #25 ⇣31.27%
+* White hot spots: #20 ⇣26.12%, #25 ⇣31.27%
+
+The proposed variations
+
+1. WG3 Q3 Q16 R17 Q17 R16 (W 98.76%, W 15.66, 201 visits)
+2. WG2 Q4 Q16 R17 Q17 R16 (W 98.87%, W 16.11, 113 visits)
+3. WQ4 F3 Q17 O3 Q14 J17 (W 98.79%, W 16.21, 122 visits)
+4. WQ16 F3 Q4 O3 B4 C6 R6 R17 (W 98.84%, W 16.10, 105 visits)
+5. WQ3 F3 Q16 R17 R16 Q17 (W 98.82%, W 16.25, 86 visits)
+6. WQ17 F3 Q4 O3 Q14 J17 (W 98.83%, W 16.31, 70 visits)
+7. WF3 Q4 Q16 H4 R3 (W 98.98%, W 16.65, 79 visits)
+8. WR4 F3 Q16 P4 N3 R3 B4 Q3 (W 98.83%, W 16.52, 66 visits)
+9. WR16 F3 Q4 P16 P17 O17 (W 98.83%, W 16.36, 59 visits)
+10. WR17 F3 Q4 O3 B4 C6 R6 (W 98.73%, W 16.51, 47 visits)
+]TE[1]SBKV[1.05]
+;W[go]C[Move 13
+
+* Win rate: W 98.45%
+* Score lead: W 14.14
+* Win rate drop: W ⇣0.50%
+* Score drop: W ⇣2.48
+* Visits: 1615
+
+Bad moves left
+
+* Black bad moves: #26 ⇣34.04%
+* Black bad hot spots: #26 ⇣34.04%
+* White bad moves: #20 ⇣26.12%, #25 ⇣31.27%
+* White hot spots: #20 ⇣26.12%, #25 ⇣31.27%
+
+The proposed variations
+
+1. BQ16 Q4 R3 Q3 R4 R6 S6 (W 98.96%, W 16.89, 95 visits)
+2. BQ3 Q16 Q6 G4 G5 H5 (W 98.99%, W 16.65, 95 visits)
+3. BQ4 Q16 R17 Q17 R16 R14 R15 (W 99.00%, W 16.72, 86 visits)
+4. BQ17 Q4 R14 G4 G5 H4 (W 98.94%, W 16.62, 93 visits)
+5. BR16 Q4 P16 O16 O15 P17 (W 98.96%, W 16.71, 92 visits)
+6. BR4 Q16 P4 D17 C17 C18 (W 98.98%, W 16.50, 86 visits)
+7. BE17 Q16 R4 F16 O4 (W 98.93%, W 16.74, 58 visits)
+8. BH4 Q4 R16 P16 P17 O17 (W 98.92%, W 16.63, 64 visits)
+9. BR3 Q16 H4 G4 G5 (W 98.91%, W 16.24, 48 visits)
+10. BR17 Q4 H4 D17 C17 C18 (W 98.89%, W 16.38, 52 visits)
+]TE[1]SBKV[1.55]
+;B[gp]C[Move 14
+
+* Win rate: W 98.99%
+* Score lead: W 16.78
+* Win rate drop: B ⇣0.54%
+* Score drop: B ⇣2.64
+* Visits: 1615
+
+Bad moves left
+
+* Black bad moves: #26 ⇣34.04%
+* Black bad hot spots: #26 ⇣34.04%
+* White bad moves: #20 ⇣26.12%, #25 ⇣31.27%
+* White hot spots: #20 ⇣26.12%, #25 ⇣31.27%
+
+The proposed variations
+
+1. WR16 Q3 R5 P4 O17 R8 (W 98.33%, W 13.78, 127 visits)
+2. WQ17 R4 R14 J17 P3 E17 (W 98.38%, W 13.93, 124 visits)
+3. WQ16 R4 O17 P4 R11 (W 98.46%, W 13.98, 91 visits)
+4. WQ4 Q16 R17 Q17 R16 Q15 S14 (W 98.49%, W 14.17, 102 visits)
+5. WR4 Q16 R17 Q17 R16 Q15 (W 98.50%, W 14.28, 85 visits)
+6. WQ3 Q16 R6 J17 R14 (W 98.46%, W 14.33, 82 visits)
+7. WP16 R16 Q4 P17 O17 Q17 O16 R14 K16 (W 98.44%, W 14.04, 62 visits)
+8. WQ15 Q17 Q4 R15 R14 R16 Q14 O17 R6 Q10 (W 98.44%, W 14.00, 58 visits)
+9. WP17 R16 Q4 Q14 D17 C17 (W 98.49%, W 14.16, 64 visits)
+10. WH4 Q4 Q16 R17 Q17 (W 98.62%, W 14.65, 52 visits)
+]TE[1]SBKV[1.01]
+;W[gq]C[Move 15
+
+* Win rate: W 95.95%
+* Score lead: W 10.79
+* Win rate drop: W ⇣3.04%
+* Score drop: W ⇣6.00
+* Visits: 1614
+
+Bad moves left
+
+* Black bad moves: #26 ⇣34.04%
+* Black bad hot spots: #26 ⇣34.04%
+* White bad moves: #20 ⇣26.12%, #25 ⇣31.27%
+* White hot spots: #20 ⇣26.12%, #25 ⇣31.27%
+
+The proposed variations
+
+1. BQ3 Q16 R6 H5 G6 H6 (W 99.03%, W 16.86, 101 visits)
+2. BQ4 Q16 J5 R3 R4 (W 99.04%, W 16.89, 111 visits)
+3. BQ16 Q4 H5 R17 Q17 R16 (W 99.00%, W 16.98, 94 visits)
+4. BH4 G3 Q4 Q16 R17 H5 (W 98.97%, W 16.71, 92 visits)
+5. BR4 Q16 O3 O17 R14 (W 98.99%, W 16.82, 72 visits)
+6. BR16 Q4 H5 P16 P17 O17 Q17 O16 (W 98.95%, W 16.80, 73 visits)
+7. BQ17 Q4 H5 Q15 R15 R14 R16 (W 98.97%, W 16.75, 71 visits)
+8. BH5 Q4 Q16 R17 Q17 R16 (W 98.98%, W 16.88, 75 visits)
+9. BJ5 Q4 Q16 R17 Q17 (W 98.98%, W 16.69, 58 visits)
+10. BE17 Q4 Q16 H5 G6 (W 98.92%, W 16.80, 53 visits)
+]SBKV[4.05]
+;W[hq]C[Move 16
+
+* Win rate: W 99.67%
+* Score lead: W 27.31
+* Win rate drop: W ⇣-3.72%
+* Score drop: W ⇣-16.52
+* Visits: 1615
+
+Bad moves left
+
+* Black bad moves: #26 ⇣34.04%
+* Black bad hot spots: #26 ⇣34.04%
+* White bad moves: #20 ⇣26.12%, #25 ⇣31.27%
+* White hot spots: #20 ⇣26.12%, #25 ⇣31.27%
+
+The proposed variations
+
+1. WH4 H5 J4 Q4 Q16 R17 Q17 R16 R14 S14 (W 95.95%, W 10.79, 1566 visits)
+2. WC15 H4 D15 E16 (W 99.06%, W 19.10, 5 visits)
+3. WD15 H4 C16 (W 98.97%, W 19.63, 3 visits)
+4. WD17 H4 C16 (W 99.08%, W 20.38, 3 visits)
+5. WC16 H4 D17 (W 99.14%, W 20.47, 3 visits)
+6. WQ16 H4 (W 99.14%, W 21.09, 2 visits)
+7. WR16 H4 (W 99.13%, W 21.50, 2 visits)
+8. WQ17 H4 (W 99.13%, W 21.59, 2 visits)
+9. WQ3 H4 (W 99.16%, W 21.57, 2 visits)
+10. WQ4 H4 (W 99.12%, W 21.08, 2 visits)
+]TE[1]SBKV[0.33]
+;B[md]C[Move 17
+
+* Win rate: W 99.72%
+* Score lead: W 28.90
+* Win rate drop: B ⇣0.05%
+* Score drop: B ⇣1.59
+* Visits: 1615
+
+Bad moves left
+
+* Black bad moves: #26 ⇣34.04%
+* Black bad hot spots: #26 ⇣34.04%
+* White bad moves: #20 ⇣26.12%, #25 ⇣31.27%
+* White hot spots: #20 ⇣26.12%, #25 ⇣31.27%
+
+The proposed variations
+
+1. BQ15 Q4 H4 K3 J4 J3 H6 F7 (W 99.64%, W 26.41, 94 visits)
+2. BQ4 Q16 R14 Q11 O17 O16 (W 99.66%, W 26.93, 115 visits)
+3. BQ3 R16 Q16 R17 Q14 (W 99.68%, W 27.20, 90 visits)
+4. BQ14 Q4 H4 K3 J4 J3 H6 (W 99.67%, W 26.95, 79 visits)
+5. BQ16 Q4 R14 K6 R6 Q6 (W 99.71%, W 28.73, 73 visits)
+6. BR15 K6 Q3 Q17 P16 P17 (W 99.64%, W 26.45, 74 visits)
+7. BR14 Q4 H4 K3 J4 J3 (W 99.65%, W 26.86, 75 visits)
+8. BR4 P3 Q16 Q5 R5 (W 99.69%, W 27.95, 60 visits)
+9. BR16 Q4 O17 Q6 Q11 (W 99.70%, W 28.76, 47 visits)
+10. BR12 Q4 H4 K3 J4 J3 H6 (W 99.67%, W 27.36, 49 visits)
+]TE[1]SBKV[0.28]
+;B[nq]C[Move 18
+
+* Win rate: W 98.83%
+* Score lead: W 17.62
+* Win rate drop: B ⇣-0.89%
+* Score drop: B ⇣-11.28
+* Visits: 1615
+
+Bad moves left
+
+* Black bad moves: #26 ⇣34.04%
+* Black bad hot spots: #26 ⇣34.04%
+* White bad moves: #20 ⇣26.12%, #25 ⇣31.27%
+* White hot spots: #20 ⇣26.12%, #25 ⇣31.27%
+
+The proposed variations
+
+1. WQ3 R16 Q6 R8 P16 Q14 (W 99.74%, W 29.65, 101 visits)
+2. WQ4 Q16 Q6 Q11 K6 K4 (W 99.73%, W 29.13, 114 visits)
+3. WQ16 Q4 Q13 R11 J17 (W 99.70%, W 28.40, 86 visits)
+4. WR4 R16 P4 Q10 K6 N3 O2 (W 99.74%, W 29.08, 77 visits)
+5. WR16 Q4 P17 Q10 K6 K16 (W 99.71%, W 28.56, 73 visits)
+6. WQ17 R15 Q4 H4 K4 H5 (W 99.69%, W 27.84, 64 visits)
+7. WP4 R3 Q16 R14 K7 Q5 (W 99.72%, W 28.37, 67 visits)
+8. WP3 Q16 R4 Q10 K6 Q7 (W 99.72%, W 29.02, 59 visits)
+9. WR3 Q16 Q5 Q3 Q4 P3 (W 99.70%, W 28.57, 51 visits)
+10. WQ5 Q3 Q16 R14 Q11 P15 (W 99.71%, W 28.84, 63 visits)
+]TE[1]SBKV[1.17]
+;B[pd]C[Move 19
+
+* Win rate: W 74.25%
+* Score lead: W 4.27
+* Win rate drop: B ⇣-24.58%
+* Score drop: B ⇣-13.35
+* Visits: 1615
+* KataGo choice no. 7
+
+Bad moves left
+
+* Black bad moves: #26 ⇣34.04%
+* Black bad hot spots: #26 ⇣34.04%
+* White bad moves: #20 ⇣26.12%, #25 ⇣31.27%
+* White hot spots: #20 ⇣26.12%, #25 ⇣31.27%
+
+The proposed variations
+
+1. BR4 R16 Q3 Q5 R5 Q7 L4 M5 (W 98.91%, W 17.83, 114 visits)
+2. BQ3 Q4 R4 R5 S3 S4 R3 P4 S5 S6 T4 (W 98.87%, W 18.13, 145 visits)
+3. BQ4 R16 P3 O4 Q6 R8 L4 S6 (W 98.84%, W 17.66, 103 visits)
+4. BR3 R16 L4 Q6 P4 M4 (W 98.86%, W 17.74, 90 visits)
+5. BP4 R15 K6 Q3 P3 P2 (W 98.78%, W 17.23, 79 visits)
+6. BR16 R4 P17 R15 Q15 Q14 (W 98.62%, W 16.47, 75 visits)
+7. BQ16 R14 K6 R4 J17 (W 98.67%, W 16.21, 71 visits)
+8. BQ17 R15 K4 R4 P16 K16 (W 98.53%, W 15.87, 57 visits)
+9. BK4 R4 R16 P16 Q17 R15 S15 (W 98.83%, W 15.54, 52 visits)
+10. BR15 Q14 K6 R4 Q15 (W 98.65%, W 16.22, 50 visits)
+]TE[1]SBKV[25.75]
+(;W[pj]C[Move 20
+
+* Win rate: B 51.87%
+* Score lead: W 0.23
+* Win rate drop: W ⇣26.12%
+* Score drop: W ⇣4.05
+* Visits: 1615
+
+Bad moves left
+
+* Black bad moves: #26 ⇣34.04%
+* Black bad hot spots: #26 ⇣34.04%
+* White bad moves: #25 ⇣31.27%
+* White hot spots: #25 ⇣31.27%
+
+The proposed variations
+
+1. WR3 Q6 P4 P3 R5 Q4 Q5 P5 R6 R4 S4 Q3 P6 O5 Q7 R14 (W 74.93%, W 4.45, 692 visits)
+2. WR4 R14 L6 Q2 Q8 D17 C17 C18 E17 D18 F16 E18 E16 (W 74.21%, W 4.16, 476 visits)
+]BM[1]HO[1]SBKV[51.87]
+;W[pn]C[Move 21
+
+* Win rate: W 97.55%
+* Score lead: W 13.06
+* Win rate drop: W ⇣-49.43%
+* Score drop: W ⇣-12.83
+* Visits: 1615
+
+Bad moves left
+
+* Black bad moves: #26 ⇣34.04%
+* Black bad hot spots: #26 ⇣34.04%
+* White bad moves: #25 ⇣31.27%
+* White hot spots: #25 ⇣31.27%
+
+The proposed variations
+
+1. BR4 R14 Q13 K6 Q14 R17 Q17 R16 R13 S14 D17 C17 C18 E17 D18 E18 (B 52.15%, W 0.19, 1008 visits)
+2. BQ4 R14 Q13 K4 Q14 R17 (B 50.47%, W 0.39, 331 visits)
+]TE[1]SBKV[2.45]
+;W[po]C[Move 22
+
+* Win rate: W 99.44%
+* Score lead: W 22.95
+* Win rate drop: W ⇣-1.89%
+* Score drop: W ⇣-9.89
+* Visits: 1615
+
+Bad moves left
+
+* Black bad moves: #26 ⇣34.04%
+* Black bad hot spots: #26 ⇣34.04%
+* White bad moves: #25 ⇣31.27%
+* White hot spots: #25 ⇣31.27%
+
+The proposed variations
+
+1. WR4 R14 P10 P9 O9 O8 O10 (W 97.48%, W 12.83, 282 visits)
+2. WQ4 R14 P9 N9 Q9 R9 R8 (W 97.53%, W 13.01, 280 visits)
+3. WR3 P4 P3 R4 P10 P11 Q9 (W 97.85%, W 13.68, 95 visits)
+4. WQ3 R14 P9 N9 Q9 R9 R8 (W 97.93%, W 13.54, 77 visits)
+5. WP9 Q3 H4 K3 J4 J3 H6 L5 (W 97.90%, W 14.28, 54 visits)
+6. WD15 E15 Q4 R14 D17 E17 (W 97.94%, W 14.35, 48 visits)
+7. WP10 Q3 H4 K3 J4 J3 H6 (W 98.00%, W 14.54, 47 visits)
+8. WN7 K6 R4 R14 Q8 (W 98.26%, W 14.56, 38 visits)
+9. WO8 Q3 H4 K3 J4 K4 (W 98.11%, W 14.77, 38 visits)
+10. WL8 K6 R4 R14 D17 (W 98.30%, W 14.60, 37 visits)
+]TE[1]SBKV[0.56]
+;B[pq]C[Move 23
+
+* Win rate: W 99.44%
+* Score lead: W 22.50
+* Win rate drop: B ⇣-0.00%
+* Score drop: B ⇣-0.45
+* Visits: 1615
+* KataGo choice no. 2
+
+Bad moves left
+
+* Black bad moves: #26 ⇣34.04%
+* Black bad hot spots: #26 ⇣34.04%
+* White bad moves: #25 ⇣31.27%
+* White hot spots: #25 ⇣31.27%
+
+The proposed variations
+
+1. BR3 N4 N3 R14 P11 P10 (W 99.40%, W 22.40, 263 visits)
+2. BQ3 R3 R2 R4 S2 R14 P10 P11 (W 99.44%, W 22.62, 223 visits)
+3. BP10 Q3 H4 K3 J4 J3 (W 99.58%, W 25.84, 46 visits)
+4. BD15 E15 R3 R14 D17 C17 (W 99.51%, W 24.06, 58 visits)
+5. BL5 L3 R3 R14 H4 J5 (W 99.57%, W 23.53, 61 visits)
+6. BP9 Q3 H4 K3 J4 J3 (W 99.58%, W 25.79, 36 visits)
+7. BH4 J4 R3 R14 P10 P11 (W 99.54%, W 25.46, 32 visits)
+8. BK5 Q3 H4 J4 H5 J5 H6 K4 (W 99.62%, W 26.47, 25 visits)
+9. BL6 Q3 H4 K3 J4 J3 (W 99.57%, W 23.94, 47 visits)
+10. BM6 Q3 H4 K3 H5 G6 (W 99.58%, W 24.34, 43 visits)
+]TE[1]SBKV[0.56]
+;B[qh]C[Move 24
+
+* Win rate: W 95.06%
+* Score lead: W 10.01
+* Win rate drop: B ⇣-4.38%
+* Score drop: B ⇣-12.50
+* Visits: 1615
+
+Bad moves left
+
+* Black bad moves: #26 ⇣34.04%
+* Black bad hot spots: #26 ⇣34.04%
+* White bad moves: #25 ⇣31.27%
+* White hot spots: #25 ⇣31.27%
+
+The proposed variations
+
+1. WR3 R2 R4 S2 M3 R12 R17 H4 (W 99.48%, W 23.00, 133 visits)
+2. WR14 R4 R17 P10 P9 Q11 (W 99.42%, W 22.30, 119 visits)
+3. WR17 R16 Q17 O17 R3 R2 R4 S2 M3 (W 99.47%, W 22.12, 81 visits)
+4. WH17 R4 R14 P10 P11 (W 99.36%, W 22.25, 69 visits)
+5. WN4 O4 N5 O5 R3 (W 99.45%, W 22.67, 75 visits)
+6. WE17 F16 R3 R2 R4 P10 L3 (W 99.42%, W 22.65, 70 visits)
+7. WP4 P3 R4 R3 R14 P10 (W 99.45%, W 22.80, 66 visits)
+8. WM3 R4 R14 P9 P10 N9 (W 99.41%, W 22.13, 58 visits)
+9. WR16 R17 R15 Q17 Q13 P10 (W 99.50%, W 22.17, 59 visits)
+10. WL17 R4 R14 P11 P10 (W 99.35%, W 22.03, 60 visits)
+]TE[1]SBKV[4.94]
+(;W[qn]C[Move 25
+
+* Win rate: W 63.79%
+* Score lead: W 2.45
+* Win rate drop: W ⇣31.27%
+* Score drop: W ⇣7.55
+* Visits: 1615
+
+Bad moves left
+
+* Black bad moves: #26 ⇣34.04%
+* Black bad hot spots: #26 ⇣34.04%
+
+The proposed variations
+
+1. BK6 R4 H17 D17 C17 C18 B17 E16 D18 (W 95.62%, W 10.14, 108 visits)
+2. BJ7 R4 H17 Q8 R17 R16 Q17 (W 95.35%, W 10.14, 88 visits)
+3. BK5 R4 H17 D17 C17 C18 E16 E17 F16 (W 95.29%, W 9.77, 79 visits)
+4. BK7 R4 H17 D17 C17 C18 E16 E17 F16 (W 95.37%, W 9.94, 79 visits)
+5. BL3 R4 H17 D17 C17 C18 E16 E17 F16 (W 94.82%, W 9.98, 76 visits)
+6. BK4 R4 H17 Q8 L17 O8 N5 (W 95.15%, W 9.60, 76 visits)
+7. BR3 R2 R4 H4 K3 J4 J3 H6 M3 S2 F7 (W 94.55%, W 10.53, 69 visits)
+8. BL4 R4 H17 H4 J5 J4 K4 J3 (W 94.14%, W 9.91, 58 visits)
+9. BN11 R4 H17 D17 C17 C18 E16 E17 F16 (W 94.93%, W 10.25, 63 visits)
+10. BL6 R4 H17 D17 C17 C18 E16 E17 F16 (W 95.28%, W 9.97, 68 visits)
+]BM[1]HO[1]SBKV[36.21]
+(;B[qo]C[Move 26
+
+* Win rate: W 97.83%
+* Score lead: W 13.96
+* Win rate drop: B ⇣34.04%
+* Score drop: B ⇣11.51
+* Visits: 1615
+
+The proposed variations
+
+1. WH4 K3 J4 L2 J6 H6 J7 K4 K5 J3 J5 (W 63.78%, W 2.45, 1533 visits)
+2. WD17 C17 C18 E17 (W 76.54%, W 4.50, 5 visits)
+3. WD13 E17 H4 (W 75.16%, W 4.24, 6 visits)
+4. WD15 C15 H4 K3 (W 73.39%, W 4.12, 6 visits)
+5. WR4 K6 D17 (W 76.68%, W 4.11, 5 visits)
+6. WP10 P11 Q9 (W 77.39%, W 5.13, 4 visits)
+7. WC17 D17 D18 (W 76.60%, W 4.76, 4 visits)
+8. WF15 L3 (W 78.96%, W 4.65, 2 visits)
+9. WD18 S3 (W 77.88%, W 4.47, 2 visits)
+10. WP8 O9 (W 79.45%, W 5.20, 2 visits)
+]BM[1]HO[1]SBKV[2.17]
+;B[qp]C[Move 27
+
+* Win rate: B 52.88%
+* Score lead: W 0.14
+* Win rate drop: B ⇣-50.71%
+* Score drop: B ⇣-13.82
+* Visits: 1615
+* KataGo choice no. 8
+
+The proposed variations
+
+1. BR3 R2 Q4 S3 R4 P2 J7 H6 K4 D17 (W 97.84%, W 14.34, 193 visits)
+2. BN3 O4 R3 R2 Q4 S3 R4 P2 (W 97.65%, W 13.67, 74 visits)
+3. BL3 R4 H17 D17 C17 C18 E16 E17 (W 98.09%, W 13.48, 75 visits)
+4. BP11 R4 H17 R9 Q9 R10 (W 97.86%, W 13.36, 68 visits)
+5. BO11 R4 H17 D17 C17 C18 (W 97.98%, W 13.64, 57 visits)
+6. BK6 R4 H17 D17 C17 C18 E16 E17 (W 98.16%, W 13.27, 66 visits)
+7. BR17 H4 K3 J4 R16 H6 R3 (W 97.81%, W 13.64, 64 visits)
+8. BR4 H4 K3 J4 L2 R3 H6 (W 97.32%, W 13.00, 48 visits)
+9. BK5 R4 H17 D17 C17 C18 B17 (W 98.08%, W 13.08, 58 visits)
+10. BJ7 R4 R14 P11 R17 (W 98.13%, W 13.22, 61 visits)
+]TE[1]SBKV[52.88])(;W[hp]C[A variation of move 26
+
+* Win rate: W 63.78%
+* Score lead: W 2.45
+* Win rate drop: W ⇣0.01%
+* Score drop: W ⇣0.00
+* Visits: 1533
+* Sequence: WH4 K3 J4 L2 J6 H6 J7 K4 K5 J3 J5
+]TE[1]SBKV[36.22];B[jq];W[ip];B[kr];W[in];B[hn];W[im];B[jp];W[jo];B[iq];W[io])(;W[dc]C[A variation of move 26
+
+* Win rate: W 76.54%
+* Score lead: W 4.50
+* Win rate drop: W ⇣-12.75%
+* Score drop: W ⇣-2.05
+* Visits: 5
+* Sequence: WD17 C17 C18 E17
+]TE[1]SBKV[23.46];B[cc];W[cb];B[ec])(;W[dg]C[A variation of move 26
+
+* Win rate: W 75.16%
+* Score lead: W 4.24
+* Win rate drop: W ⇣-11.37%
+* Score drop: W ⇣-1.79
+* Visits: 6
+* Sequence: WD13 E17 H4
+]TE[1]SBKV[24.84];B[ec];W[hp])(;W[de]C[A variation of move 26
+
+* Win rate: W 73.39%
+* Score lead: W 4.12
+* Win rate drop: W ⇣-9.60%
+* Score drop: W ⇣-1.67
+* Visits: 6
+* Sequence: WD15 C15 H4 K3
+]TE[1]SBKV[26.61];B[ce];W[hp];B[jq])(;W[qp]C[A variation of move 26
+
+* Win rate: W 76.68%
+* Score lead: W 4.11
+* Win rate drop: W ⇣-12.89%
+* Score drop: W ⇣-1.65
+* Visits: 5
+* Sequence: WR4 K6 D17
+]TE[1]SBKV[23.32];B[jn];W[dc])(;W[oj]C[A variation of move 26
+
+* Win rate: W 77.39%
+* Score lead: W 5.13
+* Win rate drop: W ⇣-13.61%
+* Score drop: W ⇣-2.67
+* Visits: 4
+* Sequence: WP10 P11 Q9
+]TE[1]SBKV[22.61];B[oi];W[pk])(;W[cc]C[A variation of move 26
+
+* Win rate: W 76.60%
+* Score lead: W 4.76
+* Win rate drop: W ⇣-12.81%
+* Score drop: W ⇣-2.30
+* Visits: 4
+* Sequence: WC17 D17 D18
+]TE[1]SBKV[23.40];B[dc];W[db])(;W[fe]C[A variation of move 26
+
+* Win rate: W 78.96%
+* Score lead: W 4.65
+* Win rate drop: W ⇣-15.17%
+* Score drop: W ⇣-2.19
+* Visits: 2
+* Sequence: WF15 L3
+]TE[1]SBKV[21.04];B[kq])(;W[db]C[A variation of move 26
+
+* Win rate: W 77.88%
+* Score lead: W 4.47
+* Win rate drop: W ⇣-14.10%
+* Score drop: W ⇣-2.02
+* Visits: 2
+* Sequence: WD18 S3
+]TE[1]SBKV[22.12];B[rq])(;W[ol]C[A variation of move 26
+
+* Win rate: W 79.45%
+* Score lead: W 5.20
+* Win rate drop: W ⇣-15.66%
+* Score drop: W ⇣-2.75
+* Visits: 2
+* Sequence: WP8 O9
+]TE[1]SBKV[20.55];B[nk]))(;B[jn]C[A variation of move 25
+
+* Win rate: W 95.62%
+* Score lead: W 10.14
+* Win rate drop: B ⇣0.56%
+* Score drop: B ⇣0.13
+* Visits: 108
+* Sequence: BK6 R4 H17 D17 C17 C18 B17 E16 D18
+]TE[1]SBKV[4.38];W[qp];B[hc];W[dc];B[cc];W[cb];B[bc];W[ed];B[db])(;B[im]C[A variation of move 25
+
+* Win rate: W 95.35%
+* Score lead: W 10.14
+* Win rate drop: B ⇣0.28%
+* Score drop: B ⇣0.13
+* Visits: 88
+* Sequence: BJ7 R4 H17 Q8 R17 R16 Q17
+]TE[1]SBKV[4.65];W[qp];B[hc];W[pl];B[qc];W[qd];B[pc])(;B[jo]C[A variation of move 25
+
+* Win rate: W 95.29%
+* Score lead: W 9.77
+* Win rate drop: B ⇣0.23%
+* Score drop: B ⇣-0.24
+* Visits: 79
+* Sequence: BK5 R4 H17 D17 C17 C18 E16 E17 F16
+]TE[1]SBKV[4.71];W[qp];B[hc];W[dc];B[cc];W[cb];B[ed];W[ec];B[fd])(;B[jm]C[A variation of move 25
+
+* Win rate: W 95.37%
+* Score lead: W 9.94
+* Win rate drop: B ⇣0.31%
+* Score drop: B ⇣-0.07
+* Visits: 79
+* Sequence: BK7 R4 H17 D17 C17 C18 E16 E17 F16
+]TE[1]SBKV[4.63];W[qp];B[hc];W[dc];B[cc];W[cb];B[ed];W[ec];B[fd])(;B[kq]C[A variation of move 25
+
+* Win rate: W 94.82%
+* Score lead: W 9.98
+* Win rate drop: B ⇣-0.24%
+* Score drop: B ⇣-0.03
+* Visits: 76
+* Sequence: BL3 R4 H17 D17 C17 C18 E16 E17 F16
+]TE[1]SBKV[5.18];W[qp];B[hc];W[dc];B[cc];W[cb];B[ed];W[ec];B[fd])(;B[jp]C[A variation of move 25
+
+* Win rate: W 95.15%
+* Score lead: W 9.60
+* Win rate drop: B ⇣0.09%
+* Score drop: B ⇣-0.40
+* Visits: 76
+* Sequence: BK4 R4 H17 Q8 L17 O8 N5
+]TE[1]SBKV[4.85];W[qp];B[hc];W[pl];B[kc];W[nl];B[mo])(;B[qq]C[A variation of move 25
+
+* Win rate: W 94.55%
+* Score lead: W 10.53
+* Win rate drop: B ⇣-0.51%
+* Score drop: B ⇣0.52
+* Visits: 69
+* Sequence: BR3 R2 R4 H4 K3 J4 J3 H6 M3 S2 F7
+]TE[1]SBKV[5.45];W[qr];B[qp];W[hp];B[jq];W[ip];B[iq];W[hn];B[lq];W[rr];B[fm])(;B[kp]C[A variation of move 25
+
+* Win rate: W 94.14%
+* Score lead: W 9.91
+* Win rate drop: B ⇣-0.93%
+* Score drop: B ⇣-0.10
+* Visits: 58
+* Sequence: BL4 R4 H17 H4 J5 J4 K4 J3
+]TE[1]SBKV[5.86];W[qp];B[hc];W[hp];B[io];W[ip];B[jp];W[iq])(;B[mi]C[A variation of move 25
+
+* Win rate: W 94.93%
+* Score lead: W 10.25
+* Win rate drop: B ⇣-0.14%
+* Score drop: B ⇣0.25
+* Visits: 63
+* Sequence: BN11 R4 H17 D17 C17 C18 E16 E17 F16
+]TE[1]SBKV[5.07];W[qp];B[hc];W[dc];B[cc];W[cb];B[ed];W[ec];B[fd])(;B[kn]C[A variation of move 25
+
+* Win rate: W 95.28%
+* Score lead: W 9.97
+* Win rate drop: B ⇣0.22%
+* Score drop: B ⇣-0.04
+* Visits: 68
+* Sequence: BL6 R4 H17 D17 C17 C18 E16 E17 F16
+]TE[1]SBKV[4.72];W[qp];B[hc];W[dc];B[cc];W[cb];B[ed];W[ec];B[fd]))(;W[qq]C[A variation of move 20
+
+* Win rate: W 74.93%
+* Score lead: W 4.45
+* Win rate drop: W ⇣-0.68%
+* Score drop: W ⇣-0.18
+* Visits: 692
+* Sequence: WR3 Q6 P4 P3 R5 Q4 Q5 P5 R6 R4 S4 Q3 P6 O5 Q7 R14
+]TE[1]SBKV[25.07];B[pn];W[op];B[oq];W[qo];B[pp];W[po];B[oo];W[qn];B[qp];W[rp];B[pq];W[on];B[no];W[pm];B[qf])(;W[qp]C[A variation of move 20
+
+* Win rate: W 74.21%
+* Score lead: W 4.16
+* Win rate drop: W ⇣0.04%
+* Score drop: W ⇣0.11
+* Visits: 476
+* Sequence: WR4 R14 L6 Q2 Q8 D17 C17 C18 E17 D18 F16 E18 E16
+]TE[1]SBKV[25.79];B[qf];W[kn];B[pr];W[pl];B[dc];W[cc];B[cb];W[ec];B[db];W[fd];B[eb];W[ed]))(;W[pp]C[A variation of move 2
+
+* Win rate: W 63.65%
+* Score lead: W 2.38
+* Win rate drop: W ⇣-0.44%
+* Score drop: W ⇣-0.05
+* Visits: 220
+* Sequence: WQ4 D16 Q16 E4 C17 C16 D17 E16 F17 R3 R4
+]TE[1]SBKV[36.35];B[dd];W[pd];B[ep];W[cc];B[cd];W[dc];B[ed];W[fc];B[qq];W[qp])(;W[pd]C[A variation of move 2
+
+* Win rate: W 63.05%
+* Score lead: W 2.29
+* Win rate drop: W ⇣0.16%
+* Score drop: W ⇣0.04
+* Visits: 243
+* Sequence: WQ16 E4 Q4 D16 C17 C16 D17 E16 F17 R3 R4
+]TE[1]SBKV[36.95];B[ep];W[pp];B[dd];W[cc];B[cd];W[dc];B[ed];W[fc];B[qq];W[qp])(;W[dd]C[A variation of move 2
+
+* Win rate: W 63.02%
+* Score lead: W 2.31
+* Win rate drop: W ⇣0.18%
+* Score drop: W ⇣0.02
+* Visits: 182
+* Sequence: WD16 R4 R16 P4 C4 C3 E4 D4
+]TE[1]SBKV[36.98];B[qp];W[qd];B[op];W[cp];B[cq];W[ep];B[dp])(;W[cd]C[A variation of move 2
+
+* Win rate: W 63.42%
+* Score lead: W 2.37
+* Win rate drop: W ⇣-0.21%
+* Score drop: W ⇣-0.04
+* Visits: 171
+* Sequence: WC16 Q4 Q16 E17 G16 E15 D14
+]TE[1]SBKV[36.58];B[pp];W[pd];B[ec];W[gd];B[ee];W[df])(;W[pq]C[A variation of move 2
+
+* Win rate: W 63.32%
+* Score lead: W 2.34
+* Win rate drop: W ⇣-0.11%
+* Score drop: W ⇣-0.02
+* Visits: 150
+* Sequence: WQ3 D16 Q16 E4 C17 D17 C16 C14 B14 C13
+]TE[1]SBKV[36.68];B[dd];W[pd];B[ep];W[cc];B[dc];W[cd];B[cf];W[bf];B[cg])(;W[qp]C[A variation of move 2
+
+* Win rate: W 63.03%
+* Score lead: W 2.33
+* Win rate drop: W ⇣0.17%
+* Score drop: W ⇣0.00
+* Visits: 119
+* Sequence: WR4 D16 Q16 P3 Q5 E4 C17 C16 D17
+]TE[1]SBKV[36.97];B[dd];W[pd];B[oq];W[po];B[ep];W[cc];B[cd];W[dc])(;W[dc]C[A variation of move 2
+
+* Win rate: W 63.18%
+* Score lead: W 2.36
+* Win rate drop: W ⇣0.03%
+* Score drop: W ⇣-0.03
+* Visits: 114
+* Sequence: WD17 Q4 Q16 C15 E16 R17 R16 Q17
+]TE[1]SBKV[36.82];B[pp];W[pd];B[ce];W[ed];B[qc];W[qd];B[pc])(;W[qd]C[A variation of move 2
+
+* Win rate: W 62.81%
+* Score lead: W 2.28
+* Win rate drop: W ⇣0.39%
+* Score drop: W ⇣0.05
+* Visits: 121
+* Sequence: WR16 D16 Q4 P17 Q15 E4 C17 C16
+]TE[1]SBKV[37.19];B[dd];W[pp];B[oc];W[pe];B[ep];W[cc];B[cd])(;W[pc]C[A variation of move 2
+
+* Win rate: W 62.59%
+* Score lead: W 2.24
+* Win rate drop: W ⇣0.61%
+* Score drop: W ⇣0.09
+* Visits: 105
+* Sequence: WQ17 Q4 D16 R15 R3 Q3 R4 R6
+]TE[1]SBKV[37.41];B[pp];W[dd];B[qe];W[qq];B[pq];W[qp];B[qn])(;W[qq]C[A variation of move 2
+
+* Win rate: W 61.83%
+* Score lead: W 2.14
+* Win rate drop: W ⇣1.38%
+* Score drop: W ⇣0.19
+* Visits: 56
+* Sequence: WR3 D17 Q16 E4 D15 C15 C14
+]TE[1]SBKV[38.17];B[dc];W[pd];B[ep];W[de];B[ce];W[cf]))(;B[pp]C[A variation of move 1
+
+* Win rate: B 56.29%
+* Score lead: B 0.29
+* Win rate drop: B ⇣-0.07%
+* Score drop: B ⇣-0.01
+* Visits: 651
+* Sequence: BQ4 D16 D4 Q16 C17 C16 D17 E16 F18 R3 Q3
+]TE[1]SBKV[56.29];W[dd];B[dp];W[pd];B[cc];W[cd];B[dc];W[ed];B[fb];W[qq];B[pq])(;B[pd]C[A variation of move 1
+
+* Win rate: B 56.29%
+* Score lead: B 0.29
+* Win rate drop: B ⇣-0.07%
+* Score drop: B ⇣-0.01
+* Visits: 651
+* Sequence: BQ16 D4 D16 Q4 C3 C4 D3 E4 F2 R17 Q17
+]TE[1]SBKV[56.29];W[dp];B[dd];W[pp];B[cq];W[cp];B[dq];W[ep];B[fr];W[qc];B[pc])(;B[dp]C[A variation of move 1
+
+* Win rate: B 56.29%
+* Score lead: B 0.29
+* Win rate drop: B ⇣-0.07%
+* Score drop: B ⇣-0.01
+* Visits: 651
+* Sequence: BD4 Q16 Q4 D16 R17 R16 Q17 P16 O18 C3 D3
+]TE[1]SBKV[56.29];W[pd];B[pp];W[dd];B[qc];W[qd];B[pc];W[od];B[nb];W[cq];B[dq])(;B[dd]C[A variation of move 1
+
+* Win rate: B 56.29%
+* Score lead: B 0.29
+* Win rate drop: B ⇣-0.07%
+* Score drop: B ⇣-0.01
+* Visits: 651
+* Sequence: BD16 Q4 Q16 D4 R3 R4 Q3 P4 O2 C17 D17
+]TE[1]SBKV[56.29];W[pp];B[pd];W[dp];B[qq];W[qp];B[pq];W[op];B[nr];W[cc];B[dc])(;B[qp]C[A variation of move 1
+
+* Win rate: B 55.31%
+* Score lead: B 0.19
+* Win rate drop: B ⇣0.90%
+* Score drop: B ⇣0.09
+* Visits: 302
+* Sequence: BR4 D4 D16 Q16 C3 D3 C4 C6 C5 D5 B6 P3
+]TE[1]SBKV[55.31];W[dp];B[dd];W[pd];B[cq];W[dq];B[cp];W[cn];B[co];W[do];B[bn];W[oq])(;B[qd]C[A variation of move 1
+
+* Win rate: B 55.31%
+* Score lead: B 0.19
+* Win rate drop: B ⇣0.90%
+* Score drop: B ⇣0.09
+* Visits: 302
+* Sequence: BR16 D16 D4 Q4 C17 D17 C16 C14 C15 D15 B14 P17
+]TE[1]SBKV[55.31];W[dd];B[dp];W[pp];B[cc];W[dc];B[cd];W[cf];B[ce];W[de];B[bf];W[oc])(;B[cp]C[A variation of move 1
+
+* Win rate: B 55.31%
+* Score lead: B 0.19
+* Win rate drop: B ⇣0.90%
+* Score drop: B ⇣0.09
+* Visits: 302
+* Sequence: BC4 Q4 Q16 D16 R3 Q3 R4 R6 R5 Q5 S6 E3
+]TE[1]SBKV[55.31];W[pp];B[pd];W[dd];B[qq];W[pq];B[qp];W[qn];B[qo];W[po];B[rn];W[eq])(;B[cd]C[A variation of move 1
+
+* Win rate: B 55.31%
+* Score lead: B 0.19
+* Win rate drop: B ⇣0.90%
+* Score drop: B ⇣0.09
+* Visits: 302
+* Sequence: BC16 Q16 Q4 D4 R17 Q17 R16 R14 R15 Q15 S14 E17
+]TE[1]SBKV[55.31];W[pd];B[pp];W[dp];B[qc];W[pc];B[qd];W[qf];B[qe];W[pe];B[rf];W[ec])(;B[dc]C[A variation of move 1
+
+* Win rate: B 55.31%
+* Score lead: B 0.19
+* Win rate drop: B ⇣0.90%
+* Score drop: B ⇣0.09
+* Visits: 302
+* Sequence: BD17 D4 Q4 Q16 C3 C4 D3 F3 E3 E4 F2 C15
+]TE[1]SBKV[55.31];W[dp];B[pp];W[pd];B[cq];W[cp];B[dq];W[fq];B[eq];W[ep];B[fr];W[ce])(;B[pc]C[A variation of move 1
+
+* Win rate: B 55.31%
+* Score lead: B 0.19
+* Win rate drop: B ⇣0.90%
+* Score drop: B ⇣0.09
+* Visits: 302
+* Sequence: BQ17 Q4 D4 D16 R3 R4 Q3 O3 P3 P4 O2 R15
+]TE[1]SBKV[55.31];W[pp];B[dp];W[dd];B[qq];W[qp];B[pq];W[nq];B[oq];W[op];B[nr];W[qe]))

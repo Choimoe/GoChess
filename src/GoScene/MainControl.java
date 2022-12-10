@@ -80,6 +80,8 @@ public class MainControl extends Application {
 
     public void display() {
         launch();
+
+        System.out.println("[DEBUG] display() end.");
     }
 
     public void clean() {

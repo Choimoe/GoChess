@@ -27,6 +27,7 @@ class InputThread extends IOThread {
         int count = 0;
         for (File file : files) {
             try {
+                if (file.isDirectory()) continue;
                 BufferedReader br = new BufferedReader(new FileReader(file));
                 StringBuilder sb = new StringBuilder();
                 String line;
@@ -134,5 +135,9 @@ public class InputData {
         input = new InputThread("Input Thread");
         input.setFileList(fileList);
         input.beginThread(data);
+    }
+
+    public void release() {
+        input = null;
     }
 }

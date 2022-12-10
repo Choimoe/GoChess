@@ -148,8 +148,8 @@ public class GoMain implements Serializable {
         if (matcherCounter.find()) steps        = Integer.parseInt(matcherCounter.group(1));
         if (matcherPlayer .find()) currentUser  = Integer.parseInt(matcherPlayer .group(1));
 
-        System.out.println("[DEBUG] matcherCounter: " + matcherCounter.group() + " -> " + steps      );
-        System.out.println("[DEBUG] matcherPlayer : " + matcherPlayer .group() + " -> " + currentUser);
+//        System.out.println("[DEBUG] matcherCounter: " + matcherCounter.group() + " -> " + steps      );
+//        System.out.println("[DEBUG] matcherPlayer : " + matcherPlayer .group() + " -> " + currentUser);
 
         int curStep = 0;
         while (matcherPiece.find()) {
@@ -157,6 +157,8 @@ public class GoMain implements Serializable {
 
             int x = match.charAt(2) - 'a';
             int y = match.charAt(3) - 'a';
+
+            System.out.println("[DEBUG] matcherPiece  : " + match + " -> " + x + ", " + y + " | color : " + match.charAt(0));
 
             if (match.charAt(0) == 'B') {
                 if ((curStep & 1) == 1) curStep++; goMap[x][y] = ++curStep;
@@ -177,14 +179,14 @@ public class GoMain implements Serializable {
         result.append("CT[").append(steps       ).append("]");
         result.append("CU[").append(currentUser ).append("]");
 
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                if (goMap[i][j] == WAIT_BEGIN) continue;
-                String pos = (char)((int)'a' + i) + "" + (char)((int)'a' + j);
-                if ((goMap[i][j] & 1) == 1) result.append('B');
-                else result.append('W');
-                result.append('[').append(pos).append(']');
-            }
+        for (int index = 0; index <= steps; index++) {
+            GoStep step = goSteps.get(index);
+            if (step == null || step == deletedStep || step.getX() == WAIT_BEGIN) continue;
+            result.append(';');
+            String pos = (char)((int)'a' + step.getX()) + "" + (char)((int)'a' + step.getY());
+            if ((index & 1) == 1) result.append('B');
+            else result.append('W');
+            result.append('[').append(pos).append(']');
         }
 
         result.append(')');

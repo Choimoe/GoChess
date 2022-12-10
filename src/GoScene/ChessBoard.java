@@ -248,7 +248,7 @@ public class ChessBoard implements Serializable {
 
             int boardPosX = step.getX(), boardPosY = step.getY(), player = 2 - (step.getPlayer() & 1);
 
-            System.out.println("[DEBUG] Recover: " + boardPosX + " " + boardPosY + " " + player);
+//            System.out.println("[DEBUG] Recover: " + boardPosX + " " + boardPosY + " " + player);
             ImageView newPiece = newPieceImage(player, boardPosX, boardPosY);
             pieceList[goGame.getPosStep(boardPosX, boardPosY)] = newPiece;
             pane.getChildren().add(newPiece);
