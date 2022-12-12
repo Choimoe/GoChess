@@ -9,6 +9,5 @@ public class Main {
         MainControl GUI = new MainControl();
         GUI.display();
         GUI.clean();
-        System.out.println("[DEBUG] Main Function Ended.");
     }
 }
