@@ -21,9 +21,15 @@ public abstract class IOThread extends Thread {
     }
 
     public void reStartRead() {
-        synchronized (this) {
-            this.notify();
-            additionAction();
+        try {
+            synchronized (this) {
+                this.notify();
+                additionAction();
+                this.wait();
+            }
+        } catch (InterruptedException e) {
+            System.out.println("[ERROR] Cannot restart thread to start read saves.");
+            e.printStackTrace();
         }
     }
 
@@ -42,6 +48,10 @@ public abstract class IOThread extends Thread {
             System.out.println("[ERROR] Thread " + this.getName() + " interrupted.");
         }
 //        System.out.println("[DEBUG] Finished Input File");
+    }
+
+    public void clean() {
+        this.interrupt();
     }
 
     public abstract void ioAction();

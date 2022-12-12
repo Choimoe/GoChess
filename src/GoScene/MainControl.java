@@ -45,7 +45,10 @@ public class MainControl extends Application {
         ButtonPages startPage   = pages[1];
         ButtonPages chessBoard  = pages[2];
 
-        homePage.button[2].button.setOnAction((ActionEvent e) -> stage.close());
+        homePage.button[2].button.setOnAction((ActionEvent e) -> {
+            fileData.release();
+            stage.close();
+        });
 
         homePage.setButtonJump      (stage, 0, startPage .getScene());
         startPage.setButtonJump     (stage, 2, homePage  .getScene());

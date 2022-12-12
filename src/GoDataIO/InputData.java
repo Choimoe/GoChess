@@ -138,6 +138,6 @@ public class InputData {
     }
 
     public void release() {
-        input = null;
+        input.clean();
     }
 }

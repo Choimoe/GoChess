@@ -97,6 +97,14 @@ public class GoMain implements Serializable {
     }
 
     /**
+     * recoverPutPiece: put the piece in history
+     * @param step: step in history
+     */
+    public void recoverPutPiece(GoStep step) {
+        putPiece(step.getX(), step.getY());
+    }
+
+    /**
      * clear the chess game
      *  - set the user to WAIT_BEGIN
      *  - set the goMap to WAIT_BEGIN
@@ -134,42 +142,44 @@ public class GoMain implements Serializable {
         changePlayer();
     }
 
-    @SuppressWarnings("RegExpRedundantEscape")
     public void recover(String data) {
         clear();
-        Pattern patCounter      = Pattern.compile("CT\\[(\\d+)\\]");
-        Pattern patPlayer       = Pattern.compile("CU\\[(\\d+)\\]");
-        Pattern patPiece        = Pattern.compile("(B|W)\\[([a-z]{2})\\]");
+        Pattern patCounter      = Pattern.compile("CT\\[(\\d+)]");
+        Pattern patPlayer       = Pattern.compile("CU\\[(\\d+)]");
+        Pattern patPiece        = Pattern.compile("([BW])\\[([a-z]{2})]");
 
         Matcher matcherCounter  = patCounter.matcher(data);
         Matcher matcherPlayer   = patPlayer.matcher (data);
         Matcher matcherPiece    = patPiece.matcher  (data);
 
-        if (matcherCounter.find()) steps        = Integer.parseInt(matcherCounter.group(1));
+        int finalStep = 0;
+        if (matcherCounter.find()) finalStep    = Integer.parseInt(matcherCounter.group(1));
         if (matcherPlayer .find()) currentUser  = Integer.parseInt(matcherPlayer .group(1));
 
-//        System.out.println("[DEBUG] matcherCounter: " + matcherCounter.group() + " -> " + steps      );
-//        System.out.println("[DEBUG] matcherPlayer : " + matcherPlayer .group() + " -> " + currentUser);
-
-        int curStep = 0;
+        int lastPlayer = WAIT_BEGIN;
         while (matcherPiece.find()) {
             String match        = matcherPiece.group();
 
             int x = match.charAt(2) - 'a';
             int y = match.charAt(3) - 'a';
-
-            System.out.println("[DEBUG] matcherPiece  : " + match + " -> " + x + ", " + y + " | color : " + match.charAt(0));
-
-            if (match.charAt(0) == 'B') {
-                if ((curStep & 1) == 1) curStep++; goMap[x][y] = ++curStep;
-                goSteps.set(curStep, new GoStep(x, y, BLACK_PLAYER));
-            } else {
-                if ((curStep & 1) == 0) curStep++; goMap[x][y] = ++curStep;
-                goSteps.set(curStep, new GoStep(x, y, WHITE_PLAYER));
+            char player;
+            switch (match.charAt(0)) {
+                case 'B' -> player = BLACK_PLAYER;
+                case 'W' -> player = WHITE_PLAYER;
+                default  -> player = WAIT_BEGIN;
             }
+
+            if (player == lastPlayer) skipTurn();
+            lastPlayer = player;
+
+            recoverPutPiece(new GoStep(x, y, player));
+
+//            System.out.println("[DEBUG] matcherPiece  : " + match + " -> " + x + ", " + y + " | color : " + match.charAt(0));
         }
 
-        if (curStep > steps) steps = 2 * curStep + currentUser;
+        if (finalStep != steps) {
+            System.out.println("[ERROR] recover failed, steps : " + steps + " != " + finalStep);
+        }
     }
 
     @Override
@@ -181,7 +191,7 @@ public class GoMain implements Serializable {
 
         for (int index = 0; index <= steps; index++) {
             GoStep step = goSteps.get(index);
-            if (step == null || step == deletedStep || step.getX() == WAIT_BEGIN) continue;
+            if (step == null || step == deletedStep || step.getX() == -1) continue;
             result.append(';');
             String pos = (char)((int)'a' + step.getX()) + "" + (char)((int)'a' + step.getY());
             if ((index & 1) == 1) result.append('B');
