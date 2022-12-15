@@ -177,9 +177,9 @@ public class GoMain implements Serializable {
 //            System.out.println("[DEBUG] matcherPiece  : " + match + " -> " + x + ", " + y + " | color : " + match.charAt(0));
         }
 
-        if (finalStep != steps) {
-            System.out.println("[ERROR] recover failed, steps : " + steps + " != " + finalStep);
-        }
+//        if (finalStep != steps) {
+//            System.out.println("[ERROR] recover failed, steps : " + steps + " != " + finalStep);
+//        }
     }
 
     @Override

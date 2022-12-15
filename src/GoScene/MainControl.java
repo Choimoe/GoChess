@@ -19,6 +19,8 @@ public class MainControl extends Application {
 
     ButtonPages[] pages = new ButtonPages[PAGE_NUMBER];
 
+    int gameCount = 0;
+
     /**
      * initialize the style:
      *  - title: "Go"
@@ -61,8 +63,12 @@ public class MainControl extends Application {
             chessBoard.createClient();
             clientThread = new Thread(() -> client.run());
             clientThread.start();
+            if (gameCount++ > 0) client.request("gameStart");
         });
-        chessBoard.setButtonJump    (stage, 4, startPage .getScene(), chessBoard::clear);
+        chessBoard.setButtonJump    (stage, 4, startPage .getScene(), () -> {
+            chessBoard.clear();
+            client.request("exit");
+        });
     }
 
     Scene getMainScene() {

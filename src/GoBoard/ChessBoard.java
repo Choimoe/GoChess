@@ -55,6 +55,7 @@ public class ChessBoard implements Serializable, Runnable{
 
     public Pane getPane() { return pane; }
     public int getPlayer() { return goGame.getCurrentPlayer(); }
+    public void addRequest(int requestID) { this.requestID.add(requestID); }
 
     /**
      * loadImage: load the piece and board image.
@@ -138,8 +139,10 @@ public class ChessBoard implements Serializable, Runnable{
         pieceWaitDisplay = pieceWait[goGame.getCurrentPlayer()];
         pieceWaitDisplay.setVisible(false);
 
-        pane.getChildren().add(boardImageView);
-        pane.getChildren().add(pieceWaitDisplay);
+        runLater(() -> {
+            pane.getChildren().add(boardImageView);
+            pane.getChildren().add(pieceWaitDisplay);
+        });
 
         boardImageView.setPreserveRatio(true);
 
@@ -227,7 +230,7 @@ public class ChessBoard implements Serializable, Runnable{
      * recoverPieces: recover all the piece from steps array(GoStep[]) and display them
      */
     public void recoverPieces(String goGameData) {
-        pane.getChildren().clear();
+        runLater(() -> pane.getChildren().clear());
         setPane();
         pieceCount = 0;
         goGame.recover(goGameData);
@@ -241,7 +244,7 @@ public class ChessBoard implements Serializable, Runnable{
 //            System.out.println("[DEBUG] Recover: " + boardPosX + " " + boardPosY + " " + player);
             ImageView newPiece = newPieceImage(player, boardPosX, boardPosY);
             pieceList[goGame.getPosStep(boardPosX, boardPosY)] = newPiece;
-            pane.getChildren().add(newPiece);
+            runLater(() -> pane.getChildren().add(newPiece));
         }
 
         pieceCount = goGame.getSteps();
@@ -325,6 +328,41 @@ public class ChessBoard implements Serializable, Runnable{
         isRunning = false;
     }
 
+    private void processResponse(String response) {
+        if (response == null) return;
+        requestID.remove();
+
+        char opt = response.charAt(0);
+        char status = response.charAt(1);
+        String data = response.substring(2);
+
+        switch (opt) {
+            case 'h' -> {
+                // data: HashCode
+            }
+            case 'p' -> putPieceFromResponse(status, data);
+            case 's' -> {
+                if (status == 'F') break;
+                skipTurn();
+            }
+            case 'l' -> {}
+            case 'r' -> recoverFromResponse(status, data);
+        }
+    }
+
+    private void putPieceFromResponse(char status, String data) {
+        if (status == 'F') return;
+        String[] pos = data.split(",");
+        int x = Integer.parseInt(pos[0]), y = Integer.parseInt(pos[1]);
+        setPieceDisplay(x, y);
+    }
+
+    public void recoverFromResponse(char status, String data) {
+        if (status == 'F') return;
+        System.out.println("[DEBUG] Client: Recover from server");
+        recoverPieces(data);
+    }
+
     @Override
     public String toString() {
         return goGame.toString();
@@ -332,32 +370,18 @@ public class ChessBoard implements Serializable, Runnable{
 
     @Override
     public void run() {
+        String response;
         while (isRunning) {
             System.out.print("");
             if (requestID.isEmpty()) continue;
-            String response = client.getResponse(requestID.element());
+            response = client.getResponse(requestID.element());
             if (response == null) continue;
-            requestID.remove();
-
-            char opt = response.charAt(0);
-            char status = response.charAt(1);
-            String data = response.substring(2);
-
-            switch (opt) {
-                case 'h' -> {
-                    // data: HashCode
-                }
-                case 'p' -> {
-                    if (status == 'F') break;
-                    String[] pos = data.split(",");
-                    int x = Integer.parseInt(pos[0]), y = Integer.parseInt(pos[1]);
-                    setPieceDisplay(x, y);
-                }
-                case 's' -> {
-                    if (status == 'F') break;
-                    skipTurn();
-                }
-                case 'l' -> {}
+            System.out.println("[DEBUG] Client: Board received: " + response);
+            processResponse(response);
+            synchronized (this) {
+                try {
+                    this.wait(100);
+                } catch (InterruptedException ignored) {}
             }
         }
     }

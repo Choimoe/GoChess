@@ -61,28 +61,31 @@ public class BoardPage extends ButtonPages{
             }
 
             inputData.refreshReadSave();
-            board.recoverPieces(inputData.getGoGame(301));
+            String gameData = inputData.getGoGame(301);
+            board.addRequest(client.request("loadSave", gameData));
         });
 
         /* set the "存档" action */
-        setButtonAction(3, () -> {
-            int curNum = inputData.getSavesCount();
-            String data = board.toString();
-            File file = new File("data/saves/" + curNum + ".sgf");
-            FileOutputStream fop;
-            try {
-                fop = new FileOutputStream(file);
-                if (!file.exists()) {
-                    boolean exists = file.createNewFile();
-                    if (!exists) System.out.println("[ERROR] Cannot save the game.");
-                }
+        setButtonAction(3, () -> saveGo(inputData));
+    }
 
-                byte[] contentInBytes = data.getBytes();
-                fop.write(contentInBytes);
-            } catch (IOException e) {
-                System.out.println("[ERROR] Cannot save the game into " + curNum + ".sgf");
+    private void saveGo(InputData inputData) {
+        int curNum = inputData.getSavesCount();
+        String data = board.toString();
+        File file = new File("data/saves/" + curNum + ".sgf");
+        FileOutputStream fop;
+        try {
+            fop = new FileOutputStream(file);
+            if (!file.exists()) {
+                boolean exists = file.createNewFile();
+                if (!exists) System.out.println("[ERROR] Cannot save the game.");
             }
-        });
+
+            byte[] contentInBytes = data.getBytes();
+            fop.write(contentInBytes);
+        } catch (IOException e) {
+            System.out.println("[ERROR] Cannot save the game into " + curNum + ".sgf");
+        }
     }
 
     /**

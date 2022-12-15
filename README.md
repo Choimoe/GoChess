@@ -16,6 +16,14 @@
 4. 人机对战 [Hard]
    - [ ] 简单的AI [Hard]
    - [x] 局面评估 [Normal]
+5. 局域网联机 [Normal]
+   - [x] 服务器 [Easy]
+   - [x] 客户端 [Easy]
+   - [x] 通信协议 [Normal]
+6. 性能优化 [Normal]
+   - [ ] 优化算法 [Normal]
+   - [ ] 优化GUI [Normal]
+   - [ ] 优化联机 [Normal] 
 
 补充：AI 太难了，于是直接套了个kataGO。
 
