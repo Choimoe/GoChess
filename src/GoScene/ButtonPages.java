@@ -82,6 +82,6 @@ public class ButtonPages {
     }
 
     public void clear() {}
-
     public void cleanPages() {}
+    public void createClient() {}
 }

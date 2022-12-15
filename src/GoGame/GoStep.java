@@ -3,13 +3,11 @@ package GoGame;
 import java.io.Serializable;
 
 public class GoStep implements Serializable {
-    private int x, y, player;
+    private final int x, y, player;
 
     public int getX()       { return x; }
     public int getY()       { return y; }
     public int getPlayer()  { return player; }
-
-    public GoStep() {}
 
     public GoStep(int x, int y, int player) {
         this.x      = x;

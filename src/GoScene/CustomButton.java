@@ -1,7 +1,6 @@
 package GoScene;
 
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 
 public class CustomButton {
     public Button button;

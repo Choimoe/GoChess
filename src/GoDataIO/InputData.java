@@ -19,7 +19,7 @@ class InputThread extends IOThread {
         super(name);
 
         directoryList = new ArrayList<>();
-        dirIndexList = new ArrayList<>();
+        dirIndexList  = new ArrayList<>();
     }
 
     public Object[] inputFromDirectory(File[] files) {
@@ -29,7 +29,7 @@ class InputThread extends IOThread {
             try {
                 if (file.isDirectory()) continue;
                 BufferedReader br = new BufferedReader(new FileReader(file));
-                StringBuilder sb = new StringBuilder();
+                StringBuilder  sb = new StringBuilder();
                 String line;
                 while ((line = br.readLine()) != null) {
                     sb.append(line);
@@ -55,16 +55,18 @@ class InputThread extends IOThread {
     public void ioAction() {
         for (String[] file : fileList) {
             try {
-                String name = file[1];
                 int id = Integer.parseInt(file[0]);
+                String name = file[1];
                 File fi = new File(name);
+
                 if (fi.isDirectory()) {
-                    dirIndexList.add(id);
+                    dirIndexList .add(id);
                     directoryList.add(fi);
 
                     inputFromDirectoryWriteToData(fi, id);
                     continue;
                 }
+
                 switch (id / 100) {
                     case 1 -> ioStream[id] = new FileInputStream(name);
                     case 2 -> ioStream[id] = AudioSystem.getAudioInputStream(fi);
@@ -82,6 +84,7 @@ class InputThread extends IOThread {
         int len = directoryList.size();
         for (int i = 0; i < len; i++)
             inputFromDirectoryWriteToData(directoryList.get(i), dirIndexList.get(i));
+//        System.out.println("[DEBUG] Finished Input File from directory");
     }
 
     public void setFileList(List<String[]> fileList) {
@@ -114,7 +117,6 @@ public class InputData {
         try {
             files = new BufferedReader(new FileReader("data/dataPath.txt"));
         } catch (FileNotFoundException e) {
-            System.out.println("[ERROR] dataPath.txt not found.");
             throw new RuntimeException(e);
         }
 

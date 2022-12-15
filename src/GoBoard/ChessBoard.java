@@ -1,20 +1,28 @@
-package GoScene;
+package GoBoard;
 
 import GoDataIO.InputData;
 import GoGame.GoMain;
 import GoGame.GoStep;
+import GoServer.GoClient;
 import GoSound.SoundList;
+
+import GoUtil.ImageUtil;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
-public class ChessBoard implements Serializable {
+import static javafx.application.Platform.runLater;
+
+public class ChessBoard implements Serializable, Runnable{
     Pane        pane;
     GoMain      goGame;
+    GoClient    client;
     SoundList   sound;
 
     final int       BOARD_ROW = 19, BOARD_COL = 19;
@@ -31,6 +39,9 @@ public class ChessBoard implements Serializable {
 
     InputData inputData;
 
+    boolean isRunning = false;
+    Queue<Integer> requestID = new LinkedList<>();
+
     /* the input image */
     Image[]     pieceWaitImage      = new Image[3];
     Image[]     pieceImage          = new Image[3];
@@ -43,36 +54,7 @@ public class ChessBoard implements Serializable {
     int pieceCount = 0;
 
     public Pane getPane() { return pane; }
-
-    final double abs(double x) { return x < 0 ? -x : x; }
-
-    final int getBoardPosX (double posX) {
-        double divided = (posX - NW_X) / LEN_X;
-        int getInt = (int)(divided + 0.5);
-        if (abs(divided - getInt) > 0.3 || getInt >= 19) return -1;
-        else return getInt;
-    }
-
-    final int getBoardPosY (double posY) {
-        double divided = (posY - NW_Y) / LEN_Y;
-        int getInt = (int)(divided + 0.5);
-        if (abs(divided - getInt) > 0.3 || getInt >= 19) return -1;
-        else return getInt;
-    }
-
-    final int getAbsolutePosX (int posX) { return (int)(posX * LEN_X + NW_X); }
-    final int getAbsolutePosY (int posY) { return (int)(posY * LEN_Y + NW_Y); }
-
-    /**
-     * reshapeImageWithHeight: change the height of the image by *keeping ratio*
-     * @param imageView: the image waiting change
-     * @param height: the height of the image
-     */
-    public void reshapeImageWithHeight(ImageView imageView, int height) {
-        if (imageView == null) return;
-        imageView.setPreserveRatio(true);
-        imageView.setFitHeight(height);
-    }
+    public int getPlayer() { return goGame.getCurrentPlayer(); }
 
     /**
      * loadImage: load the piece and board image.
@@ -88,17 +70,17 @@ public class ChessBoard implements Serializable {
         pieceImage[1]       = inputData.getImage(103);
         pieceImage[2]       = inputData.getImage(104);
 
-        pieceWait[1]        = new ImageView(pieceWaitImage[1]);
-        pieceWait[2]        = new ImageView(pieceWaitImage[2]);
-        piece[1]            = new ImageView(pieceImage[1]);
-        piece[2]            = new ImageView(pieceImage[2]);
+        pieceWait[1]        = new ImageView(pieceWaitImage  [1]);
+        pieceWait[2]        = new ImageView(pieceWaitImage  [2]);
+        piece[1]            = new ImageView(pieceImage      [1]);
+        piece[2]            = new ImageView(pieceImage      [2]);
 
-        for (int i = 1; i <= 2; i++) reshapeImageWithHeight(pieceWait[i], 2 * RADIUS - 1);
-        for (int i = 1; i <= 2; i++) reshapeImageWithHeight(piece[i]    , 2 * RADIUS - 1);
+        for (int i = 1; i <= 2; i++) ImageUtil.reshapeImageWithHeight(pieceWait[i], 2 * RADIUS - 1);
+        for (int i = 1; i <= 2; i++) ImageUtil.reshapeImageWithHeight(piece[i]    , 2 * RADIUS - 1);
 
         boardImageView = new ImageView(inputData.getImage(105));
 
-        reshapeImageWithHeight(boardImageView, 768);
+        ImageUtil.reshapeImageWithHeight(boardImageView, 768);
     }
 
     /**
@@ -116,10 +98,10 @@ public class ChessBoard implements Serializable {
      * @param posY: the *absolute* y position
      */
     public void setPiecePosition (ImageView piece, int posX, int posY) {
-        reshapeImageWithHeight(piece, 2 * RADIUS - 1);
+        ImageUtil.reshapeImageWithHeight(piece, 2 * RADIUS - 1);
 
-        piece.setX(getAbsolutePosX(posX) - RADIUS + 1);
-        piece.setY(getAbsolutePosY(posY) - RADIUS + 1);
+        piece.setX(ImageUtil.getAbsolutePosX(posX, NW_X, LEN_X) - RADIUS + 1);
+        piece.setY(ImageUtil.getAbsolutePosY(posY, NW_Y, LEN_Y) - RADIUS + 1);
     }
 
     /**
@@ -142,7 +124,7 @@ public class ChessBoard implements Serializable {
      */
     public ImageView newPieceWaitImage (int type) {
         ImageView newPiece = new ImageView(pieceWaitImage[type]);
-        reshapeImageWithHeight(newPiece, 2 * RADIUS - 1);
+        ImageUtil.reshapeImageWithHeight(newPiece, 2 * RADIUS - 1);
         newPiece.setVisible(false);
         return newPiece;
     }
@@ -165,8 +147,9 @@ public class ChessBoard implements Serializable {
         pane.setOnMouseClicked  (event -> setPiece      (event.getX(), event.getY()));
     }
 
-    public ChessBoard(InputData inputData) {
+    public ChessBoard(InputData inputData, GoClient client) {
         this.inputData = inputData;
+        this.client = client;
 
         loadImage();
         loadSound();
@@ -177,6 +160,8 @@ public class ChessBoard implements Serializable {
         beginGoGame();
 
         setPane();
+
+        isRunning = true;
     }
 
     /**
@@ -204,18 +189,21 @@ public class ChessBoard implements Serializable {
      * changeWaitingDisplay: set pieceWaitDisplay to the other side
      */
     public void updateWaitingDisplay() {
-        pane.getChildren().remove(pieceWaitDisplay);
-        pieceWaitDisplay = newPieceWaitImage(goGame.getCurrentPlayer());
-        pane.getChildren().add(pieceWaitDisplay);
+        runLater(() -> {
+            pane.getChildren().remove(pieceWaitDisplay);
+            pieceWaitDisplay = newPieceWaitImage(goGame.getCurrentPlayer());
+            pane.getChildren().add(pieceWaitDisplay);
+        });
     }
 
-    /**
-     * skipTurn
-     */
     public void skipTurn() {
         goGame.skipTurn();
         pieceCount++;
         updateWaitingDisplay();
+    }
+
+    public void requestSkipTurn() {
+        requestID.add(client.request("skipTurn", getPlayer()));
     }
 
     /**
@@ -229,8 +217,10 @@ public class ChessBoard implements Serializable {
         if (step == 0)                  return;
         if (pieceList[step] == null)    return;
 
-        pane.getChildren().remove(pieceList[step]);
-        pieceList[step] = null;
+        runLater(() -> {
+            pane.getChildren().remove(pieceList[step]);
+            pieceList[step] = null;
+        });
     }
 
     /**
@@ -274,9 +264,15 @@ public class ChessBoard implements Serializable {
      * @param posY: the *absolute* y position
      */
     public void setPiece(double posX, double posY) {
-        int boardPosX = getBoardPosX(posX), boardPosY = getBoardPosY(posY);
+        int boardPosX = ImageUtil.getBoardPosX(posX, NW_X, LEN_X),
+            boardPosY = ImageUtil.getBoardPosY(posY, NW_Y, LEN_Y);
+
         if (boardPosX == -1 || boardPosY == -1) return;
 
+        requestID.add(client.request("putPiece", boardPosX, boardPosY, getPlayer()));
+    }
+
+    private void setPieceDisplay(int boardPosX, int boardPosY) {
         /* try to put the piece */
         if (goGame.putPiece(boardPosX, boardPosY)) {
             /* play putPiece sound */
@@ -284,7 +280,7 @@ public class ChessBoard implements Serializable {
 
             /* make the new pieces */
             ImageView newPiece = newPieceImage(goGame.getLastPlayer(), boardPosX, boardPosY);
-            pane.getChildren().add(pieceList[++pieceCount] = newPiece);
+            runLater(() -> pane.getChildren().add(pieceList[++pieceCount] = newPiece));
 
             /* set the display of the deleted pieces */
             List<GoStep> list = goGame.getRemovePieces(boardPosX, boardPosY);
@@ -302,7 +298,7 @@ public class ChessBoard implements Serializable {
      * @param posY: the *absolute* y position
      */
     public void setPieceWait(double posX, double posY) {
-        int boardPosX = getBoardPosX(posX), boardPosY = getBoardPosY(posY);
+        int boardPosX = ImageUtil.getBoardPosX(posX, NW_X, LEN_X), boardPosY = ImageUtil.getBoardPosY(posY, NW_Y, LEN_Y);
         if (boardPosX == -1 || boardPosY == -1) {
             pieceWaitDisplay.setVisible(false);
             return;
@@ -315,21 +311,54 @@ public class ChessBoard implements Serializable {
 
         pieceWaitDisplay.setVisible(true);
 
-        pieceWaitDisplay.setX(getAbsolutePosX(boardPosX) - RADIUS + 1);
-        pieceWaitDisplay.setY(getAbsolutePosY(boardPosY) - RADIUS + 1);
+        pieceWaitDisplay.setX(ImageUtil.getAbsolutePosX(boardPosX, NW_X, LEN_X) - RADIUS + 1);
+        pieceWaitDisplay.setY(ImageUtil.getAbsolutePosY(boardPosY, NW_Y, LEN_Y) - RADIUS + 1);
     }
 
-    void refreshSound() {
+    public void refreshSound() {
         sound.resetAll();
     }
 
-    void clean() {
+    public void clean() {
         sound.recycle();
         loadSound();
+        isRunning = false;
     }
 
     @Override
     public String toString() {
         return goGame.toString();
+    }
+
+    @Override
+    public void run() {
+        while (isRunning) {
+            System.out.print("");
+            if (requestID.isEmpty()) continue;
+            String response = client.getResponse(requestID.element());
+            if (response == null) continue;
+            requestID.remove();
+
+            char opt = response.charAt(0);
+            char status = response.charAt(1);
+            String data = response.substring(2);
+
+            switch (opt) {
+                case 'h' -> {
+                    // data: HashCode
+                }
+                case 'p' -> {
+                    if (status == 'F') break;
+                    String[] pos = data.split(",");
+                    int x = Integer.parseInt(pos[0]), y = Integer.parseInt(pos[1]);
+                    setPieceDisplay(x, y);
+                }
+                case 's' -> {
+                    if (status == 'F') break;
+                    skipTurn();
+                }
+                case 'l' -> {}
+            }
+        }
     }
 }

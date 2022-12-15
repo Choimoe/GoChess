@@ -1,58 +1,40 @@
 package GoScene;
 
+import GoBoard.ChessBoard;
 import GoDataIO.InputData;
-import GoGame.GoMain;
+import GoServer.GoClient;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 import java.io.*;
-import java.util.Objects;
 
 public class BoardPage extends ButtonPages{
     ChessBoard board;
     BorderPane rootPane;
     InputData data;
 
-    int savesNumber = 0;
-
-    /**
-     * serialize: serialize the object to local storage
-     * @param obj: the object to be serialized
-     * @param index: the file number
-     */
-    static void serialize(Object obj, int index) throws IOException {
-        ObjectOutputStream objectOutputStream =
-                new ObjectOutputStream(new FileOutputStream("data\\saves\\save" + index + ".dat"));
-        objectOutputStream.writeObject(obj);
-        objectOutputStream.close();
-    }
-
-    /**
-     * deserialize: read the object from file
-     * @param pathName: the path of the file
-     */
-    public Object deserialize(String pathName) throws IOException, ClassNotFoundException {
-        ObjectInputStream objectInputStream =
-                new ObjectInputStream(new FileInputStream(pathName));
-        Object obj = objectInputStream.readObject();
-        objectInputStream.close();
-
-        return obj;
-    }
+    GoClient client;
+    Thread clientThread, boardThread;
 
     /**
      * set all the object on the page
      */
-    public BoardPage(InputData inputData) throws FileNotFoundException {
+    public BoardPage(InputData inputData, GoClient client, Thread clientThread) {
         initialButton(new String[]{"认输", "虚着", "读档", "存档", "退出"}, 170, 80);
-        data = inputData;
 
-        board       = new ChessBoard(data);
-        rootPane    = new BorderPane();
-        scene       = new Scene(rootPane);
+        this.data           = inputData;
+        this.client         = client;
+        this.clientThread   = clientThread;
 
-        VBox buttonLayout = new VBox();
+        board               = new ChessBoard(data, client);
+        rootPane            = new BorderPane();
+        scene               = new Scene(rootPane);
+        boardThread         = new Thread(board);
+
+        VBox buttonLayout   = new VBox();
+
+        boardThread.start();
 
         /* set the layout of the button */
         buttonLayout.setLayoutX(1100);
@@ -67,7 +49,7 @@ public class BoardPage extends ButtonPages{
         rootPane.setRight(buttonLayout);
         rootPane.setLeft(board.getPane());
 
-        setButtonAction(1, () -> board.skipTurn());
+        setButtonAction(1, () -> board.requestSkipTurn());
 
         /* set the "读档" action */
         // TODO:
@@ -87,12 +69,14 @@ public class BoardPage extends ButtonPages{
             int curNum = inputData.getSavesCount();
             String data = board.toString();
             File file = new File("data/saves/" + curNum + ".sgf");
-            FileOutputStream fop = null;
+            FileOutputStream fop;
             try {
                 fop = new FileOutputStream(file);
-                if (!file.exists())
-                    //noinspection ResultOfMethodCallIgnored
-                    file.createNewFile();
+                if (!file.exists()) {
+                    boolean exists = file.createNewFile();
+                    if (!exists) System.out.println("[ERROR] Cannot save the game.");
+                }
+
                 byte[] contentInBytes = data.getBytes();
                 fop.write(contentInBytes);
             } catch (IOException e) {

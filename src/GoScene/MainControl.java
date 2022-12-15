@@ -1,6 +1,7 @@
 package GoScene;
 
 import GoDataIO.InputData;
+import GoServer.GoClient;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
@@ -13,6 +14,8 @@ public class MainControl extends Application {
     final int PAGE_NUMBER = 3;
 
     InputData fileData;
+    GoClient client;
+    Thread clientThread;
 
     ButtonPages[] pages = new ButtonPages[PAGE_NUMBER];
 
@@ -30,15 +33,16 @@ public class MainControl extends Application {
         stage.initStyle(StageStyle.TRANSPARENT);
     }
 
-    void createPages() throws Exception {
+    void createPages() {
         HomePage homePage       = new HomePage();
         StartGamePage startPage = new StartGamePage();
-        BoardPage chessBoard    = new BoardPage(fileData);
+        BoardPage chessBoard    = new BoardPage(fileData, client, clientThread);
 
         pages[0] = homePage;
         pages[1] = startPage;
         pages[2] = chessBoard;
     }
+
 
     void setJumpRelation(Stage stage) {
         ButtonPages homePage    = pages[0];
@@ -48,11 +52,16 @@ public class MainControl extends Application {
         homePage.button[2].button.setOnAction((ActionEvent e) -> {
             fileData.release();
             stage.close();
+            if (clientThread != null) clientThread.interrupt();
         });
 
         homePage.setButtonJump      (stage, 0, startPage .getScene());
-        startPage.setButtonJump     (stage, 2, homePage  .getScene());
-        startPage.setButtonJump     (stage, 0, chessBoard.getScene());
+        startPage.setButtonJump     (stage, 3, homePage  .getScene());
+        startPage.setButtonJump     (stage, 0, chessBoard.getScene(), () -> {
+            chessBoard.createClient();
+            clientThread = new Thread(() -> client.run());
+            clientThread.start();
+        });
         chessBoard.setButtonJump    (stage, 4, startPage .getScene(), chessBoard::clear);
     }
 
@@ -67,6 +76,7 @@ public class MainControl extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         fileData = new InputData();
+        client = new GoClient();
 
         initializeStageStyle(stage);
 
