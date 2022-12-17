@@ -53,6 +53,7 @@ public class ClientSend implements Runnable {
             case "getClientID" -> "9x0";
             case "getObserver" -> "9x1";
             case "getOtherPlayer" -> "9x2";
+            case "questLocal" -> "9x7";
             case "gameStart" -> "9x8";
             case "exit" -> "9x9";
 

@@ -9,7 +9,7 @@ public class StartGamePage extends ButtonPages {
      * Set the StartGamePage
      */
     public StartGamePage() {
-        initialButton(new String[]{"单人游戏", "多人游戏", "回放", "返回"});
+        initialButton(new String[]{"布棋", "对弈", "观悟", "返回"});
 
         Group group = new Group();
         scene       = new Scene(group);

@@ -11,9 +11,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class GoServerMain implements Runnable {
     GoMain goGame;
 
-    int userCount;
+    int userCountHis, userCount;
     private final CopyOnWriteArrayList<Channel> users= new CopyOnWriteArrayList<>();
     private final CopyOnWriteArrayList<Thread> pool = new CopyOnWriteArrayList<>();
+
+    private final int OBSERVER = -1, BLACK_PLAYER = 1, WHITE_PLAYER = 2;
+    private boolean isLocalGame = false;
 
     private void debugPrintGoMap() {
         System.out.println("[DEBUG] Server: Map:");
@@ -25,12 +28,20 @@ public class GoServerMain implements Runnable {
         }
     }
 
+    private int allocationUser() {
+        return switch(userCount) {
+            case 1 -> BLACK_PLAYER;
+            case 2 -> WHITE_PLAYER;
+            default -> OBSERVER;
+        };
+    }
+
     @Override
     public void run() {
         System.out.println("[LOG] ----- Server -----");
         ServerSocket server = null;
 
-        userCount = 0;
+        userCountHis = 0;
         goGame = new GoMain();
         goGame.beginGame();
 
@@ -50,14 +61,15 @@ public class GoServerMain implements Runnable {
                 System.out.println("[ERROR] Failed to accept client.");
                 throw new RuntimeException();
             }
-            if (userCount > 9) {
+            if (userCountHis > 9) {
                 System.out.println("[LOG] Server: Too many users.");
                 continue;
             }
-            Channel userChannel = new Channel(client, userCount);
+            userCount++;
+            Channel userChannel = new Channel(client, userCountHis, allocationUser());
             Thread userThread = new Thread(userChannel);
             System.out.println("[LOG] A client connected");
-            userCount++;
+            userCountHis++;
 
             users.add(userChannel);
             pool.add(userThread);
@@ -71,10 +83,13 @@ public class GoServerMain implements Runnable {
         private DataOutputStream output;
         private boolean isRunning;
         private final int id;
+        private int userProp;
 
-        public Channel(Socket client, int id) {
+        public Channel(Socket client, int id, int userProp) {
             isRunning = true;
             this.id = id;
+            this.userProp = userProp;
+
             try {
                 this.input = new DataInputStream(client.getInputStream());
                 this.output = new DataOutputStream(client.getOutputStream());
@@ -140,6 +155,7 @@ public class GoServerMain implements Runnable {
                 case "9x0" -> response.append("i").append(id);
                 case "9x1" -> response.append("o").append(Math.max(userCount - 2, 0));
                 case "9x2" -> response.append(userCount >= 2 ? "gT" : "gF");
+                case "9x7" -> questLocal(response);
                 case "9x8" -> gameStart(response);
                 case "9x9" -> { return null; }
             }
@@ -147,8 +163,17 @@ public class GoServerMain implements Runnable {
             return response.toString();
         }
 
+        private void questLocal(StringBuilder response) {
+            if (userCount != 1) {
+                response.append("vF");
+                return;
+            }
+            response.append("vT");
+            isLocalGame = true;
+        }
+
         private void loadSave(String content, StringBuilder response) {
-            if (userCount != 1) response.append("rF");
+            if (userCountHis != 1) response.append("rF");
             else {
                 response.append("rT");
                 goGame.recover(content);
@@ -162,7 +187,7 @@ public class GoServerMain implements Runnable {
         }
 
         private void gameStart(StringBuilder response) {
-            if (userCount >= 2) {
+            if (userCountHis >= 2) {
                 response.append("aF");
             } else {
                 response.append("gT");
@@ -186,7 +211,7 @@ public class GoServerMain implements Runnable {
                 y       = Integer.parseInt(contentSplit[1]),
                 player  = Integer.parseInt(contentSplit[2]);
 
-            if (player != goGame.getCurrentPlayer()) {
+            if (!isLocalGame && ((player != goGame.getCurrentPlayer()) || (player != userProp))) {
                 response.append("pF");
                 return;
             }
@@ -199,6 +224,7 @@ public class GoServerMain implements Runnable {
         }
 
         private void clientExit() {
+            userCount--;
             release();
             goGame.clear();
             System.out.println("[LOG] Server: Game cleared.");
@@ -212,7 +238,8 @@ public class GoServerMain implements Runnable {
                 String response = processMessage(message);
                 System.out.println("[LOG] " + message + " -> " + response);
                 if (response == null) continue;
-                sendAll(response);
+                if (isLocalGame) send(response);
+                else sendAll(response);
             }
 
             clientExit();

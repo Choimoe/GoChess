@@ -59,16 +59,21 @@ public class MainControl extends Application {
 
         homePage.setButtonJump      (stage, 0, startPage .getScene());
         startPage.setButtonJump     (stage, 3, homePage  .getScene());
-        startPage.setButtonJump     (stage, 0, chessBoard.getScene(), () -> {
-            chessBoard.createClient();
-            clientThread = new Thread(() -> client.run());
-            clientThread.start();
-            if (gameCount++ > 0) client.request("gameStart");
-        });
+        startPage.setButtonJump     (stage, 0, chessBoard.getScene(), () -> startPlay(chessBoard, true ));
+        startPage.setButtonJump     (stage, 1, chessBoard.getScene(), () -> startPlay(chessBoard, false));
         chessBoard.setButtonJump    (stage, 4, startPage .getScene(), () -> {
             chessBoard.clear();
             client.request("exit");
         });
+    }
+
+    private void startPlay(ButtonPages chessBoard, boolean isLocalGame) {
+        chessBoard.createClient();
+        System.out.println("[DEBUG] Main: isLocalGame = " + isLocalGame);
+        client.setLocalGame(isLocalGame);
+        clientThread = new Thread(() -> client.run());
+        clientThread.start();
+        if (gameCount++ > 0) client.request("gameStart");
     }
 
     Scene getMainScene() {

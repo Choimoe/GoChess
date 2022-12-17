@@ -194,12 +194,14 @@ public class ChessBoard implements Serializable, Runnable{
     public void updateWaitingDisplay() {
         runLater(() -> {
             pane.getChildren().remove(pieceWaitDisplay);
+            System.out.println("[DEBUG] change to " + goGame.getCurrentPlayer());
             pieceWaitDisplay = newPieceWaitImage(goGame.getCurrentPlayer());
             pane.getChildren().add(pieceWaitDisplay);
         });
     }
 
-    public void skipTurn() {
+    public void skipTurn(char status) {
+        if (status == 'F') return;
         goGame.skipTurn();
         pieceCount++;
         updateWaitingDisplay();
@@ -330,23 +332,26 @@ public class ChessBoard implements Serializable, Runnable{
 
     private void processResponse(String response) {
         if (response == null) return;
-        requestID.remove();
+        if (!requestID.isEmpty()) requestID.remove();
 
         char opt = response.charAt(0);
         char status = response.charAt(1);
         String data = response.substring(2);
 
         switch (opt) {
-            case 'h' -> {
-                // data: HashCode
-            }
+            case 'h' -> checkHashCode(data);
             case 'p' -> putPieceFromResponse(status, data);
-            case 's' -> {
-                if (status == 'F') break;
-                skipTurn();
-            }
+            case 's' -> skipTurn(status);
             case 'l' -> {}
             case 'r' -> recoverFromResponse(status, data);
+        }
+    }
+
+    private void checkHashCode(String data) {
+        int hashCodeServer = Integer.parseInt(data);
+        int hashCodeClient = goGame.hashCode();
+        if (hashCodeServer != hashCodeClient) {
+            System.out.println("[DEBUG] HashCode not match: " + hashCodeServer + " - " + hashCodeClient);
         }
     }
 
@@ -373,11 +378,17 @@ public class ChessBoard implements Serializable, Runnable{
         String response;
         while (isRunning) {
             System.out.print("");
-            if (requestID.isEmpty()) continue;
-            response = client.getResponse(requestID.element());
-            if (response == null) continue;
-            System.out.println("[DEBUG] Client: Board received: " + response);
-            processResponse(response);
+            if (!requestID.isEmpty()){
+                response = client.getResponse(requestID.element());
+                System.out.println("[DEBUG] Client: Board received: " + response);
+                processResponse(response);
+            }
+            if (client.waitingNumber() == 0) continue;
+            String[] allResponse = client.getAllResponse();
+            for (String s : allResponse) {
+                System.out.println("[DEBUG] Client: Board received from other client: " + s);
+                processResponse(s);
+            }
             synchronized (this) {
                 try {
                     this.wait(100);

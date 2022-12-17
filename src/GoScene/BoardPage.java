@@ -21,7 +21,7 @@ public class BoardPage extends ButtonPages{
      * set all the object on the page
      */
     public BoardPage(InputData inputData, GoClient client, Thread clientThread) {
-        initialButton(new String[]{"认输", "虚着", "读档", "存档", "退出"}, 170, 80);
+        initialButton(new String[]{"认输", "虚着", "复盘", "存档", "离开"}, 170, 80);
 
         this.data           = inputData;
         this.client         = client;
