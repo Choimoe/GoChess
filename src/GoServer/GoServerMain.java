@@ -154,6 +154,7 @@ public class GoServerMain implements Runnable {
                     // lose
                 }
                 case "0x4" -> loadSave(content, response);
+                case "0x5" -> anaSave(content, response);
 
                 case "1x1" -> response.append("cT");
 
@@ -186,6 +187,15 @@ public class GoServerMain implements Runnable {
             if (!isLocalGame &&userCountHis != 1) response.append("rF");
             else {
                 response.append("rT");
+                goGame.recover(content);
+                response.append(content);
+            }
+        }
+
+        private void anaSave(String content, StringBuilder response) {
+            if (!isLocalGame &&userCountHis != 1) response.append("nF");
+            else {
+                response.append("nT");
                 goGame.recover(content);
                 response.append(content);
             }

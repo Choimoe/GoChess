@@ -8,6 +8,7 @@ out/
 kataGo/*.*
 **/*.log
 **/*.txt
+*.mp4
 #.idea/
 #*.xml
 #*.iml

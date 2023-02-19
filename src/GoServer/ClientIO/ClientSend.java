@@ -49,6 +49,7 @@ public class ClientSend implements Runnable {
             case "skipTurn" -> "0x2";
             case "putLose" -> "0x3";
             case "loadSave" -> "0x4";
+            case "anaSave" -> "0x5";
 
             case "getClientID" -> "9x0";
             case "getObserver" -> "9x1";
@@ -60,7 +61,7 @@ public class ClientSend implements Runnable {
             default -> "1x1";
         };
         String content = switch (type) {
-            case "chat", "loadSave", "skipTurn" -> params[0].toString();
+            case "chat", "loadSave", "anaSave", "skipTurn" -> params[0].toString();
             case "putPiece" -> params[0] + "," + params[1] + "," + params[2];
             default -> "";
         };

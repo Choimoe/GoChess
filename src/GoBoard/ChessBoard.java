@@ -1,5 +1,6 @@
 package GoBoard;
 
+import GoBoard.AnaDisplay.StepInfo;
 import GoDataIO.InputData;
 import GoGame.GoMain;
 import GoGame.GoStep;
@@ -12,7 +13,9 @@ import GoUtil.ImageUtil;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,6 +28,7 @@ public class ChessBoard implements Serializable, Runnable{
     GoMain      goGame;
     GoClient    client;
     SoundList   sound;
+    Text        infoTextDisplay;
 
     final int       BOARD_ROW = 19, BOARD_COL = 19;
 
@@ -54,6 +58,11 @@ public class ChessBoard implements Serializable, Runnable{
 
     int pieceCount = 0;
     int requestTimes = 0;
+
+    List<GoStep> steps;
+    List<StepInfo> stepInfo;
+    int recoverPieceCount;
+    int currentRecoverPieceCount;
 
     public Pane getPane() { return pane; }
     public int getPlayer() { return goGame.getCurrentPlayer(); }
@@ -257,6 +266,51 @@ public class ChessBoard implements Serializable, Runnable{
         updateWaitingDisplay();
     }
 
+    public void setInfoOnText(StepInfo info, int player) {
+        infoTextDisplay.setText("当前局面黑棋胜率：" + info.winRate
+                + "%\n黑子目数领先：" + info.scoreLead
+                + "\n\n\n本步胜率变化：" + (player == 1 ? "黑" : "白") + "棋⇣" + info.winRateDrop
+                + "%\n本步评分变化：" + (player == 1 ? "黑" : "白") + "棋⇣" + info.scoreDrop);
+    }
+
+    public void anaSavesFromPieces(String goGameData) {
+        runLater(() -> pane.getChildren().clear());
+        setPane();
+        pieceCount = 0;
+        goGame.recover(goGameData);
+
+        File kataGoFile = new File("data/analysis.sgf");
+
+        steps = goGame.getGoSteps();
+        stepInfo = StepInfo.getDataFromAnalysedData(kataGoFile);
+        recoverPieceCount = steps.size();
+        currentRecoverPieceCount = 0;
+
+        pieceCount = goGame.getSteps();
+
+        updateWaitingDisplay();
+    }
+
+    public void stepByStepRecover() {
+        if (currentRecoverPieceCount >= recoverPieceCount) return;
+        setNowStepInfo(currentRecoverPieceCount);
+        currentRecoverPieceCount++;
+    }
+
+    private void setNowStepInfo(int index) {
+        GoStep step = steps.get(index);
+//        StepInfo info = stepInfo.get(index);
+        StepInfo info = new StepInfo(0, 0, 0, 0);
+        if (step == null) return;
+        if ((step.getX() == -1) || (step.getY() == -1) || (step.getPlayer() == -1)) return;
+
+        int boardPosX = step.getX(), boardPosY = step.getY(), player = 2 - (step.getPlayer() & 1);
+
+        setInfoOnText(info, player);
+//            System.out.println("[DEBUG] Recover: " + boardPosX + " " + boardPosY + " " + player);
+        putPieceFromRecover(boardPosX, boardPosY, player);
+    }
+
     private void putPieceFromRecover(int boardPosX, int boardPosY, int player) {
         ImageView newPiece = newPieceImage(player, boardPosX, boardPosY);
         pieceList[goGame.getPosStep(boardPosX, boardPosY)] = newPiece;
@@ -359,7 +413,14 @@ public class ChessBoard implements Serializable, Runnable{
             case 's' -> skipTurn(status);
             case 'l' -> {}
             case 'r' -> recoverFromResponse(status, data);
+            case 'n' -> analyzeFromResponse(status, data);
         }
+    }
+
+    private void analyzeFromResponse(char status, String data) {
+        if (status == 'F') return;
+        GoLogger.debug("Client: analyze saves from server");
+        anaSavesFromPieces(data);
     }
 
     private void checkHashCode(String data) {
@@ -385,6 +446,10 @@ public class ChessBoard implements Serializable, Runnable{
 
     public boolean checkFirstTime() {
         return requestTimes == 0;
+    }
+
+    public void setInfoTextDisplay(Text info) {
+        infoTextDisplay = info;
     }
 
     public void setReadOnly() {

@@ -2,6 +2,7 @@ package GoScene;
 
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 import java.util.Objects;
@@ -67,6 +68,15 @@ public class ButtonPages {
      */
     public void setButtonAction(int index, ButtonLambda buttonAction) {
         button[index].button.setOnAction((ActionEvent e) -> buttonAction.buttonAction());
+    }
+
+    /**
+     * setButtonAction: set the action of the button
+     * @param temp: the button on the scene
+     * @param buttonAction: do the action when click the button
+     */
+    public void setButtonAction(Button temp, ButtonLambda buttonAction) {
+        temp.setOnAction((ActionEvent e) -> buttonAction.buttonAction());
     }
 
     /**
