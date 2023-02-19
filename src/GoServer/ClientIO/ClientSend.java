@@ -1,16 +1,16 @@
 package GoServer.ClientIO;
 
+import GoUtil.GoLogger;
 import GoUtil.GoUtil;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-
-import static java.lang.System.currentTimeMillis;
-import static java.lang.Thread.sleep;
 
 public class ClientSend implements Runnable {
     private final Socket client;
@@ -82,7 +82,7 @@ public class ClientSend implements Runnable {
             output.writeUTF(message);
             output.flush();
         } catch (IOException e) {
-            System.out.println("[ERROR] " + name + ": Failed to send message : " + message);
+            GoLogger.error(name + " - Failed to send message.");
             release();
         }
     }
@@ -95,7 +95,7 @@ public class ClientSend implements Runnable {
             try {
                 GoRequest request = requestQueue.poll();
                 if (request == null) continue;
-                System.out.println("[DEBUG] " + name + ": send request: " + request);
+                GoLogger.debug(name + " - send request: " + request);
                 send(request.toString());
             } finally {
                 lock.writeLock().unlock();

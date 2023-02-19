@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import socket
 
 
 def get_avg_color(image, x, y, radius):
@@ -87,10 +88,15 @@ def upper_black_piece(feature):
     return (feature * 2 + 0) // 3
 
 
-def trans_go_map(image, lines, feature, xy_eps=PROD_EPS * 0.2):
+def equals(a, b):
+    return abs(a - b) < 0.0001
+
+
+def trans_go_map(image, lines, feature, temperature, sock, xy_eps=PROD_EPS * 0.2):
     """
     It takes an image, a list of lines, and a feature, and returns a go map and a result image
 
+    :param temperature: the time of waiting to ensure the piece
     :param image: the image to be processed
     :param lines: the lines that are detected by the Hough transform
     :param feature: the average color of the board
@@ -110,16 +116,38 @@ def trans_go_map(image, lines, feature, xy_eps=PROD_EPS * 0.2):
             x, y = get_intersect_point_of_lines(lines[i], lines[j])
             x = int(x)
             y = int(y)
+
+            if temperature[i - row, j] == 0:
+                cv2.circle(result, (x, y), 20, (0, 0, 255), 2)
+                continue
+
             color = get_avg_color(original_image, x, y, int(xy_eps))
             # print(posX, posY, rad, image[posY, posX])
             # print('(', x, y, ')', color, end = ',')
             # print(original_image[posX, posY])
             if color == -1:
+                temperature[i - row, j] = 20
                 continue
+
+            if color < upper_black_piece(feature) or color > lower_white_piece(feature):
+                temperature[i - row, j] -= 1
+
+            if not temperature[i - row, j] == 0:
+                continue
+
+            sng = str(i - row) + " " + str(j)
+
             if color < upper_black_piece(feature):
                 go_map[i - row, j] = 1
+                sng = sng + " B\n"
+                sock.send(bytes(sng, 'utf-8'))
+                # sock.send(b"1 1 B")
                 cv2.circle(result, (x, y), 20, (0, 255, 0), 2)
             if color > lower_white_piece(feature):
                 go_map[i - row, j] = -1
+                sng = sng + " W\n"
+                sock.send(bytes(sng, 'utf-8'))
+                # sock.send(b"1 1 W")
                 cv2.circle(result, (x, y), 20, (255, 0, 0), 2)
+
     return go_map, result

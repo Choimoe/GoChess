@@ -4,6 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class ButtonPages {
     int                     buttonNumber;
     String[]                buttonName;
@@ -39,7 +41,7 @@ public class ButtonPages {
      * @param name: the names which displayed on the buttons
      * @param size: should be zero or two integers, representing the width and height
      */
-    void initialButton (String[] name, int... size) {
+    protected void initialButton(String[] name, int... size) {
         buttonNumber = name.length;
         button = new CustomButton[buttonNumber];
         buttonName = name;
@@ -65,6 +67,18 @@ public class ButtonPages {
      */
     public void setButtonAction(int index, ButtonLambda buttonAction) {
         button[index].button.setOnAction((ActionEvent e) -> buttonAction.buttonAction());
+    }
+
+    /**
+     * setButtonAction: set the action of the button
+     * @param buttonName: the name of the button
+     * @param buttonAction: do the action when click the button
+     */
+    public void setButtonAction(String buttonName, ButtonLambda buttonAction) {
+        for (CustomButton but : button) {
+            if (Objects.equals(but.name, buttonName)) but.button.setOnAction((ActionEvent e) -> buttonAction.buttonAction());
+        }
+//        button[index].button.setOnAction((ActionEvent e) -> buttonAction.buttonAction());
     }
 
     /**

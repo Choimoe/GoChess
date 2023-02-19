@@ -1,8 +1,10 @@
 package GoServer;
 
+import GoBoard.ChessBoard;
 import GoServer.ClientIO.ClientReceive;
 import GoServer.ClientIO.ClientSend;
 import GoServer.ClientIO.GoRequest;
+import GoUtil.GoLogger;
 
 import java.io.*;
 import java.net.Socket;
@@ -14,6 +16,7 @@ public class GoClient implements Runnable {
 
     ClientSend send;
     ClientReceive receive;
+    ChessBoard board;
 
     int requestIDCount = 0, waitingResponse = 0;
     int clientID = -1;
@@ -21,20 +24,21 @@ public class GoClient implements Runnable {
     private final int MAX_USER = 10;
     private boolean isLocalGame = false;
 
-    public void setLocalGame(boolean isLocalGame) { this.isLocalGame = isLocalGame; System.out.println("[DEBUG] isLocalGame = " + isLocalGame); }
+    public void setLocalGame(boolean isLocalGame) { this.isLocalGame = isLocalGame; }
 
     @Override
     public void run() {
-        System.out.println("[LOG] ----- Client -----");
+        GoLogger.log("Client", "start");
         try {
             client = new Socket("localhost", 2005);
         } catch (IOException e) {
-            System.out.println("[ERROR] Client?: Failed to connect the server.");
+            GoLogger.error("Client?: Failed to connect the server.");
             throw new RuntimeException(e);
         }
         send = new ClientSend(client, name);
         requestResponse = new HashMap<>();
         receive = new ClientReceive(client, requestResponse, name);
+        receive.setNotifyOnNewRequests(board);
 
         new Thread(send).start();
         new Thread(receive).start();
@@ -43,14 +47,14 @@ public class GoClient implements Runnable {
         String response = requestVital("getClientID");
         clientID = Integer.parseInt(response.substring(1));
         name += clientID;
-        System.out.println("[LOG] " + name + ": get ID = " + clientID);
+        GoLogger.log(name, "get ID = " + clientID);
         requestIDCount = MAX_USER + clientID;
 
-        System.out.println("[DEBUG] isLocalGame = " + isLocalGame);
+        GoLogger.log(name, "isLocalGame = " + isLocalGame);
 
         if (isLocalGame) {
             requestVital("questLocal");
-            System.out.println("[LOG] " + name + ": set LocalGame = " + response);
+            GoLogger.log(name, "set LocalGame = " + response);
 //            requestVital("gameStart");
         }
     }
@@ -62,7 +66,7 @@ public class GoClient implements Runnable {
                 try {
                     this.wait(100);
                 } catch (InterruptedException e) {
-                    System.out.println("[ERROR] Client?: Failed to wait for " + request);
+                    GoLogger.error("Client?: Failed to wait for " + request);
                 }
             }
         }
@@ -94,5 +98,9 @@ public class GoClient implements Runnable {
         }
         requestResponse.clear();
         return responses;
+    }
+
+    public void setBoard(ChessBoard board) {
+        this.board = board;
     }
 }

@@ -1,5 +1,6 @@
 import GoScene.MainControl;
 import GoServer.GoServerMain;
+import GoUtil.GoLogger;
 
 public class Main {
     public static void main(String[] args) {

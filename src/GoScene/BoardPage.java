@@ -3,15 +3,17 @@ package GoScene;
 import GoBoard.ChessBoard;
 import GoDataIO.InputData;
 import GoServer.GoClient;
+import GoUtil.GoLogger;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 import java.io.*;
 
-public class BoardPage extends ButtonPages{
+public class BoardPage extends ButtonPages {
     ChessBoard board;
     BorderPane rootPane;
+
     InputData data;
 
     GoClient client;
@@ -20,21 +22,22 @@ public class BoardPage extends ButtonPages{
     /**
      * set all the object on the page
      */
-    public BoardPage(InputData inputData, GoClient client, Thread clientThread) {
-        initialButton(new String[]{"认输", "虚着", "复盘", "存档", "离开"}, 170, 80);
+    public BoardPage(InputData inputData, GoClient client, Thread clientThread, String[] buttonNames) {
+        initialButton(buttonNames, 170, 80);
 
         this.data           = inputData;
         this.client         = client;
         this.clientThread   = clientThread;
 
-        board               = new ChessBoard(data, client);
         rootPane            = new BorderPane();
-        scene               = new Scene(rootPane);
         boardThread         = new Thread(board);
+        scene               = new Scene(rootPane);
+        board               = new ChessBoard(data);
 
         VBox buttonLayout   = new VBox();
 
         boardThread.start();
+        board.setClient(client);
 
         /* set the layout of the button */
         buttonLayout.setLayoutX(1100);
@@ -51,22 +54,22 @@ public class BoardPage extends ButtonPages{
 
         setButtonAction(1, () -> board.requestSkipTurn());
 
-        /* set the "读档" action */
-        // TODO:
-        //  - choose the saves
-        setButtonAction(2, () -> {
-            if (inputData.getSavesCount() == 0) {
-                System.out.println("[ERROR] No saves found.");
-                return;
-            }
+        setButtonAction("回想", () -> readGoFromSave(inputData, client));
+        setButtonAction("存档", () -> saveGo(inputData));
+    }
 
-            inputData.refreshReadSave();
-            String gameData = inputData.getGoGame(301);
-            board.addRequest(client.request("loadSave", gameData));
-        });
+    private void readGoFromAnalysis(InputData inputData) {
+    }
 
-        /* set the "存档" action */
-        setButtonAction(3, () -> saveGo(inputData));
+    private void readGoFromSave(InputData inputData, GoClient client) {
+        if (inputData.getSavesCount() == 0) {
+            GoLogger.error("No saves found.");
+            return;
+        }
+
+        inputData.refreshReadSave();
+        String gameData = inputData.getGoGame(301);
+        board.addRequest(client.request("loadSave", gameData));
     }
 
     private void saveGo(InputData inputData) {
@@ -78,14 +81,22 @@ public class BoardPage extends ButtonPages{
             fop = new FileOutputStream(file);
             if (!file.exists()) {
                 boolean exists = file.createNewFile();
-                if (!exists) System.out.println("[ERROR] Cannot save the game.");
+                if (!exists) GoLogger.error("Cannot save the game.");
             }
 
             byte[] contentInBytes = data.getBytes();
             fop.write(contentInBytes);
         } catch (IOException e) {
-            System.out.println("[ERROR] Cannot save the game into " + curNum + ".sgf");
+            GoLogger.error("Cannot save the game into " + curNum + ".sgf");
         }
+    }
+
+    public Thread getThread() {
+        return boardThread;
+    }
+
+    public ChessBoard getChessBoard() {
+        return board;
     }
 
     /**

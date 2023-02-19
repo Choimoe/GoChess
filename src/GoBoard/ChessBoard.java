@@ -6,6 +6,7 @@ import GoGame.GoStep;
 import GoServer.GoClient;
 import GoSound.SoundList;
 
+import GoUtil.GoLogger;
 import GoUtil.ImageUtil;
 
 import javafx.scene.image.Image;
@@ -39,7 +40,7 @@ public class ChessBoard implements Serializable, Runnable{
 
     InputData inputData;
 
-    boolean isRunning = false;
+    boolean isRunning = false, isReadOnly = false;
     Queue<Integer> requestID = new LinkedList<>();
 
     /* the input image */
@@ -52,6 +53,7 @@ public class ChessBoard implements Serializable, Runnable{
     ImageView[] pieceList           = new ImageView[BOARD_ROW * BOARD_COL * 3];
 
     int pieceCount = 0;
+    int requestTimes = 0;
 
     public Pane getPane() { return pane; }
     public int getPlayer() { return goGame.getCurrentPlayer(); }
@@ -150,9 +152,12 @@ public class ChessBoard implements Serializable, Runnable{
         pane.setOnMouseClicked  (event -> setPiece      (event.getX(), event.getY()));
     }
 
-    public ChessBoard(InputData inputData, GoClient client) {
-        this.inputData = inputData;
+    public void setClient(GoClient client) {
         this.client = client;
+    }
+
+    public ChessBoard(InputData inputData) {
+        this.inputData = inputData;
 
         loadImage();
         loadSound();
@@ -194,7 +199,7 @@ public class ChessBoard implements Serializable, Runnable{
     public void updateWaitingDisplay() {
         runLater(() -> {
             pane.getChildren().remove(pieceWaitDisplay);
-            System.out.println("[DEBUG] change to " + goGame.getCurrentPlayer());
+            GoLogger.debug("change to " + goGame.getCurrentPlayer());
             pieceWaitDisplay = newPieceWaitImage(goGame.getCurrentPlayer());
             pane.getChildren().add(pieceWaitDisplay);
         });
@@ -244,14 +249,18 @@ public class ChessBoard implements Serializable, Runnable{
             int boardPosX = step.getX(), boardPosY = step.getY(), player = 2 - (step.getPlayer() & 1);
 
 //            System.out.println("[DEBUG] Recover: " + boardPosX + " " + boardPosY + " " + player);
-            ImageView newPiece = newPieceImage(player, boardPosX, boardPosY);
-            pieceList[goGame.getPosStep(boardPosX, boardPosY)] = newPiece;
-            runLater(() -> pane.getChildren().add(newPiece));
+            putPieceFromRecover(boardPosX, boardPosY, player);
         }
 
         pieceCount = goGame.getSteps();
 
         updateWaitingDisplay();
+    }
+
+    private void putPieceFromRecover(int boardPosX, int boardPosY, int player) {
+        ImageView newPiece = newPieceImage(player, boardPosX, boardPosY);
+        pieceList[goGame.getPosStep(boardPosX, boardPosY)] = newPiece;
+        runLater(() -> pane.getChildren().add(newPiece));
     }
 
     /**
@@ -297,6 +306,10 @@ public class ChessBoard implements Serializable, Runnable{
         }
     }
 
+    public void forceSetPieceDisplay(int x, int y) {
+        setPieceDisplay(x, y);
+    }
+
     /**
      * setPieceWait: display the waiting piece on the given position
      * @param posX: the *absolute* x position
@@ -330,9 +343,11 @@ public class ChessBoard implements Serializable, Runnable{
         isRunning = false;
     }
 
-    private void processResponse(String response) {
+    public void processResponse(String response) {
+        GoLogger.debug("Client: Board received: " + response);
         if (response == null) return;
         if (!requestID.isEmpty()) requestID.remove();
+
 
         char opt = response.charAt(0);
         char status = response.charAt(1);
@@ -351,11 +366,11 @@ public class ChessBoard implements Serializable, Runnable{
         int hashCodeServer = Integer.parseInt(data);
         int hashCodeClient = goGame.hashCode();
         if (hashCodeServer != hashCodeClient) {
-            System.out.println("[DEBUG] HashCode not match: " + hashCodeServer + " - " + hashCodeClient);
+            GoLogger.error("HashCode not match: " + hashCodeServer + " - " + hashCodeClient);
         }
     }
 
-    private void putPieceFromResponse(char status, String data) {
+    public void putPieceFromResponse(char status, String data) {
         if (status == 'F') return;
         String[] pos = data.split(",");
         int x = Integer.parseInt(pos[0]), y = Integer.parseInt(pos[1]);
@@ -364,8 +379,16 @@ public class ChessBoard implements Serializable, Runnable{
 
     public void recoverFromResponse(char status, String data) {
         if (status == 'F') return;
-        System.out.println("[DEBUG] Client: Recover from server");
+        GoLogger.debug("Client: Recover from server");
         recoverPieces(data);
+    }
+
+    public boolean checkFirstTime() {
+        return requestTimes == 0;
+    }
+
+    public void setReadOnly() {
+        isReadOnly = true;
     }
 
     @Override
@@ -375,25 +398,5 @@ public class ChessBoard implements Serializable, Runnable{
 
     @Override
     public void run() {
-        String response;
-        while (isRunning) {
-            System.out.print("");
-            if (!requestID.isEmpty()){
-                response = client.getResponse(requestID.element());
-                System.out.println("[DEBUG] Client: Board received: " + response);
-                processResponse(response);
-            }
-            if (client.waitingNumber() == 0) continue;
-            String[] allResponse = client.getAllResponse();
-            for (String s : allResponse) {
-                System.out.println("[DEBUG] Client: Board received from other client: " + s);
-                processResponse(s);
-            }
-            synchronized (this) {
-                try {
-                    this.wait(100);
-                } catch (InterruptedException ignored) {}
-            }
-        }
     }
 }

@@ -1,6 +1,7 @@
 import os
 import cv2
 import numpy as np
+import socket
 
 import chessPoly
 import checkPos
@@ -8,6 +9,7 @@ import checkPos
 PROD_EPS: float = 30.0
 lineCount: int = 0
 width, height = 960, 1036
+
 
 def get_chess_line(input_image):
     """
@@ -76,6 +78,9 @@ def initialize_position(camera):
             break
 
 
+waiting_frame = 30
+
+
 def split_frames_mp4(source_file_name):
     """
     The function `split_frames_mp4` takes a video file and splits it into frames, and then displays the frames in real
@@ -84,7 +89,13 @@ def split_frames_mp4(source_file_name):
     :param source_file_name: the name of the video file, which is the name of the video file without the suffix
     """
 
-    video_path = os.path.join('./asserts/', source_file_name + '.mp4')
+    temperature = np.zeros((19, 19), dtype=int)
+
+    for i in range(0, 19):
+        for j in range(0, 19):
+            temperature[i, j] = waiting_frame
+
+    video_path = os.path.join('./assets/', source_file_name + '.mp4')
     times = 0
 
     # get the image from the video, with the frequency of frame_frequency
@@ -99,7 +110,12 @@ def split_frames_mp4(source_file_name):
     line_count = 0
     feature = 255 * 3 // 2
 
-    initialize_position(camera)
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.connect(('localhost', 1111))
+
+    print('Client start!')
+
+    #     initialize_position(camera)
 
     set_args = False
     if len(position) >= 4:
@@ -123,7 +139,7 @@ def split_frames_mp4(source_file_name):
 
         if times % frame_frequency == 0:
             # cv2.imwrite(outPutDirName + str(times)+'.jpg', image)
-            go_map, image = checkPos.trans_go_map(image, lines, feature)
+            go_map, image = checkPos.trans_go_map(image, lines, feature, temperature, sock)
             # time_text = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             # cv2.putText(image, time_text, (word_x,word_y),
             # cv2.FONT_HERSHEY_SIMPLEX,1,(55,255,155),2)
@@ -136,10 +152,12 @@ def split_frames_mp4(source_file_name):
             break
 
     camera.release()
+    sock.close()
+    print('Client end!')
 
 
 if __name__ == '__main__':
-    im_file = "./asserts/"
+    im_file = "./assets/"
 
     for im_name in os.listdir(im_file):
         suffix_file = os.path.splitext(im_name)[-1]

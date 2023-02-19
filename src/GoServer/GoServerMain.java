@@ -1,6 +1,7 @@
 package GoServer;
 
 import GoGame.GoMain;
+import GoUtil.GoLogger;
 import GoUtil.GoUtil;
 
 import java.io.*;
@@ -19,7 +20,7 @@ public class GoServerMain implements Runnable {
     private boolean isLocalGame = false;
 
     private void debugPrintGoMap() {
-        System.out.println("[DEBUG] Server: Map:");
+        GoLogger.debug("Map:");
         for (int i = 0; i < 19; i++) {
             for (int j = 0; j < 19; j++) {
                 System.out.print(goGame.getPosStep(i, j) + " ");
@@ -38,7 +39,7 @@ public class GoServerMain implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("[LOG] ----- Server -----");
+        GoLogger.log("Server", "start");
         ServerSocket server = null;
 
         userCountHis = 0;
@@ -48,7 +49,7 @@ public class GoServerMain implements Runnable {
         try {
             server = new ServerSocket(2005);
         } catch (IOException e) {
-            System.out.println("[ERROR] Failed to create server.");
+            GoLogger.error("Failed to create server.");
 //            throw new RuntimeException();
         }
         if (server == null) return;
@@ -58,17 +59,19 @@ public class GoServerMain implements Runnable {
             try {
                 client = server.accept();
             } catch (IOException e) {
-                System.out.println("[ERROR] Failed to accept client.");
+                GoLogger.error("Failed to accept client.");
                 throw new RuntimeException();
             }
+
             if (userCountHis > 9) {
-                System.out.println("[LOG] Server: Too many users.");
+                GoLogger.log("Server", "rejected : too many users.");
                 continue;
             }
+
             userCount++;
             Channel userChannel = new Channel(client, userCountHis, allocationUser());
             Thread userThread = new Thread(userChannel);
-            System.out.println("[LOG] A client connected");
+            GoLogger.log("Server", "A client connected");
             userCountHis++;
 
             users.add(userChannel);
@@ -81,9 +84,11 @@ public class GoServerMain implements Runnable {
     class Channel implements Runnable {
         private DataInputStream input;
         private DataOutputStream output;
-        private boolean isRunning;
+        private boolean isRunning, isReady;
         private final int id;
         private int userProp;
+
+        private void setReady() { isReady = true; }
 
         public Channel(Socket client, int id, int userProp) {
             isRunning = true;
@@ -94,7 +99,7 @@ public class GoServerMain implements Runnable {
                 this.input = new DataInputStream(client.getInputStream());
                 this.output = new DataOutputStream(client.getOutputStream());
             } catch (IOException e) {
-                System.out.println("[ERROR] Failed to create IO stream.");
+                GoLogger.error("Failed to create IO stream.");
                 release();
             }
         }
@@ -104,7 +109,7 @@ public class GoServerMain implements Runnable {
                 output.writeUTF(message);
                 output.flush();
             } catch (IOException e) {
-                System.out.println("[ERROR] Failed to send message.");
+                GoLogger.error("Failed to send message.");
                 release();
             }
         }
@@ -120,7 +125,7 @@ public class GoServerMain implements Runnable {
             try {
                 message = input.readUTF();
             } catch (IOException e) {
-                System.out.println("[ERROR] Failed to receive message.");
+                GoLogger.error("Failed to receive message.");
                 release();
             }
             return message;
@@ -152,7 +157,7 @@ public class GoServerMain implements Runnable {
 
                 case "1x1" -> response.append("cT");
 
-                case "9x0" -> response.append("i").append(id);
+                case "9x0" -> getClientID(response);
                 case "9x1" -> response.append("o").append(Math.max(userCount - 2, 0));
                 case "9x2" -> response.append(userCount >= 2 ? "gT" : "gF");
                 case "9x7" -> questLocal(response);
@@ -161,6 +166,11 @@ public class GoServerMain implements Runnable {
             }
 
             return response.toString();
+        }
+
+        private void getClientID(StringBuilder response) {
+            response.append("i").append(id);
+            setReady();
         }
 
         private void questLocal(StringBuilder response) {
@@ -173,7 +183,7 @@ public class GoServerMain implements Runnable {
         }
 
         private void loadSave(String content, StringBuilder response) {
-            if (userCountHis != 1) response.append("rF");
+            if (!isLocalGame &&userCountHis != 1) response.append("rF");
             else {
                 response.append("rT");
                 goGame.recover(content);
@@ -211,6 +221,7 @@ public class GoServerMain implements Runnable {
                 y       = Integer.parseInt(contentSplit[1]),
                 player  = Integer.parseInt(contentSplit[2]);
 
+            GoLogger.debug("isLocalGame = " + String.valueOf(isLocalGame));
             if (!isLocalGame && ((player != goGame.getCurrentPlayer()) || (player != userProp))) {
                 response.append("pF");
                 return;
@@ -220,14 +231,14 @@ public class GoServerMain implements Runnable {
                 response.append("pT").append(x).append(",").append(y);
                 goGame.removePiece(goGame.getRemovePieces(x, y));
             } else response.append("pF");
-//                    debugPrintGoMap();
+//            debugPrintGoMap();
         }
 
         private void clientExit() {
             userCount--;
             release();
             goGame.clear();
-            System.out.println("[LOG] Server: Game cleared.");
+            GoLogger.log("Server", "Game cleared.");
         }
 
         @Override
@@ -236,7 +247,7 @@ public class GoServerMain implements Runnable {
                 String message = receive();
                 if (message.equals("")) continue;
                 String response = processMessage(message);
-                System.out.println("[LOG] " + message + " -> " + response);
+                GoLogger.log("Server", message + " -> " + response);
                 if (response == null) continue;
                 if (isLocalGame) send(response);
                 else sendAll(response);

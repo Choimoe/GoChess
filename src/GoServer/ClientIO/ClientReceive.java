@@ -1,5 +1,7 @@
 package GoServer.ClientIO;
 
+import GoBoard.ChessBoard;
+import GoUtil.GoLogger;
 import GoUtil.GoUtil;
 
 import java.io.DataInputStream;
@@ -13,6 +15,7 @@ public class ClientReceive implements Runnable {
     private boolean isRunning;
     private final Map<Integer, String> requestResponse;
     private final String name;
+    private ChessBoard notifier;
 
     public ClientReceive(Socket client, Map<Integer, String> requestResponse, String name) {
         this.client = client;
@@ -23,7 +26,7 @@ public class ClientReceive implements Runnable {
         try {
             input = new DataInputStream(client.getInputStream());
         } catch (IOException e) {
-            System.out.println("[ERROR] " + name + ": Failed to create Input stream.");
+            GoLogger.error(name + " - Failed to create Input stream.");
             release();
         }
     }
@@ -35,10 +38,10 @@ public class ClientReceive implements Runnable {
 
     private String receive() {
         try {
-//            System.out.println("[LOG] " + name + ": Waiting for response...");
+//            GoLogger.log(name, "Waiting for response...");
             return input.readUTF();
         } catch (IOException e) {
-            System.out.println("[ERROR] " + name + ": Failed to receive message.");
+            GoLogger.error(name + " - Failed to receive message.");
             release();
         }
         return null;
@@ -49,8 +52,13 @@ public class ClientReceive implements Runnable {
         String[] messageSplit = message.split("\\|");
         int requestID = Integer.parseInt(messageSplit[0].substring(1));
         if (requestID < 0) return;
-        System.out.println("[DEBUG] " + name + ": Received message: [" + requestID / 10 + "] " + messageSplit[1]);
+        GoLogger.log(name, "Received message: [" + requestID / 10 + "] " + messageSplit[1]);
         requestResponse.put(requestID, messageSplit[1]);
+        notifier.processResponse(messageSplit[1]);
+    }
+
+    public void setNotifyOnNewRequests(ChessBoard board) {
+        this.notifier = board;
     }
 
     @Override
