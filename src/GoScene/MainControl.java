@@ -71,9 +71,9 @@ public class MainControl extends Application {
         });
 
         homePage.setButtonJump      (stage, 0, startPage .getScene());
-        review.setButtonJump        (stage, 1, startPage .getScene(), () -> {
-            linker.setRunning(false);
-        });
+//        review.setButtonJump        (stage, 1, startPage .getScene(), () -> {
+//            linker.setRunning(false);
+//        });
 
         startPage.setButtonJump     (stage, 0, chessBoard.getScene(), () -> startPlay(chessBoard, true ));
         startPage.setButtonJump     (stage, 1, chessBoard.getScene(), () -> startPlay(chessBoard, false));

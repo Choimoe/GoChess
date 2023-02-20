@@ -1,5 +1,7 @@
 package GoGame;
 
+import GoUtil.GoLogger;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -160,19 +162,23 @@ public class GoMain implements Serializable {
         while (matcherPiece.find()) {
             String match        = matcherPiece.group();
 
+//            GoLogger.debug(match.charAt(0) + " found in: " + match);
+
             int x = match.charAt(2) - 'a';
             int y = match.charAt(3) - 'a';
-            char player;
-            switch (match.charAt(0)) {
-                case 'B' -> player = BLACK_PLAYER;
-                case 'W' -> player = WHITE_PLAYER;
-                default  -> player = WAIT_BEGIN;
-            }
+            int player = switch (match.charAt(0)) {
+                case 'B' -> BLACK_PLAYER;
+                case 'W' -> WHITE_PLAYER;
+                default  -> WAIT_BEGIN;
+            };
 
             if (player == lastPlayer) skipTurn();
             lastPlayer = player;
 
             recoverPutPiece(new GoStep(x, y, player));
+
+//            GoLogger.debug("now player = " + player);
+            currentUser = player;
 
 //            System.out.println("[DEBUG] matcherPiece  : " + match + " -> " + x + ", " + y + " | color : " + match.charAt(0));
         }

@@ -20,7 +20,10 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import static GoUtil.ImageUtil.abs;
 import static javafx.application.Platform.runLater;
 
 public class ChessBoard implements Serializable, Runnable{
@@ -208,7 +211,6 @@ public class ChessBoard implements Serializable, Runnable{
     public void updateWaitingDisplay() {
         runLater(() -> {
             pane.getChildren().remove(pieceWaitDisplay);
-            GoLogger.debug("change to " + goGame.getCurrentPlayer());
             pieceWaitDisplay = newPieceWaitImage(goGame.getCurrentPlayer());
             pane.getChildren().add(pieceWaitDisplay);
         });
@@ -248,18 +250,53 @@ public class ChessBoard implements Serializable, Runnable{
     public void recoverPieces(String goGameData) {
         runLater(() -> pane.getChildren().clear());
         setPane();
+
         pieceCount = 0;
-        goGame.recover(goGameData);
+        goGame.beginGame();
         List<GoStep> steps = goGame.getGoSteps();
-        for (GoStep step : steps) {
-            if (step == null) continue;
-            if ((step.getX() == -1) || (step.getY() == -1) || (step.getPlayer() == -1)) continue;
 
-            int boardPosX = step.getX(), boardPosY = step.getY(), player = 2 - (step.getPlayer() & 1);
+        Pattern patPiece        = Pattern.compile   ("([BW])\\[([a-z]{2})]");
+        Matcher matcherPiece    = patPiece.matcher  (goGameData);
 
-//            System.out.println("[DEBUG] Recover: " + boardPosX + " " + boardPosY + " " + player);
-            putPieceFromRecover(boardPosX, boardPosY, player);
+        int lastPlayer = 0;
+        while (matcherPiece.find()) {
+            String match        = matcherPiece.group();
+
+//            GoLogger.debug(match.charAt(0) + " found in: " + match);
+
+            int x = match.charAt(2) - 'a';
+            int y = match.charAt(3) - 'a';
+            int player = switch (match.charAt(0)) {
+                case 'B' -> 1;
+                case 'W' -> 2;
+                default  -> 0;
+            };
+
+            if (player == lastPlayer) skipTurn('T');
+            lastPlayer = player;
+
+//            goGame.recoverPutPiece(new GoStep(x, y, player));
+
+            setPieceDisplay(x, y);
+
+//            GoLogger.debug("now player = " + player);
+//            goGame.changePlayer();
+
+//            System.out.println("[DEBUG] matcherPiece  : " + match + " -> " + x + ", " + y + " | color : " + match.charAt(0));
         }
+
+//        for (GoStep step : steps) {
+//            if (step == null) continue;
+//            if ((step.getX() == -1) || (step.getY() == -1) || (step.getPlayer() == -1)) continue;
+//
+//            int boardPosX = step.getX(), boardPosY = step.getY(), player = 2 - (step.getPlayer() & 1);
+//
+////            System.out.println("[DEBUG] Recover: " + boardPosX + " " + boardPosY + " " + player);
+//            putPieceFromRecover(boardPosX, boardPosY, player);
+////            setPieceDisplay(boardPosX, boardPosY);
+////            goGame.changePlayer();
+////            GoLogger.debug("Step #" + ++stepCount + " : " + goGame.getCurrentPlayer());
+//        }
 
         pieceCount = goGame.getSteps();
 
@@ -269,17 +306,22 @@ public class ChessBoard implements Serializable, Runnable{
     public void setInfoOnText(StepInfo info, int player) {
         infoTextDisplay.setText("当前局面黑棋胜率：" + info.winRate
                 + "%\n黑子目数领先：" + info.scoreLead
-                + "\n\n\n本步胜率变化：" + (player == 1 ? "黑" : "白") + "棋⇣" + info.winRateDrop
-                + "%\n本步评分变化：" + (player == 1 ? "黑" : "白") + "棋⇣" + info.scoreDrop);
+                + "\n\n\n本步胜率变化：" + (player == 1 ? "黑" : "白") + "棋" + (info.winRateDrop < 0 ? "↓" : "↑") + abs(info.winRateDrop)
+                + "%\n本步评分变化：" + (player == 1 ? "黑" : "白") + "棋" + (info.scoreDrop < 0 ? "↓" : "↑") + abs(info.scoreDrop));
+    }
+
+    public void setInfoClear() {
+        infoTextDisplay.setText("");
     }
 
     public void anaSavesFromPieces(String goGameData) {
         runLater(() -> pane.getChildren().clear());
         setPane();
         pieceCount = 0;
+        goGame.beginGame();
         goGame.recover(goGameData);
 
-        File kataGoFile = new File("data/analysis.sgf");
+        File kataGoFile = new File("data\\saves\\analysis.sgf");
 
         steps = goGame.getGoSteps();
         stepInfo = StepInfo.getDataFromAnalysedData(kataGoFile);
@@ -291,24 +333,30 @@ public class ChessBoard implements Serializable, Runnable{
         updateWaitingDisplay();
     }
 
-    public void stepByStepRecover() {
-        if (currentRecoverPieceCount >= recoverPieceCount) return;
-        setNowStepInfo(currentRecoverPieceCount);
+    public boolean stepByStepRecover() {
+        if (currentRecoverPieceCount >= recoverPieceCount) {
+            setInfoClear();
+            return false;
+        }
+        boolean ret = setNowStepInfo(currentRecoverPieceCount);
         currentRecoverPieceCount++;
+        return ret;
     }
 
-    private void setNowStepInfo(int index) {
+    private boolean setNowStepInfo(int index) {
+        if (index >= steps.size() || index >= stepInfo.size()) return false;
         GoStep step = steps.get(index);
-//        StepInfo info = stepInfo.get(index);
-        StepInfo info = new StepInfo(0, 0, 0, 0);
-        if (step == null) return;
-        if ((step.getX() == -1) || (step.getY() == -1) || (step.getPlayer() == -1)) return;
+        StepInfo info = stepInfo.get(index);
+//        StepInfo info = new StepInfo(0, 0, 0, 0);
+        if (step == null) return false;
+        if ((step.getX() == -1) || (step.getY() == -1) || (step.getPlayer() == -1)) return false;
 
         int boardPosX = step.getX(), boardPosY = step.getY(), player = 2 - (step.getPlayer() & 1);
 
         setInfoOnText(info, player);
 //            System.out.println("[DEBUG] Recover: " + boardPosX + " " + boardPosY + " " + player);
         putPieceFromRecover(boardPosX, boardPosY, player);
+        return true;
     }
 
     private void putPieceFromRecover(int boardPosX, int boardPosY, int player) {

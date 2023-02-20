@@ -23,7 +23,7 @@ public class GoServerMain implements Runnable {
         GoLogger.debug("Map:");
         for (int i = 0; i < 19; i++) {
             for (int j = 0; j < 19; j++) {
-                System.out.print(goGame.getPosStep(i, j) + " ");
+                System.out.print(goGame.getPosStep(j, i) + "\t");
             }
             System.out.println();
         }

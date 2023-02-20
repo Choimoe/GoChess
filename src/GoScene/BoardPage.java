@@ -6,13 +6,11 @@ import GoServer.GoClient;
 import GoUtil.GoLogger;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontSmoothingType;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.io.*;
@@ -71,6 +69,7 @@ public class BoardPage extends ButtonPages {
             buttonLayout.getChildren().add(button[i].getButton());
 
         CustomButton nextPlace = new CustomButton("下一步", 300, 70);
+        nextPlace.getButton().setVisible(false);
         nextButLayout.getChildren().add(nextPlace.getButton());
 
         /* put the button and pane on the rootPane */
@@ -81,19 +80,25 @@ public class BoardPage extends ButtonPages {
 
         setButtonAction(1, () -> board.requestSkipTurn());
 
-        setButtonAction(nextPlace.getButton(), () -> board.stepByStepRecover());
+        setButtonAction(nextPlace.getButton(), () -> getNextStepFromAnalysis(nextPlace));
         setButtonAction("回想", () -> readGoFromSave(inputData, client));
-        setButtonAction("复盘", () -> readGoFromAnalysis(inputData, client));
+        setButtonAction("复盘", () -> readGoFromAnalysis(inputData, client, nextPlace));
         setButtonAction("存档", () -> saveGo(inputData));
     }
 
-    private void readGoFromAnalysis(InputData inputData, GoClient client) {
+    private void getNextStepFromAnalysis(CustomButton nextPlace) {
+        if (!board.stepByStepRecover())
+            nextPlace.getButton().setVisible(true);
+    }
+
+    private void readGoFromAnalysis(InputData inputData, GoClient client, CustomButton nextPlace) {
         if (inputData.getSavesCount() == 0) {
             GoLogger.error("No saves found.");
             return;
         }
 
         inputData.refreshReadSave();
+        nextPlace.getButton().setVisible(true);
         String gameData = inputData.getGoGame(301);
         board.addRequest(client.request("anaSave", gameData));
     }
